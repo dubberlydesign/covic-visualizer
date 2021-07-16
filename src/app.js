@@ -9,7 +9,9 @@ const middlewares = require("./middlewares");
 const api = require("./api");
 
 const app = express();
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
+
+res.json("covic home");
 
 app.use(morgan("dev"));
 app.use(helmet());
