@@ -20,7 +20,6 @@
   },
   "license": "MIT",
   "dependencies": {
-    "airtable": "^0.11.1",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
     "dotenv": "^10.0.0",
