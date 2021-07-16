@@ -25,7 +25,7 @@ const router = express.Router();
 let cachedRecords;
 let cacheLogTime;
 
-router.get("/", limiter, speedLimiter, async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
     console.log("returning cached data");
     return res.json(cachedRecords);
