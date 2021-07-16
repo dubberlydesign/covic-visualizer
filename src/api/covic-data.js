@@ -2,6 +2,11 @@ const express = require("express");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
+const Airtable = require("airtable");
+
+new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+  process.env.AIRTABLE_BASE
+);
 
 axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Articles/`;
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -27,7 +32,6 @@ let cacheLogTime;
 
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
-    console.log("returning cached data");
     return res.json(cachedRecords);
   }
 
