@@ -4,16 +4,6 @@ const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
 const Airtable = require("airtable");
 
-new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
-  process.env.AIRTABLE_BASE
-);
-
-axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Articles/`;
-axios.defaults.headers.post["Content-Type"] = "application/json";
-axios.defaults.headers[
-  "Authorization"
-] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
-
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -34,6 +24,16 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
     return res.json(cachedRecords);
   }
+
+  const base = new Airtable({ apiKey: process.env.AIRTABLE_API_KEY }).base(
+    process.env.AIRTABLE_BASE
+  );
+
+  axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Articles/`;
+  axios.defaults.headers.post["Content-Type"] = "application/json";
+  axios.defaults.headers[
+    "Authorization"
+  ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
   try {
     await axios
