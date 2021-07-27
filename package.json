@@ -7,8 +7,8 @@
     "node": "15.x"
   },
   "scripts": {
-    "start": "node server/src/index.js",
-    "dev": "nodemon server/src/index.js",
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
     "lint": "eslint --fix src",
     "test": "mocha --exit",
     "build": "cd client && yarn && yarn build"
