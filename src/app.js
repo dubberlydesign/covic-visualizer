@@ -17,7 +17,7 @@ app.use(morgan("dev"));
 app.use(
   helmet({
     contentSecurityPolicy:
-      process.env.NODE_ENV === "production" ? undefined : false,
+      process.env.NODE_ENV === "production" ? false : false,
   })
 );
 app.use(cors());
