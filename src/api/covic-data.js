@@ -43,4 +43,28 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   }
 });
 
+router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
+  if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
+    return res.json(cachedRecords);
+  }
+
+  axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Figures/`;
+  axios.defaults.headers.post["Content-Type"] = "application/json";
+  axios.defaults.headers[
+    "Authorization"
+  ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
+
+  try {
+    await axios
+      .get("/", { params: { offset: "", pageSize: 20 } })
+      .then(response => {
+        cachedRecords = response.data.records;
+        cacheLogTime = Date.now();
+        return res.json(response.data.records);
+      });
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;
