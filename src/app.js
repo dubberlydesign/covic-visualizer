@@ -1,3 +1,4 @@
+const path = require("path");
 const express = require("express");
 const morgan = require("morgan");
 const helmet = require("helmet");
@@ -16,7 +17,13 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+app.use(express.static(path.resolve(__dirname, "../client/build")));
+
 app.use("/api/v1", api);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../client/build", "index.html"));
+});
 
 app.use(middlewares.notFound);
 app.use(middlewares.errorHandler);

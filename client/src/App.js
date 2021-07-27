@@ -13,9 +13,13 @@ const App = () => {
 
   return (
     <div>
-      {data.map(item => {
-        return item.fields["Data Source"];
-      })}
+      <div>Covic App</div>
+
+      <div>
+        {data.map(item => {
+          return item.fields["Data Source"];
+        })}
+      </div>
     </div>
   );
 };
