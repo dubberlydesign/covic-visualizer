@@ -11,7 +11,7 @@
     "dev": "nodemon server/src/index.js",
     "lint": "eslint --fix src",
     "test": "mocha --exit",
-    "build": "cd client && yarn && yarn start"
+    "build": "cd client && yarn && yarn build"
   },
   "keywords": [],
   "author": "Blending Design",
