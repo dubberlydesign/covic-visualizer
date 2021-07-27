@@ -16,8 +16,12 @@ app.use(morgan("dev"));
 // app.use(helmet());
 app.use(
   helmet({
-    contentSecurityPolicy:
-      process.env.NODE_ENV === "production" ? false : false,
+    contentSecurityPolicy: {
+      directives: {
+        ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+        "img-src": ["'self'", "https://dl.airtable.com/"],
+      },
+    },
   })
 );
 app.use(cors());
