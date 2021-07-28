@@ -31,7 +31,6 @@ const useStyles = makeStyles(theme => ({
   },
 
   cardContainer: {
-    minWidth: 275,
     backgroundColor: "#fff",
     textAlign: "left",
     padding: "20px",
