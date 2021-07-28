@@ -9,10 +9,12 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
+    background: "#F6F4F2",
   },
 
   paper: {
@@ -20,7 +22,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     textAlign: "left",
     color: "white",
-    backgroundColor: "#373A36",
+    backgroundColor: "#425664",
   },
 
   box: {
@@ -58,6 +60,14 @@ const useStyles = makeStyles(theme => ({
     position: "fixed",
     bottom: "0",
     left: "50%",
+    color: "#C6AD8F",
+  },
+
+  links: {
+    marginTop: "20px",
+    backgroundColor: "#C6AD8F",
+    color: "white",
+    width: "150px",
   },
 }));
 
@@ -75,7 +85,6 @@ const Figures = () => {
         params: { offset: dataOffset, requestAmount },
       })
       .then(response => {
-        console.log("response.data.records", response.data.records);
         setData(data.concat(response.data.records));
         setDataOffset(response.data.offset);
       });
@@ -125,6 +134,15 @@ const Figures = () => {
                         >
                           {item.fields["Title"]}
                         </Typography>
+                        <Button
+                          variant='contained'
+                          disableElevation
+                          className={classes.links}
+                          href={item.fields["URL (from ID copy)"]}
+                          target='_blank'
+                        >
+                          Learn More
+                        </Button>
                       </CardContent>
                     </Card>
                   </Paper>
