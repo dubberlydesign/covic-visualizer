@@ -19,6 +19,8 @@ const router = express.Router();
 let cachedRecords;
 let cacheLogTime;
 
+let prevOffset = "";
+
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
     return res.json(cachedRecords);
@@ -44,10 +46,15 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
 });
 
 router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
-  if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
+  if (
+    cacheLogTime &&
+    cacheLogTime > Date.now() - 30 * 1000 &&
+    prevOffset === req.query.offset
+  ) {
     return res.json(cachedRecords);
   }
 
+  prevOffset = req.query.offset;
   axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Figures/`;
   axios.defaults.headers.post["Content-Type"] = "application/json";
   axios.defaults.headers[
@@ -56,11 +63,14 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
 
   try {
     await axios
-      .get("/", { params: { offset: "", pageSize: 20 } })
+      .get("/", {
+        params: { offset: req.query.offset, pageSize: req.query.requestAmount },
+      })
       .then(response => {
-        cachedRecords = response.data.records;
+        cachedRecords = response.data;
         cacheLogTime = Date.now();
-        return res.json(response.data.records);
+
+        return res.json(response.data);
       });
   } catch (error) {
     return next(error);
