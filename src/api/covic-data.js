@@ -21,24 +21,44 @@ let cacheLogTime;
 
 let prevOffset = "";
 
+const baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/`;
+axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.headers[
+  "Authorization"
+] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
+
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
-  if (cacheLogTime && cacheLogTime > Date.now() - 30 * 1000) {
+  if (
+    cacheLogTime &&
+    cacheLogTime > Date.now() - 30 * 1000 &&
+    prevOffset === req.query.offset
+  ) {
     return res.json(cachedRecords);
   }
+  prevOffset = req.query.offset;
+  axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
-  axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Articles/`;
-  axios.defaults.headers.post["Content-Type"] = "application/json";
-  axios.defaults.headers[
-    "Authorization"
-  ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
+  const params = {
+    offset: req.query.offset,
+    pageSize: req.query.requestAmount,
+  };
+
+  if (req.query.filterType !== "") {
+    params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
+  } else {
+    delete params.filterByFormula;
+  }
 
   try {
     await axios
-      .get("/", { params: { offset: "", pageSize: 20 } })
+      .get("/", {
+        params,
+      })
       .then(response => {
-        cachedRecords = response.data.records;
+        cachedRecords = response.data;
         cacheLogTime = Date.now();
-        return res.json(response.data.records);
+
+        return res.json(response.data);
       });
   } catch (error) {
     return next(error);
@@ -55,16 +75,15 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
   }
 
   prevOffset = req.query.offset;
-  axios.defaults.baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/Figures/`;
-  axios.defaults.headers.post["Content-Type"] = "application/json";
-  axios.defaults.headers[
-    "Authorization"
-  ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
+  axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
   try {
     await axios
       .get("/", {
-        params: { offset: req.query.offset, pageSize: req.query.requestAmount },
+        params: {
+          offset: req.query.offset,
+          pageSize: req.query.requestAmount,
+        },
       })
       .then(response => {
         cachedRecords = response.data;

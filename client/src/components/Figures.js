@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { makeStyles, createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 
@@ -11,64 +11,7 @@ import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-    background: "#F6F4F2",
-  },
-
-  paper: {
-    padding: theme.spacing(2),
-    margin: theme.spacing(2),
-    textAlign: "left",
-    color: "white",
-    backgroundColor: "#425664",
-  },
-
-  box: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-
-  cardContainer: {
-    backgroundColor: "#fff",
-    textAlign: "left",
-    padding: "20px",
-  },
-
-  cardImage: {
-    width: "100%",
-    height: "400px",
-    objectFit: "cover",
-    margin: "auto",
-    display: "block",
-    boxSizing: "border-box",
-    border: "1px solid #333",
-    marginBottom: "20px",
-  },
-
-  cardLabel: {
-    color: "#fff",
-    fontFamily: "sans-serif",
-    overflowWrap: "break-word",
-    width: "500px",
-    paddingTop: "10px",
-  },
-
-  loader: {
-    position: "fixed",
-    bottom: "0",
-    left: "50%",
-    color: "#C6AD8F",
-  },
-
-  links: {
-    marginTop: "20px",
-    backgroundColor: "#C6AD8F",
-    color: "white",
-    width: "150px",
-  },
-}));
+import { useStyles } from "./styles";
 
 const Figures = () => {
   const theme = createTheme();
@@ -76,12 +19,12 @@ const Figures = () => {
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
-  const requestAmount = 20;
+  const requestAmount = 100;
 
   const requestData = () => {
     axios
       .get("/api/v1/covic-data/figures", {
-        params: { offset: dataOffset, requestAmount },
+        params: { baseType: "Figures", offset: dataOffset, requestAmount },
       })
       .then(response => {
         setData(data.concat(response.data.records));
