@@ -4,6 +4,7 @@ export const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     background: "#F6F4F2",
+    height: "100vh",
   },
 
   paper: {
@@ -56,5 +57,30 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#C6AD8F",
     color: "white",
     width: "150px",
+  },
+
+  gridHolder: {
+    padding: "20px",
+  },
+
+  formHolder: {
+    display: "flex",
+    width: "80%",
+    margin: "0 auto 50px auto",
+    paddingTop: "50px",
+  },
+
+  inputText: {
+    fontSize: 50,
+    color: "#C6AD8F",
+    letterSpacing: "-.5px",
+    borderColor: "#C6AD8F",
+  },
+
+  helperText: {
+    fontSize: 16,
+    color: "#425664",
+    textTransform: "uppercase",
+    fontWeight: 700,
   },
 }));
