@@ -26,18 +26,24 @@ const Articles = () => {
   const [data, setData] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
   const [searchValue, setSearchVal] = useState("");
-  const requestAmount = 100;
+  const requestAmount = 150;
 
-  const requestData = () => {
+  const requestData = (
+    queryType = "",
+    filterType = "",
+    term = "",
+    fieldCol = ""
+  ) => {
     axios
       .get("/api/v1/covic-data", {
         params: {
           baseType: "Articles",
           offset: dataOffset,
           requestAmount,
-          filterType: "",
-          term: "",
-          fieldCol: "",
+          queryType,
+          filterType,
+          term,
+          fieldCol,
         },
       })
       .then(response => {
@@ -53,22 +59,48 @@ const Articles = () => {
   }, []);
 
   const handleScroll = () => {
-    requestData();
+    if (searchValue !== "") {
+      requestData("search", "FIND", searchValue);
+    } else {
+      requestData();
+    }
   };
 
   const handleSubmit = e => {
-    console.log("submitting form");
+    e.preventDefault();
+    setData(data.splice(0, data.length));
+    setDataOffset("");
+    requestData("search", "FIND", searchValue);
   };
 
   const handleChange = e => {
-    console.log("handle change");
-    // setSearchVal(e.target.value);
+    setTimeout(() => {
+      setSearchVal(e.target.value);
+    }, 500);
+  };
+
+  const renderImg = item => {
+    if (item?.fields["Figure Count (Figures relation)"] === 0) return null;
+    const imgList = item?.fields["Image (from Figures relation)"].map(
+      figure => {
+        if (figure.thumbnails) {
+          return (
+            <img
+              src={figure.thumbnails.large.url}
+              alt=''
+              className={classes.cardImage}
+            />
+          );
+        }
+      }
+    );
+    return imgList.length > 0 ? imgList[0] : null;
   };
 
   return (
     <div className={classes.root}>
       <div>
-        <form onSubmit={handleSubmit} className={classes.formHolder}>
+        <form className={classes.formHolder}>
           <TextField
             id='standard-full-width'
             style={{ margin: 8 }}
@@ -87,6 +119,8 @@ const Articles = () => {
                     style={{
                       padding: "0",
                     }}
+                    onClick={handleSubmit}
+                    type='submit'
                   >
                     <SearchOutlinedIcon
                       style={{
@@ -107,18 +141,19 @@ const Articles = () => {
       <Grid container spacing={3} style={{ padding: 20 }}>
         <InfiniteScroll
           dataLength={data.length}
-          next={handleScroll}
-          hasMore={true}
+          next={data.length === 0 ? () => {} : handleScroll}
+          hasMore={data.length === 0 ? false : true}
           className={classes.box}
           loader={<CircularProgress className={classes.loader} />}
         >
           {data.map(item => {
-            if (item.fields) {
+            if (item.fields && item.fields["Subject Present"] === "okay") {
               return (
-                <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
+                <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={item.id}>
                   <Paper className={classes.paper}>
                     <Card key={item.id}>
                       <CardContent className={classes.cardContainer}>
+                        {renderImg(item)}
                         <Typography
                           variant='body2'
                           color='textSecondary'
