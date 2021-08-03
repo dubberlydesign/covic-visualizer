@@ -17,16 +17,23 @@ import IconButton from "@material-ui/core/IconButton";
 
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 
+import AppBar from "@material-ui/core/AppBar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import ElevationScroll from "./ElavationScroll";
+
+import FilterMenu from "./FilterMenu";
 import { useStyles } from "./styles";
 
-const Articles = () => {
+const Articles = props => {
   const theme = createTheme();
 
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
   const [searchValue, setSearchVal] = useState("");
-  const requestAmount = 100;
+  const requestAmount = 50;
 
   const requestData = (
     queryType = "",
@@ -68,7 +75,6 @@ const Articles = () => {
   const handleSubmit = e => {
     e.preventDefault();
     setData(data.splice(0, data.length));
-    setDataOffset("");
     requestData("search", "FIND", searchValue);
   };
 
@@ -90,6 +96,8 @@ const Articles = () => {
               className={classes.cardImage}
             />
           );
+        } else {
+          return [];
         }
       }
     );
@@ -98,88 +106,106 @@ const Articles = () => {
 
   return (
     <div className={classes.root}>
-      <div>
-        <form className={classes.formHolder}>
-          <TextField
-            id='standard-full-width'
-            style={{ margin: 8 }}
-            placeholder='Search Visualizations...'
-            helperText='Search'
-            fullWidth
-            margin='normal'
-            FormHelperTextProps={{
-              className: classes.helperText,
-            }}
-            InputProps={{
-              className: classes.inputText,
-              endAdornment: (
-                <InputAdornment position='end'>
-                  <IconButton
-                    style={{
-                      padding: "0",
-                    }}
-                    onClick={handleSubmit}
-                    type='submit'
-                  >
-                    <SearchOutlinedIcon
-                      style={{
-                        fontSize: 65,
-                        color: "#C6AD8F",
-                        letterSpacing: "-2.5px",
-                        opacity: ".5",
-                      }}
-                    />
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            onChange={handleChange}
-          />
-        </form>
-      </div>
-      <Grid container spacing={3} style={{ padding: 20 }}>
-        <InfiniteScroll
-          dataLength={data.length}
-          next={data.length === 0 ? () => {} : handleScroll}
-          hasMore={data.length === 0 ? false : true}
-          className={classes.box}
-          loader={<CircularProgress className={classes.loader} />}
-        >
-          {data.map(item => {
-            if (item.fields && item.fields["Subject Present"] === "okay") {
-              return (
-                <Grid item xs={12} sm={6} md={4} lg={4} xl={3} key={item.id}>
-                  <Paper className={classes.paper}>
-                    <Card key={item.id}>
-                      <CardContent className={classes.cardContainer}>
-                        {renderImg(item)}
-                        <Typography
-                          variant='body2'
-                          color='textSecondary'
-                          component='p'
-                        >
-                          {item?.fields["Title"]}
-                        </Typography>
-                        <Button
-                          variant='contained'
-                          disableElevation
-                          className={classes.links}
-                          href={item.fields["URL"]}
-                          target='_blank'
-                        >
-                          Learn More
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </Paper>
-                </Grid>
-              );
-            } else {
-              return null;
-            }
-          })}
-        </InfiniteScroll>
-      </Grid>
+      <CssBaseline />
+      <ElevationScroll {...props}>
+        <AppBar className={classes.appBar}>
+          <>
+            <form className={classes.formHolder}>
+              <TextField
+                id='standard-full-width'
+                style={{ margin: 8 }}
+                placeholder='Search Visualizations...'
+                helperText='Search'
+                fullWidth
+                margin='normal'
+                FormHelperTextProps={{
+                  className: classes.helperText,
+                }}
+                InputProps={{
+                  className: classes.inputText,
+                  endAdornment: (
+                    <InputAdornment position='end'>
+                      <IconButton
+                        style={{
+                          padding: "0",
+                        }}
+                        onClick={handleSubmit}
+                        type='submit'
+                      >
+                        <SearchOutlinedIcon
+                          style={{
+                            fontSize: 65,
+                            color: "#C6AD8F",
+                            letterSpacing: "-2.5px",
+                            opacity: ".5",
+                          }}
+                        />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                onChange={handleChange}
+              />
+            </form>
+          </>
+          <FilterMenu />
+        </AppBar>
+      </ElevationScroll>
+      <Container maxWidth={false} className={classes.containerScroll}>
+        <Box my={6}>
+          <Grid container spacing={3} style={{ padding: 20 }}>
+            <InfiniteScroll
+              dataLength={data.length}
+              next={data.length === 0 ? () => {} : handleScroll}
+              hasMore={data.length === 0 ? false : true}
+              className={classes.box}
+              loader={<CircularProgress className={classes.loader} />}
+            >
+              {data.map(item => {
+                if (item.fields && item.fields["Subject Present"] === "okay") {
+                  return (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={4}
+                      xl={3}
+                      key={item.id}
+                    >
+                      <Paper className={classes.paper}>
+                        <Card key={item.id}>
+                          <CardContent className={classes.cardContainer}>
+                            {renderImg(item)}
+                            <Typography
+                              variant='body2'
+                              color='textSecondary'
+                              component='p'
+                            >
+                              {item?.fields["Title"]}
+                            </Typography>
+                            <Button
+                              variant='contained'
+                              disableElevation
+                              className={classes.links}
+                              href={item.fields["URL"]}
+                              target='_blank'
+                            >
+                              Learn More
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </Paper>
+                    </Grid>
+                  );
+                } else {
+                  return null;
+                }
+              })}
+            </InfiniteScroll>
+          </Grid>
+        </Box>
+      </Container>
     </div>
   );
 };
