@@ -41,12 +41,34 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   const params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
+    view: "Gallery",
   };
 
-  if (req.query.filterType !== "") {
+  if (req.query.filterType !== "" && req.query.queryType !== "search") {
     params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
   } else {
-    delete params.filterByFormula;
+    params.filterByFormula = "";
+  }
+
+  if (req.query.queryType === "search") {
+    params.offset = "";
+    params.filterByFormula = `OR(
+      FIND('${req.query.term}',{ID})>0,
+      FIND('${req.query.term}',{Student Coder})>0,
+      FIND('${req.query.term}',{Title})>0,
+      FIND('${req.query.term}',{URL})>0,
+      FIND('${req.query.term}',{Publisher})>0,
+      FIND('${req.query.term}',{Language})>0,
+      FIND('${req.query.term}',{Country})>0,
+      FIND('${req.query.term}',{Source Type})>0,
+      FIND('${req.query.term}',{Date Recorded})>0,
+      FIND('${req.query.term}',{Date})>0,
+      FIND('${req.query.term}',{Data Source})>0,
+      FIND('${req.query.term}',{Article Technique})>0,
+      FIND('${req.query.term}',{Subject(s)})>0,
+      FIND('${req.query.term}',{Notes})>0,
+      FIND('${req.query.term}',{Figures Relation})>0,
+      FIND('${req.query.term}',{Figure Count (Figures Relation)})>0)`;
   }
 
   try {

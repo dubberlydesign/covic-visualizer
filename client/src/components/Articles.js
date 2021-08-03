@@ -26,7 +26,7 @@ const Articles = () => {
   const [data, setData] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
   const [searchValue, setSearchVal] = useState("");
-  const requestAmount = 150;
+  const requestAmount = 100;
 
   const requestData = (
     queryType = "",
@@ -49,7 +49,6 @@ const Articles = () => {
       .then(response => {
         setData(data.concat(response.data.records));
         setDataOffset(response.data.offset);
-        console.log("DATA", response.data.records);
       });
   };
 
