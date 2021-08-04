@@ -202,6 +202,7 @@ const FilterMenu = props => {
           </Select>
         </FormControl>
       </div>
+      <Divider />
       <div>
         <FormControl className={classes.formControl}>
           <InputLabel id='demo-mutiple-chip-label'>Intended Message</InputLabel>
@@ -233,6 +234,7 @@ const FilterMenu = props => {
           </Select>
         </FormControl>
       </div>
+      <Divider />
       <div>
         <FormControl className={classes.formControl}>
           <InputLabel id='demo-mutiple-chip-label'>
@@ -266,6 +268,7 @@ const FilterMenu = props => {
           </Select>
         </FormControl>
       </div>
+      <Divider />
       <div>
         <FormControl className={classes.formControl}>
           <InputLabel id='demo-mutiple-chip-label'>
@@ -299,6 +302,7 @@ const FilterMenu = props => {
           </Select>
         </FormControl>
       </div>
+      <Divider />
       <div className={classes.infoIconHolder}>
         <Button
           variant='contained'
