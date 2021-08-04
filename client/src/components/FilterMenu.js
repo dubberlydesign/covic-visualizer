@@ -17,7 +17,13 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-import { SOURCE_NAMES, CHART_NAMES } from "./utils/FilterValues";
+import {
+  SOURCE_NAMES,
+  CHART_NAMES,
+  INTENDED_MESSAGE,
+  ARTICLE_TECHNIQUE,
+  FIGURE_TECHNIQUES,
+} from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
 
 const FilterMenu = props => {
@@ -29,6 +35,9 @@ const FilterMenu = props => {
 
   const [sourceName, setSourceName] = useState([]);
   const [chartName, setChartName] = useState([]);
+  const [intendedName, setIntendedName] = useState([]);
+  const [articleTechName, setArticleTechName] = useState([]);
+  const [figureTechName, setFigureTechName] = useState([]);
 
   const handleSourceChange = event => {
     if (event.target.value.includes("All")) {
@@ -43,6 +52,30 @@ const FilterMenu = props => {
       setChartName(CHART_NAMES);
     } else {
       setChartName(event.target.value);
+    }
+  };
+
+  const handleIntendedChange = event => {
+    if (event.target.value.includes("All")) {
+      setIntendedName(INTENDED_MESSAGE);
+    } else {
+      setIntendedName(event.target.value);
+    }
+  };
+
+  const handleArticleTechChange = event => {
+    if (event.target.value.includes("All")) {
+      setArticleTechName(ARTICLE_TECHNIQUE);
+    } else {
+      setArticleTechName(event.target.value);
+    }
+  };
+
+  const handleFigureTechChange = event => {
+    if (event.target.value.includes("All")) {
+      setFigureTechName(FIGURE_TECHNIQUES);
+    } else {
+      setFigureTechName(event.target.value);
     }
   };
 
@@ -158,6 +191,103 @@ const FilterMenu = props => {
             MenuProps={MenuProps}
           >
             {CHART_NAMES.map(name => (
+              <MenuItem
+                key={name}
+                value={name}
+                style={getStyles(name, chartName, theme)}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div>
+        <FormControl className={classes.formControl}>
+          <InputLabel id='demo-mutiple-chip-label'>Intended Message</InputLabel>
+          <Select
+            labelId='demo-mutiple-chip-label'
+            id='demo-mutiple-chip'
+            multiple
+            value={intendedName}
+            onChange={handleIntendedChange}
+            input={<Input id='select-multiple-chip' />}
+            renderValue={selected => (
+              <div className={classes.chips}>
+                {selected.map(value => (
+                  <Chip key={value} label={value} className={classes.chip} />
+                ))}
+              </div>
+            )}
+            MenuProps={MenuProps}
+          >
+            {INTENDED_MESSAGE.map(name => (
+              <MenuItem
+                key={name}
+                value={name}
+                style={getStyles(name, chartName, theme)}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div>
+        <FormControl className={classes.formControl}>
+          <InputLabel id='demo-mutiple-chip-label'>
+            Article Technique
+          </InputLabel>
+          <Select
+            labelId='demo-mutiple-chip-label'
+            id='demo-mutiple-chip'
+            multiple
+            value={articleTechName}
+            onChange={handleArticleTechChange}
+            input={<Input id='select-multiple-chip' />}
+            renderValue={selected => (
+              <div className={classes.chips}>
+                {selected.map(value => (
+                  <Chip key={value} label={value} className={classes.chip} />
+                ))}
+              </div>
+            )}
+            MenuProps={MenuProps}
+          >
+            {ARTICLE_TECHNIQUE.map(name => (
+              <MenuItem
+                key={name}
+                value={name}
+                style={getStyles(name, chartName, theme)}
+              >
+                {name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </div>
+      <div>
+        <FormControl className={classes.formControl}>
+          <InputLabel id='demo-mutiple-chip-label'>
+            Figure Techniques
+          </InputLabel>
+          <Select
+            labelId='demo-mutiple-chip-label'
+            id='demo-mutiple-chip'
+            multiple
+            value={figureTechName}
+            onChange={handleFigureTechChange}
+            input={<Input id='select-multiple-chip' />}
+            renderValue={selected => (
+              <div className={classes.chips}>
+                {selected.map(value => (
+                  <Chip key={value} label={value} className={classes.chip} />
+                ))}
+              </div>
+            )}
+            MenuProps={MenuProps}
+          >
+            {FIGURE_TECHNIQUES.map(name => (
               <MenuItem
                 key={name}
                 value={name}

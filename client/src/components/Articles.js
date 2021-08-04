@@ -104,6 +104,7 @@ const Articles = props => {
               src={figure.thumbnails.large.url}
               alt=''
               className={isModal ? classes.cardImageModal : classes.cardImage}
+              key={Math.random() * 100}
             />
           );
         } else {
@@ -124,7 +125,6 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
-    console.log("dfklasdlfsadjf", item);
     setCurItem(item);
     setOpen(true);
   };

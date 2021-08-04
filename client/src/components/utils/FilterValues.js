@@ -33,3 +33,39 @@ export const CHART_NAMES = [
   "Streamgraph",
   "Treemap",
 ];
+
+export const INTENDED_MESSAGE = [
+  "All",
+  "Biomedical",
+  "Data Vis Advice",
+  "Economic",
+  "Environment",
+  "Flatten the Curve",
+  "Future Model",
+  "Historical",
+  "Magnitude",
+  "Social",
+  "Supplies",
+  "Transmission & Infection",
+];
+
+export const ARTICLE_TECHNIQUE = [
+  "All",
+  "Dashboard",
+  "Data update",
+  "Other Chart",
+  "Scrollytelling",
+  "Video",
+];
+
+export const FIGURE_TECHNIQUES = [
+  "All",
+  "Brushing and linking",
+  "Educational animation",
+  "Filtering",
+  "Mouseover",
+  "Navigating",
+  "Small Multiples",
+  "Time-series animation",
+  "Transition animation",
+];
