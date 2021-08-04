@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
+import { hidden } from "ansi-colors";
 
 export const useStyles = makeStyles(theme => ({
   root: {
@@ -26,6 +27,11 @@ export const useStyles = makeStyles(theme => ({
     padding: "20px",
   },
 
+  cardButtons: {
+    display: "flex",
+    justifyContent: "center",
+  },
+
   cardImage: {
     width: "100%",
     height: "400px",
@@ -35,6 +41,21 @@ export const useStyles = makeStyles(theme => ({
     boxSizing: "border-box",
     border: "1px solid #333",
     marginBottom: "20px",
+    maxWidth: "600px",
+  },
+
+  cardImageModal: {
+    height: "400px",
+    objectFit: "cover",
+    boxSizing: "border-box",
+    border: "1px solid #333",
+    margin: "20px",
+    maxWidth: "200px",
+  },
+
+  modalImagesHolder: {
+    display: "flex",
+    flexWrap: "wrap",
   },
 
   cardLabel: {
@@ -53,10 +74,11 @@ export const useStyles = makeStyles(theme => ({
   },
 
   links: {
-    marginTop: "20px",
+    marginTop: "30px",
     backgroundColor: "#C6AD8F",
     color: "white",
     width: "150px",
+    marginRight: "10px",
   },
 
   gridHolder: {
@@ -119,5 +141,56 @@ export const useStyles = makeStyles(theme => ({
   containerScroll: {
     marginTop: "220px",
     maxWidth: "none",
+  },
+
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  modalTextHolder: {
+    maxWidth: "600px",
+  },
+
+  modalTextHolderLast: {
+    maxWidth: "600px",
+    marginBottom: 20,
+  },
+
+  modalTextHolderHeader: {
+    fontWeight: 700,
+    fontSize: 20,
+    marginBottom: 10,
+    maxWidth: "400px",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+  },
+
+  modalChipHolder: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+
+  modalIconHolder: {
+    display: "flex",
+    justifyContent: "flex-end",
+  },
+
+  modalHeaderClose: {
+    fontFamily: "sans-serif",
+    fontSize: 50,
+    color: "#C6AD8F",
+    letterSpacing: "-1px",
+    borderColor: "#C6AD8F",
+    margin: "0 0 0 0",
+    cursor: "pointer",
+  },
+
+  modalButtonHolder: {
+    display: "flex",
   },
 }));

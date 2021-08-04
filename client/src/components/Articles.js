@@ -26,6 +26,12 @@ import ElevationScroll from "./ElavationScroll";
 import FilterMenu from "./FilterMenu";
 import { useStyles } from "./styles";
 
+import Modal from "@material-ui/core/Modal";
+import Backdrop from "@material-ui/core/Backdrop";
+import Fade from "@material-ui/core/Fade";
+import Chip from "@material-ui/core/Chip";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+
 const Articles = props => {
   const theme = createTheme();
 
@@ -34,6 +40,9 @@ const Articles = props => {
   const [dataOffset, setDataOffset] = useState("");
   const [searchValue, setSearchVal] = useState("");
   const requestAmount = 50;
+
+  const [open, setOpen] = useState(false);
+  const [curItem, setCurItem] = useState(null);
 
   const requestData = (
     queryType = "",
@@ -84,16 +93,17 @@ const Articles = props => {
     }, 500);
   };
 
-  const renderImg = item => {
+  const renderImg = (item, isModal = false) => {
+    if (item === null) return [];
     if (item?.fields["Figure Count (Figures relation)"] === 0) return null;
     const imgList = item?.fields["Image (from Figures relation)"].map(
-      figure => {
-        if (figure.thumbnails) {
+      (figure, index) => {
+        if (figure.thumbnails && index <= 3) {
           return (
             <img
               src={figure.thumbnails.large.url}
               alt=''
-              className={classes.cardImage}
+              className={isModal ? classes.cardImageModal : classes.cardImage}
             />
           );
         } else {
@@ -101,12 +111,26 @@ const Articles = props => {
         }
       }
     );
-    return imgList.length > 0 ? imgList[0] : null;
+    if (isModal) {
+      return imgList.length > 0 ? imgList : null;
+    } else {
+      return imgList.length > 0 ? imgList[0] : null;
+    }
   };
 
   const handleApplyFilter = filterObject => {
     setData(data.splice(0, data.length));
     requestData("filter", "FIND", filterObject);
+  };
+
+  const handleOpen = item => {
+    console.log("dfklasdlfsadjf", item);
+    setCurItem(item);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   return (
@@ -189,15 +213,26 @@ const Articles = props => {
                             >
                               {item?.fields["Title"]}
                             </Typography>
-                            <Button
-                              variant='contained'
-                              disableElevation
-                              className={classes.links}
-                              href={item.fields["URL"]}
-                              target='_blank'
-                            >
-                              Learn More
-                            </Button>
+                            <div className={classes.cardButtons}>
+                              <Button
+                                variant='contained'
+                                disableElevation
+                                className={classes.links}
+                                onClick={() => handleOpen(item)}
+                                target='_blank'
+                              >
+                                Quick Look
+                              </Button>
+                              <Button
+                                variant='contained'
+                                disableElevation
+                                className={classes.links}
+                                href={item.fields["URL"]}
+                                target='_blank'
+                              >
+                                Visit
+                              </Button>
+                            </div>
                           </CardContent>
                         </Card>
                       </Paper>
@@ -211,6 +246,104 @@ const Articles = props => {
           </Grid>
         </Box>
       </Container>
+      <Modal
+        aria-labelledby='transition-modal-title'
+        aria-describedby='transition-modal-description'
+        className={classes.modal}
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Paper className={classes.paper}>
+            <Card>
+              <CardContent className={classes.cardContainer}>
+                <div className={classes.modalIconHolder}>
+                  <IconButton
+                    className={classes.modalHeaderClose}
+                    onClick={handleClose}
+                  >
+                    <HighlightOffIcon className={classes.filterBtnIcon} />
+                  </IconButton>
+                </div>
+                <div className={classes.modalChipHolder}>
+                  <Chip className={classes.chip} label='Government' clickable />
+                  <Typography
+                    variant='body2'
+                    color='textSecondary'
+                    component='p'
+                    className={classes.modalTextHolder}
+                  >
+                    {curItem?.fields["Country"]} - {curItem?.fields["Language"]}
+                  </Typography>
+                </div>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  component='p'
+                  className={classes.modalTextHolderHeader}
+                >
+                  {curItem?.fields["Data Source"] === "None"
+                    ? curItem?.fields["Publisher"]
+                    : curItem?.fields["Data Source"]}
+                </Typography>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  component='p'
+                  className={classes.modalTextHolderLast}
+                >
+                  <b>Title:</b> {curItem?.fields["Title"]}
+                </Typography>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  component='p'
+                  className={classes.modalTextHolder}
+                >
+                  <b>Publisher:</b> {curItem?.fields["Publisher"]}
+                </Typography>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  component='p'
+                  className={classes.modalTextHolder}
+                >
+                  <b>Published:</b> {curItem?.fields["Date"]}
+                </Typography>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  component='p'
+                  className={classes.modalTextHolderLast}
+                >
+                  <b>Date Recorded:</b> {curItem?.fields["Date Recorded"]}
+                </Typography>
+
+                <div className={classes.modalImagesHolder}>
+                  {renderImg(curItem, true)}
+                </div>
+
+                <div className={classes.modalButtonHolder}>
+                  <Button
+                    variant='contained'
+                    disableElevation
+                    className={classes.links}
+                    href={curItem?.fields["URL"]}
+                    target='_blank'
+                  >
+                    Visit
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </Paper>
+        </Fade>
+      </Modal>
     </div>
   );
 };
