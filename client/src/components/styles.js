@@ -146,6 +146,8 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    overflow: "scroll",
+    paddingTop: 150,
   },
 
   modalTextHolder: {
