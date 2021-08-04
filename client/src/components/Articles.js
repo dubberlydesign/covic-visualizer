@@ -104,6 +104,11 @@ const Articles = props => {
     return imgList.length > 0 ? imgList[0] : null;
   };
 
+  const handleApplyFilter = filterObject => {
+    setData(data.splice(0, data.length));
+    requestData("filter", "FIND", filterObject);
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -148,7 +153,7 @@ const Articles = props => {
               />
             </form>
           </>
-          <FilterMenu />
+          <FilterMenu handleApplyFilter={handleApplyFilter} />
         </AppBar>
       </ElevationScroll>
       <Container maxWidth={false} className={classes.containerScroll}>

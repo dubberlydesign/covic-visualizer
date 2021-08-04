@@ -28,6 +28,11 @@ export const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(3),
   },
 
+  filterHeaderContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+
   filterHeader: {
     fontFamily: "sans-serif",
     fontSize: 20,
@@ -35,6 +40,21 @@ export const useStyles = makeStyles(theme => ({
     letterSpacing: "-1px",
     borderColor: "#C6AD8F",
     margin: "20px 20px 0 20px",
+  },
+
+  filterHeaderClose: {
+    fontFamily: "sans-serif",
+    fontSize: 30,
+    color: "#C6AD8F",
+    letterSpacing: "-1px",
+    borderColor: "#C6AD8F",
+    margin: "5px 20px 0 20px",
+    cursor: "pointer",
+  },
+
+  filterBtnIcon: {
+    fontFamily: "sans-serif",
+    fontSize: 30,
   },
 
   filterButton: {
@@ -57,5 +77,12 @@ export const useStyles = makeStyles(theme => ({
   filterInfoIcon: {
     fontSize: 60,
     color: "#C6AD8F",
+  },
+
+  links: {
+    marginTop: "20px",
+    backgroundColor: "#C6AD8F",
+    color: "white",
+    width: "150px",
   },
 }));

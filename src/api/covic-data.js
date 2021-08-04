@@ -27,6 +27,28 @@ axios.defaults.headers[
   "Authorization"
 ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
+const setSearchParams = (params, term) => {
+  const locParams = params;
+  locParams.offset = "";
+  locParams.filterByFormula = `OR(
+    FIND('${term}',{ID})>0,
+    FIND('${term}',{Student Coder})>0,
+    FIND('${term}',{Title})>0,
+    FIND('${term}',{URL})>0,
+    FIND('${term}',{Publisher})>0,
+    FIND('${term}',{Language})>0,
+    FIND('${term}',{Country})>0,
+    FIND('${term}',{Source Type})>0,
+    FIND('${term}',{Date Recorded})>0,
+    FIND('${term}',{Date})>0,
+    FIND('${term}',{Data Source})>0,
+    FIND('${term}',{Article Technique})>0,
+    FIND('${term}',{Subject(s)})>0,
+    FIND('${term}',{Notes})>0)`;
+
+  return locParams;
+};
+
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
@@ -38,37 +60,50 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   prevOffset = req.query.offset;
   axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
-  const params = {
+  let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
     view: "Gallery",
   };
 
-  if (req.query.filterType !== "" && req.query.queryType !== "search") {
+  if (
+    req.query.filterType !== "" &&
+    req.query.queryType !== "search" &&
+    req.query.queryType !== "filter"
+  ) {
     params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
   } else {
     params.filterByFormula = "";
   }
 
   if (req.query.queryType === "search") {
+    const searchParams = setSearchParams(params, req.query.term);
+    params = { ...params, searchParams };
+
+    if (req.query.term === "") {
+      params.filterByFormula = "";
+    }
+  }
+
+  if (req.query.queryType === "filter") {
+    const obj = JSON.parse(req.query.term);
+    let filterQuery = "OR(";
+    if (obj.sourceType.length > 0) {
+      obj.sourceType.forEach((source, index) => {
+        filterQuery += `FIND('${source}',{Source Type})>0`;
+        if (index !== obj.sourceType.length - 1) {
+          filterQuery += ",";
+        }
+      });
+
+      filterQuery += ")";
+
+      params.filterByFormula = filterQuery;
+    } else {
+      params.filterByFormula = "";
+    }
+
     params.offset = "";
-    params.filterByFormula = `OR(
-      FIND('${req.query.term}',{ID})>0,
-      FIND('${req.query.term}',{Student Coder})>0,
-      FIND('${req.query.term}',{Title})>0,
-      FIND('${req.query.term}',{URL})>0,
-      FIND('${req.query.term}',{Publisher})>0,
-      FIND('${req.query.term}',{Language})>0,
-      FIND('${req.query.term}',{Country})>0,
-      FIND('${req.query.term}',{Source Type})>0,
-      FIND('${req.query.term}',{Date Recorded})>0,
-      FIND('${req.query.term}',{Date})>0,
-      FIND('${req.query.term}',{Data Source})>0,
-      FIND('${req.query.term}',{Article Technique})>0,
-      FIND('${req.query.term}',{Subject(s)})>0,
-      FIND('${req.query.term}',{Notes})>0,
-      FIND('${req.query.term}',{Figures Relation})>0,
-      FIND('${req.query.term}',{Figure Count (Figures Relation)})>0)`;
   }
 
   try {

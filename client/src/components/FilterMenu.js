@@ -12,14 +12,15 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Chip from "@material-ui/core/Chip";
+import IconButton from "@material-ui/core/IconButton";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
-import InfoIcon from "@material-ui/icons/Info";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 import { SOURCE_NAMES, CHART_NAMES } from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
 
-const FilterMenu = () => {
+const FilterMenu = props => {
   const theme = createTheme();
   const classes = useStyles(theme);
   const [state, setState] = useState({
@@ -30,22 +31,19 @@ const FilterMenu = () => {
   const [chartName, setChartName] = useState([]);
 
   const handleSourceChange = event => {
-    setSourceName(event.target.value);
+    if (event.target.value.includes("All")) {
+      setSourceName(SOURCE_NAMES);
+    } else {
+      setSourceName(event.target.value);
+    }
   };
 
   const handleChartChange = event => {
-    setChartName(event.target.value);
-  };
-
-  const handleChangeMultiple = event => {
-    const { options } = event.target;
-    const value = [];
-    for (let i = 0, l = options.length; i < l; i += 1) {
-      if (options[i].selected) {
-        value.push(options[i].value);
-      }
+    if (event.target.value.includes("All")) {
+      setChartName(CHART_NAMES);
+    } else {
+      setChartName(event.target.value);
     }
-    setSourceName(value);
   };
 
   const toggleDrawer = (anchor, open) => event => {
@@ -79,6 +77,16 @@ const FilterMenu = () => {
     },
   };
 
+  const handleApplyFilterClick = () => {
+    const filterObject = {
+      sourceType: sourceName,
+      // chartType: chartName,
+    };
+
+    console.log("handle filter apply", filterObject);
+    props.handleApplyFilter(filterObject);
+  };
+
   const list = anchor => (
     <div
       className={clsx(classes.list, {
@@ -88,7 +96,16 @@ const FilterMenu = () => {
       // onClick={toggleDrawer(anchor, false)}
       // onKeyDown={toggleDrawer(anchor, false)}
     >
-      <div className={classes.filterHeader}>Filter Visualizations By...</div>
+      <div className={classes.filterHeaderContainer}>
+        <div className={classes.filterHeader}>Filter Visualizations By...</div>
+        <IconButton
+          className={classes.filterHeaderClose}
+          onClick={toggleDrawer(anchor, false)}
+        >
+          <HighlightOffIcon className={classes.filterBtnIcon} />
+        </IconButton>
+      </div>
+
       <div>
         <FormControl className={classes.formControl}>
           <InputLabel id='demo-mutiple-chip-label'>Source Type</InputLabel>
@@ -153,7 +170,15 @@ const FilterMenu = () => {
         </FormControl>
       </div>
       <div className={classes.infoIconHolder}>
-        <InfoIcon className={classes.filterInfoIcon} />
+        <Button
+          variant='contained'
+          disableElevation
+          className={classes.links}
+          onClick={handleApplyFilterClick}
+          target='_blank'
+        >
+          Apply Filters
+        </Button>
       </div>
     </div>
   );

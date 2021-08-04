@@ -1,12 +1,12 @@
 export const SOURCE_NAMES = [
   "All",
-  "commercial",
-  "government",
-  "independent media",
-  "news media",
-  "ngo",
-  "peer-reviewed publication",
-  "social media posts",
+  "Commercial",
+  "Government",
+  "Independent Media",
+  "News Media",
+  "NGO",
+  "Peer-Reviewed Publication",
+  "Social Media Posts",
 ];
 
 export const CHART_NAMES = [
