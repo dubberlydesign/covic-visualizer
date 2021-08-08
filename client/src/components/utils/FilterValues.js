@@ -1,9 +1,3 @@
-export const COUNTRY = ["USA", "UK", "Spain", "Hungary"];
-
-export const LANGUAGE = ["English", "Spanish", "Hungarian", "Japanese"];
-
-export const PUBLISHER = ["New York Times", "Visient", "Danny Dorling", "ESRI"];
-
 export const SOURCE_NAMES = [
   "All",
   "Commercial",
@@ -16,9 +10,15 @@ export const SOURCE_NAMES = [
 ];
 
 export const SUBJECTS = [
-  "Medical Magnitude",
-  "Non-Medical Economic",
+  "Non-Medical Environmental",
+  "Risk Future Model",
   "Risk Flatten the Curve",
+  "Non-Medical Economic",
+  "Non-Medical Social",
+  "Medical Magnitude",
+  "Transmission and Infection",
+  "Medical Supplies",
+  "Data Viz Advice",
 ];
 
 export const CHART_NAMES = [

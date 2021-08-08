@@ -49,6 +49,10 @@ const setSearchParams = (params, term) => {
   return locParams;
 };
 
+const getFilterItems = (responseData, filterType) => [
+  ...new Set(responseData.records.map(({ fields }) => fields[filterType])),
+];
+
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
@@ -115,7 +119,16 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
         cachedRecords = response.data;
         cacheLogTime = Date.now();
 
-        return res.json(response.data);
+        const covicDataRepsonse = {
+          ...response.data,
+          filterCategoryItems: {
+            countryFilterItems: getFilterItems(response.data, "Country"),
+            languageFilterItems: getFilterItems(response.data, "Language"),
+            publisherFilterItems: getFilterItems(response.data, "Publisher"),
+            sourceTypeFilterItems: getFilterItems(response.data, "Source Type"),
+          },
+        };
+        return res.json(covicDataRepsonse);
       });
   } catch (error) {
     return next(error);

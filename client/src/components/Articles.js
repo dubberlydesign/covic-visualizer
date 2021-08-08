@@ -39,6 +39,8 @@ const Articles = props => {
   const [data, setData] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
   const [searchValue, setSearchVal] = useState("");
+  const [filteringValues, setFilterValues] = useState({});
+
   const requestAmount = 50;
 
   const [open, setOpen] = useState(false);
@@ -63,7 +65,22 @@ const Articles = props => {
         },
       })
       .then(response => {
+        const {
+          countryFilterItems,
+          languageFilterItems,
+          publisherFilterItems,
+          sourceTypeFilterItems,
+          subjectTypeFilterItems,
+        } = response?.data?.filterCategoryItems;
+
         setData(data.concat(response.data.records));
+        setFilterValues({
+          country: countryFilterItems,
+          language: languageFilterItems,
+          publisher: publisherFilterItems,
+          sourceType: sourceTypeFilterItems,
+          subjectType: subjectTypeFilterItems,
+        });
         setDataOffset(response.data.offset);
       });
   };
@@ -72,6 +89,8 @@ const Articles = props => {
     requestData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {}, [filteringValues]);
 
   const handleScroll = () => {
     if (searchValue !== "") {
@@ -177,7 +196,10 @@ const Articles = props => {
               />
             </form>
           </>
-          <FilterMenu handleApplyFilter={handleApplyFilter} />
+          <FilterMenu
+            handleApplyFilter={handleApplyFilter}
+            filteringValues={filteringValues}
+          />
         </AppBar>
       </ElevationScroll>
       <Container maxWidth={false} className={classes.containerScroll}>

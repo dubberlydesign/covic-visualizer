@@ -17,13 +17,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-import {
-  COUNTRY,
-  LANGUAGE,
-  PUBLISHER,
-  SOURCE_NAMES,
-  SUBJECTS,
-} from "./utils/FilterValues";
+import { SUBJECTS } from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
 
 const getStyles = (name, nameType, theme) => {
@@ -46,6 +40,10 @@ const MenuProps = {
   },
 };
 
+const isEmpty = obj => {
+  return Object.keys(obj).length === 0;
+};
+
 const FilterMenu = props => {
   const theme = createTheme();
   const classes = useStyles(theme);
@@ -64,25 +62,33 @@ const FilterMenu = props => {
       filterLabel: "Source Type",
       filterName: sourceName,
       setFilter: setSourceName,
-      filterData: SOURCE_NAMES,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues?.sourceType,
     },
     {
       filterLabel: "Country Type",
       filterName: countryName,
       setFilter: setCountryName,
-      filterData: COUNTRY,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues?.country,
     },
     {
       filterLabel: "Language Type",
       filterName: languageName,
       setFilter: setLanguageName,
-      filterData: LANGUAGE,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues?.language,
     },
     {
       filterLabel: "Publisher Type",
       filterName: publisherName,
       setFilter: setPublisherName,
-      filterData: PUBLISHER,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues?.publisher,
     },
     {
       filterLabel: "Subject Type",
