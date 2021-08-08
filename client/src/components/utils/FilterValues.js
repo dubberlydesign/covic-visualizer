@@ -1,3 +1,9 @@
+export const COUNTRY = ["USA", "UK", "Spain", "Hungary"];
+
+export const LANGUAGE = ["English", "Spanish", "Hungarian", "Japanese"];
+
+export const PUBLISHER = ["New York Times", "Visient", "Danny Dorling", "ESRI"];
+
 export const SOURCE_NAMES = [
   "All",
   "Commercial",
@@ -7,6 +13,12 @@ export const SOURCE_NAMES = [
   "NGO",
   "Peer-Reviewed Publication",
   "Social Media Posts",
+];
+
+export const SUBJECTS = [
+  "Medical Magnitude",
+  "Non-Medical Economic",
+  "Risk Flatten the Curve",
 ];
 
 export const CHART_NAMES = [

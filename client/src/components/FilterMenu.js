@@ -18,13 +18,33 @@ import FilterListIcon from "@material-ui/icons/FilterList";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 import {
+  COUNTRY,
+  LANGUAGE,
+  PUBLISHER,
   SOURCE_NAMES,
-  CHART_NAMES,
-  INTENDED_MESSAGE,
-  ARTICLE_TECHNIQUE,
-  FIGURE_TECHNIQUES,
+  SUBJECTS,
 } from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
+
+const getStyles = (name, nameType, theme) => {
+  return {
+    fontWeight:
+      nameType.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+};
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
 const FilterMenu = props => {
   const theme = createTheme();
@@ -34,49 +54,60 @@ const FilterMenu = props => {
   });
 
   const [sourceName, setSourceName] = useState([]);
-  const [chartName, setChartName] = useState([]);
-  const [intendedName, setIntendedName] = useState([]);
-  const [articleTechName, setArticleTechName] = useState([]);
-  const [figureTechName, setFigureTechName] = useState([]);
+  const [countryName, setCountryName] = useState([]);
+  const [languageName, setLanguageName] = useState([]);
+  const [publisherName, setPublisherName] = useState([]);
+  const [subjectName, setSubjectName] = useState([]);
 
-  const handleSourceChange = event => {
+  const FILTER_CATEGORIES = [
+    {
+      filterLabel: "Source Type",
+      filterName: sourceName,
+      setFilter: setSourceName,
+      filterData: SOURCE_NAMES,
+    },
+    {
+      filterLabel: "Country Type",
+      filterName: countryName,
+      setFilter: setCountryName,
+      filterData: COUNTRY,
+    },
+    {
+      filterLabel: "Language Type",
+      filterName: languageName,
+      setFilter: setLanguageName,
+      filterData: LANGUAGE,
+    },
+    {
+      filterLabel: "Publisher Type",
+      filterName: publisherName,
+      setFilter: setPublisherName,
+      filterData: PUBLISHER,
+    },
+    {
+      filterLabel: "Subject Type",
+      filterName: subjectName,
+      setFilter: setSubjectName,
+      filterData: SUBJECTS,
+    },
+  ];
+
+  const handleFilterChange = (event, setFilter, filterData) => {
     if (event.target.value.includes("All")) {
-      setSourceName(SOURCE_NAMES);
+      setFilter(filterData);
     } else {
-      setSourceName(event.target.value);
+      setFilter(event.target.value);
     }
   };
 
-  const handleChartChange = event => {
-    if (event.target.value.includes("All")) {
-      setChartName(CHART_NAMES);
-    } else {
-      setChartName(event.target.value);
-    }
-  };
+  const handleApplyFilterClick = () => {
+    const filterObject = {
+      sourceType: sourceName,
+      // chartType: chartName,
+    };
 
-  const handleIntendedChange = event => {
-    if (event.target.value.includes("All")) {
-      setIntendedName(INTENDED_MESSAGE);
-    } else {
-      setIntendedName(event.target.value);
-    }
-  };
-
-  const handleArticleTechChange = event => {
-    if (event.target.value.includes("All")) {
-      setArticleTechName(ARTICLE_TECHNIQUE);
-    } else {
-      setArticleTechName(event.target.value);
-    }
-  };
-
-  const handleFigureTechChange = event => {
-    if (event.target.value.includes("All")) {
-      setFigureTechName(FIGURE_TECHNIQUES);
-    } else {
-      setFigureTechName(event.target.value);
-    }
+    console.log("handle filter apply", filterObject);
+    props.handleApplyFilter(filterObject);
   };
 
   const toggleDrawer = (anchor, open) => event => {
@@ -90,35 +121,51 @@ const FilterMenu = props => {
     setState({ ...state, [anchor]: open });
   };
 
-  const getStyles = (name, nameType, theme) => {
-    return {
-      fontWeight:
-        nameType.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  };
-
-  const ITEM_HEIGHT = 48;
-  const ITEM_PADDING_TOP = 8;
-  const MenuProps = {
-    PaperProps: {
-      style: {
-        maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-        width: 250,
-      },
-    },
-  };
-
-  const handleApplyFilterClick = () => {
-    const filterObject = {
-      sourceType: sourceName,
-      // chartType: chartName,
-    };
-
-    console.log("handle filter apply", filterObject);
-    props.handleApplyFilter(filterObject);
-  };
+  const renderFilterCategories = () =>
+    FILTER_CATEGORIES.map(
+      ({ filterLabel, filterName, setFilter, filterData }) => (
+        <>
+          <div>
+            <FormControl className={classes.formControl}>
+              <InputLabel id='demo-mutiple-chip-label'>
+                {filterLabel}
+              </InputLabel>
+              <Select
+                labelId='demo-mutiple-chip-label'
+                id='demo-mutiple-chip'
+                multiple
+                value={filterName}
+                onChange={e => handleFilterChange(e, setFilter, filterData)}
+                input={<Input id='select-multiple-chip' />}
+                renderValue={selected => (
+                  <div className={classes.chips}>
+                    {selected.map(value => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        className={classes.chip}
+                      />
+                    ))}
+                  </div>
+                )}
+                MenuProps={MenuProps}
+              >
+                {filterData.map(name => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, filterName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <Divider />
+        </>
+      )
+    );
 
   const list = anchor => (
     <div
@@ -138,171 +185,8 @@ const FilterMenu = props => {
           <HighlightOffIcon className={classes.filterBtnIcon} />
         </IconButton>
       </div>
+      {renderFilterCategories()}
 
-      <div>
-        <FormControl className={classes.formControl}>
-          <InputLabel id='demo-mutiple-chip-label'>Source Type</InputLabel>
-          <Select
-            labelId='demo-mutiple-chip-label'
-            id='demo-mutiple-chip'
-            multiple
-            value={sourceName}
-            onChange={handleSourceChange}
-            input={<Input id='select-multiple-chip' />}
-            renderValue={selected => (
-              <div className={classes.chips}>
-                {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={MenuProps}
-          >
-            {SOURCE_NAMES.map(name => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, sourceName, theme)}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <Divider />
-      <div>
-        <FormControl className={classes.formControl}>
-          <InputLabel id='demo-mutiple-chip-label'>Chart Type</InputLabel>
-          <Select
-            labelId='demo-mutiple-chip-label'
-            id='demo-mutiple-chip'
-            multiple
-            value={chartName}
-            onChange={handleChartChange}
-            input={<Input id='select-multiple-chip' />}
-            renderValue={selected => (
-              <div className={classes.chips}>
-                {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={MenuProps}
-          >
-            {CHART_NAMES.map(name => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, chartName, theme)}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <Divider />
-      <div>
-        <FormControl className={classes.formControl}>
-          <InputLabel id='demo-mutiple-chip-label'>Intended Message</InputLabel>
-          <Select
-            labelId='demo-mutiple-chip-label'
-            id='demo-mutiple-chip'
-            multiple
-            value={intendedName}
-            onChange={handleIntendedChange}
-            input={<Input id='select-multiple-chip' />}
-            renderValue={selected => (
-              <div className={classes.chips}>
-                {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={MenuProps}
-          >
-            {INTENDED_MESSAGE.map(name => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, chartName, theme)}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <Divider />
-      <div>
-        <FormControl className={classes.formControl}>
-          <InputLabel id='demo-mutiple-chip-label'>
-            Article Technique
-          </InputLabel>
-          <Select
-            labelId='demo-mutiple-chip-label'
-            id='demo-mutiple-chip'
-            multiple
-            value={articleTechName}
-            onChange={handleArticleTechChange}
-            input={<Input id='select-multiple-chip' />}
-            renderValue={selected => (
-              <div className={classes.chips}>
-                {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={MenuProps}
-          >
-            {ARTICLE_TECHNIQUE.map(name => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, chartName, theme)}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <Divider />
-      <div>
-        <FormControl className={classes.formControl}>
-          <InputLabel id='demo-mutiple-chip-label'>
-            Figure Techniques
-          </InputLabel>
-          <Select
-            labelId='demo-mutiple-chip-label'
-            id='demo-mutiple-chip'
-            multiple
-            value={figureTechName}
-            onChange={handleFigureTechChange}
-            input={<Input id='select-multiple-chip' />}
-            renderValue={selected => (
-              <div className={classes.chips}>
-                {selected.map(value => (
-                  <Chip key={value} label={value} className={classes.chip} />
-                ))}
-              </div>
-            )}
-            MenuProps={MenuProps}
-          >
-            {FIGURE_TECHNIQUES.map(name => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, chartName, theme)}
-              >
-                {name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </div>
-      <Divider />
       <div className={classes.infoIconHolder}>
         <Button
           variant='contained'
