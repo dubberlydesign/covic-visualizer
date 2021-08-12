@@ -17,7 +17,7 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-import { SUBJECTS } from "./utils/FilterValues";
+import { SOURCE_NAMES, SUBJECTS } from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
 
 const getStyles = (name, nameType, theme) => {
@@ -62,9 +62,7 @@ const FilterMenu = props => {
       filterLabel: "Source Type",
       filterName: sourceName,
       setFilter: setSourceName,
-      filterData: isEmpty(props.filteringValues)
-        ? []
-        : props.filteringValues?.sourceType,
+      filterData: SOURCE_NAMES,
     },
     {
       filterLabel: "Country Type",
@@ -109,7 +107,10 @@ const FilterMenu = props => {
   const handleApplyFilterClick = () => {
     const filterObject = {
       sourceType: sourceName,
-      // chartType: chartName,
+      countryType: countryName,
+      languageType: languageName,
+      publisherType: publisherName,
+      subjectType: subjectName,
     };
 
     console.log("handle filter apply", filterObject);

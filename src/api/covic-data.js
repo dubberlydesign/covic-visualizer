@@ -3,6 +3,8 @@ const axios = require("axios");
 const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
 
+const filterColumn = require("../util/filterColumn");
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 100,
@@ -92,18 +94,45 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (req.query.queryType === "filter") {
     const obj = JSON.parse(req.query.term);
     let filterQuery = "OR(";
-    if (obj.sourceType.length > 0) {
-      obj.sourceType.forEach((source, index) => {
-        filterQuery += `FIND('${source}',{Source Type})>0`;
-        if (index !== obj.sourceType.length - 1) {
-          filterQuery += ",";
-        }
-      });
+    filterQuery = filterColumn.useFilterType(
+      obj.sourceType,
+      0,
+      "Source Type",
+      filterQuery,
+      obj
+    );
+    filterQuery = filterColumn.useFilterType(
+      obj.countryType,
+      1,
+      "Country",
+      filterQuery,
+      obj
+    );
+    filterQuery = filterColumn.useFilterType(
+      obj.languageType,
+      2,
+      "Language",
+      filterQuery,
+      obj
+    );
+    filterQuery = filterColumn.useFilterType(
+      obj.publisherType,
+      3,
+      "Publisher",
+      filterQuery,
+      obj
+    );
+    filterQuery = filterColumn.useFilterType(
+      obj.subjectType,
+      4,
+      "Subject(s)",
+      filterQuery,
+      obj
+    );
+    filterQuery += ")";
 
-      filterQuery += ")";
-
-      params.filterByFormula = filterQuery;
-    } else {
+    params.filterByFormula = filterQuery;
+    if (filterColumn.isFilterInactive(obj)) {
       params.filterByFormula = "";
     }
 
@@ -116,7 +145,6 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
         params,
       })
       .then(response => {
-        cachedRecords = response.data;
         cacheLogTime = Date.now();
 
         const covicDataRepsonse = {
@@ -128,6 +156,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
             sourceTypeFilterItems: getFilterItems(response.data, "Source Type"),
           },
         };
+        cachedRecords = covicDataRepsonse;
         return res.json(covicDataRepsonse);
       });
   } catch (error) {
