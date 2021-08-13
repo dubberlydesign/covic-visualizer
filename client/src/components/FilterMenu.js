@@ -13,6 +13,8 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Chip from "@material-ui/core/Chip";
 import IconButton from "@material-ui/core/IconButton";
+import CancelIcon from "@material-ui/icons/Cancel";
+import _without from "lodash/without";
 
 import FilterListIcon from "@material-ui/icons/FilterList";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
@@ -117,7 +119,7 @@ const FilterMenu = props => {
     }
   };
 
-  const handleApplyFilterClick = () => {
+  const handleApplyFilterClick = (anchor, open) => event => {
     const filterObject = {
       sourceType: sourceName,
       countryType: countryName,
@@ -132,11 +134,8 @@ const FilterMenu = props => {
         format(selectedDateAfter, dateFormatting),
       ],
     };
-
     props.handleApplyFilter(filterObject);
-  };
 
-  const toggleDrawer = (anchor, open) => event => {
     if (
       event.type === "keydown" &&
       (event.key === "Tab" || event.key === "Shift")
@@ -156,6 +155,39 @@ const FilterMenu = props => {
 
   const handleDateChangeAfter = date => {
     setSelectedDateAfter(date);
+  };
+
+  const handleDelete = (e, value) => {
+    e.preventDefault();
+    if (sourceName.includes(value)) {
+      setSourceName(current => _without(current, value));
+    }
+    if (countryName.includes(value)) {
+      setCountryName(current => _without(current, value));
+    }
+    if (languageName.includes(value)) {
+      setLanguageName(current => _without(current, value));
+    }
+    if (publisherName.includes(value)) {
+      setPublisherName(current => _without(current, value));
+    }
+    if (publisherName.includes(value)) {
+      setPublisherName(current => _without(current, value));
+    }
+    if (subjectName.includes(value)) {
+      setSubjectName(current => _without(current, value));
+    }
+  };
+
+  const toggleDrawer = (anchor, open) => event => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
   };
 
   const renderFilterCategories = () =>
@@ -179,6 +211,14 @@ const FilterMenu = props => {
                         key={value}
                         label={value}
                         className={classes.chip}
+                        clickable
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={event => event.stopPropagation()}
+                          />
+                        }
+                        onDelete={e => handleDelete(e, value)}
+                        onClick={() => console.log("clicked chip")}
                       />
                     ))}
                   </div>
@@ -268,7 +308,7 @@ const FilterMenu = props => {
           variant='contained'
           disableElevation
           className={classes.links}
-          onClick={handleApplyFilterClick}
+          onClick={handleApplyFilterClick(anchor, false)}
           target='_blank'
         >
           Apply Filters

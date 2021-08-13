@@ -49,6 +49,7 @@ const Articles = props => {
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
   const [isMoreEntries, setIsMoreEntries] = useState(true);
+
   const requestData = (
     queryType = "",
     filterType = "",
