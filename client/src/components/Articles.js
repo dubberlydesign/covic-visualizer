@@ -394,7 +394,7 @@ const Articles = props => {
                   className={classes.modalTextHolderLast}
                 >
                   <b>Subject(s):</b>{" "}
-                  {curItem?.fields["Subject(s)"].map(
+                  {curItem?.fields["Subject(s)"]?.map(
                     (subject, index) =>
                       `${subject}${
                         index === curItem?.fields["Subject(s)"].length - 1

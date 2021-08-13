@@ -13,6 +13,7 @@ export const useStyles = makeStyles(theme => ({
     textAlign: "left",
     color: "white",
     backgroundColor: "#425664",
+    maxWidth: "600px",
   },
 
   box: {
@@ -160,6 +161,14 @@ export const useStyles = makeStyles(theme => ({
     overflow: "scroll",
     position: "absolute",
     top: "25%",
+  },
+
+  paperModal: {
+    padding: theme.spacing(2),
+    margin: theme.spacing(2),
+    textAlign: "left",
+    color: "white",
+    backgroundColor: "#425664",
   },
 
   modalTextHolder: {

@@ -1,6 +1,6 @@
 import React, { useState, Fragment } from "react";
 import clsx from "clsx";
-import { createTheme } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
@@ -27,6 +27,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 
 import { useStyles } from "./filterMenuStyles";
+import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
 
 const getStyles = (name, nameType, theme) => {
   return {
@@ -251,32 +252,34 @@ const FilterMenu = props => {
           </InputLabel>
           <FormControl className={classes.datePickers}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                variant='inline'
-                format='MM/dd/yyyy'
-                margin='normal'
-                id='date-picker-inline'
-                label='From'
-                value={selectedDateBefore}
-                onChange={handleDateChangeBefore}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
-              <KeyboardDatePicker
-                disableToolbar
-                variant='inline'
-                format='MM/dd/yyyy'
-                margin='normal'
-                id='date-picker-inline'
-                label='To'
-                value={selectedDateAfter}
-                onChange={handleDateChangeAfter}
-                KeyboardButtonProps={{
-                  "aria-label": "change date",
-                }}
-              />
+              <ThemeProvider theme={DEFAULT_MATERIAL_THEME}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant='inline'
+                  format='MM/dd/yyyy'
+                  margin='normal'
+                  id='date-picker-inline'
+                  label='From'
+                  value={selectedDateBefore}
+                  onChange={handleDateChangeBefore}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+                <KeyboardDatePicker
+                  disableToolbar
+                  variant='inline'
+                  format='MM/dd/yyyy'
+                  margin='normal'
+                  id='date-picker-inline'
+                  label='To'
+                  value={selectedDateAfter}
+                  onChange={handleDateChangeAfter}
+                  KeyboardButtonProps={{
+                    "aria-label": "change date",
+                  }}
+                />
+              </ThemeProvider>
             </MuiPickersUtilsProvider>
           </FormControl>
           <Divider />
