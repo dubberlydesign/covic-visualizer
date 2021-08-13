@@ -141,7 +141,7 @@ const Articles = props => {
     if (item?.fields["Figure Count (Figures relation)"] === 0) return null;
     const imgList = item?.fields["Image (from Figures relation)"]?.map(
       (figure, index) => {
-        if (figure.thumbnails && index <= 3) {
+        if (figure.thumbnails && index <= 4) {
           return (
             <img
               src={figure.thumbnails.large.url}

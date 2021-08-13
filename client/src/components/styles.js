@@ -155,12 +155,9 @@ export const useStyles = makeStyles(theme => ({
   },
 
   modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
     overflow: "scroll",
     position: "absolute",
-    top: "25%",
+    padding: "100px",
   },
 
   paperModal: {
@@ -195,6 +192,7 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 20,
+    flexWrap: "wrap",
   },
 
   modalIconHolder: {
