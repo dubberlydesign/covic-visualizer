@@ -65,13 +65,16 @@ const FilterMenu = props => {
   const [subjectName, setSubjectName] = useState([]);
   const initialStartDate = "2020-02-01T21:11:54";
   const dateFormatting = "MM/dd/yyyy";
+  const initialNewDate = new Date(initialStartDate);
 
   const FILTER_CATEGORIES = [
     {
       filterLabel: "Source Type",
       filterName: sourceName,
       setFilter: setSourceName,
-      filterData: SOURCE_NAMES,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Source Type"],
     },
     {
       filterLabel: "Country Type",
@@ -79,7 +82,7 @@ const FilterMenu = props => {
       setFilter: setCountryName,
       filterData: isEmpty(props.filteringValues)
         ? []
-        : props.filteringValues?.country,
+        : props.filteringValues["Country"],
     },
     {
       filterLabel: "Language Type",
@@ -87,7 +90,7 @@ const FilterMenu = props => {
       setFilter: setLanguageName,
       filterData: isEmpty(props.filteringValues)
         ? []
-        : props.filteringValues?.language,
+        : props.filteringValues["Language"],
     },
     {
       filterLabel: "Publisher Type",
@@ -95,13 +98,15 @@ const FilterMenu = props => {
       setFilter: setPublisherName,
       filterData: isEmpty(props.filteringValues)
         ? []
-        : props.filteringValues?.publisher,
+        : props.filteringValues["Publisher"],
     },
     {
       filterLabel: "Subject Type",
       filterName: subjectName,
       setFilter: setSubjectName,
-      filterData: SUBJECTS,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Subject(s)"],
     },
   ];
 
@@ -122,7 +127,7 @@ const FilterMenu = props => {
       subjectType: subjectName,
       isDateFilter:
         format(selectedDateBefore, dateFormatting) !==
-        format(new Date(initialStartDate), dateFormatting),
+        format(initialNewDate, dateFormatting),
       dateRange: [
         format(selectedDateBefore, dateFormatting),
         format(selectedDateAfter, dateFormatting),
@@ -143,9 +148,7 @@ const FilterMenu = props => {
     setState({ ...state, [anchor]: open });
   };
 
-  const [selectedDateBefore, setSelectedDateBefore] = useState(
-    new Date(initialStartDate)
-  );
+  const [selectedDateBefore, setSelectedDateBefore] = useState(initialNewDate);
   const [selectedDateAfter, setSelectedDateAfter] = useState(new Date());
 
   const handleDateChangeBefore = date => {
@@ -249,8 +252,6 @@ const FilterMenu = props => {
         [classes.fullList]: anchor === "bottom",
       })}
       role='presentation'
-      // onClick={toggleDrawer(anchor, false)}
-      // onKeyDown={toggleDrawer(anchor, false)}
     >
       <div className={classes.filterHeaderContainer}>
         <div className={classes.filterHeader}>Filter Visualizations By...</div>

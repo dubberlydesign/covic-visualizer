@@ -51,10 +51,6 @@ const setSearchParams = (params, term) => {
   return locParams;
 };
 
-const getFilterItems = (responseData, filterType) => [
-  ...new Set(responseData.records.map(({ fields }) => fields[filterType])),
-];
-
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
@@ -131,17 +127,19 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       obj
     );
 
-    filterQuery = filterColumn.useFilterType(
-      obj.dateRange,
-      5,
-      "Date",
-      filterQuery,
-      obj
-    );
+    if (obj.isDateFilter) {
+      filterQuery = filterColumn.useFilterType(
+        obj.dateRange,
+        5,
+        "Date",
+        filterQuery,
+        obj
+      );
+    }
 
     filterQuery += "), 'true')";
     params.filterByFormula = filterQuery;
-    if (filterColumn.isFilterInactive(obj)) {
+    if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
       params.filterByFormula = "";
     }
 
@@ -154,19 +152,9 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
         params,
       })
       .then(response => {
+        cachedRecords = response.data;
         cacheLogTime = Date.now();
-
-        const covicDataRepsonse = {
-          ...response.data,
-          filterCategoryItems: {
-            countryFilterItems: getFilterItems(response.data, "Country"),
-            languageFilterItems: getFilterItems(response.data, "Language"),
-            publisherFilterItems: getFilterItems(response.data, "Publisher"),
-            sourceTypeFilterItems: getFilterItems(response.data, "Source Type"),
-          },
-        };
-        cachedRecords = covicDataRepsonse;
-        return res.json(covicDataRepsonse);
+        return res.json(response.data);
       });
   } catch (error) {
     return next(error);
@@ -192,6 +180,42 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
           offset: req.query.offset,
           pageSize: req.query.requestAmount,
         },
+      })
+      .then(response => {
+        cachedRecords = response.data;
+        cacheLogTime = Date.now();
+
+        return res.json(response.data);
+      });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get("/metadata", limiter, speedLimiter, async (req, res, next) => {
+  if (
+    cacheLogTime &&
+    cacheLogTime > Date.now() - 30 * 1000 &&
+    prevOffset === req.query.offset
+  ) {
+    return res.json(cachedRecords);
+  }
+  prevOffset = req.query.offset;
+  axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
+
+  let params = {
+    offset: req.query.offset,
+    pageSize: req.query.requestAmount,
+    view: "Grid view",
+  };
+
+  params.filterByFormula =
+    'OR(FIND("Country",{Field Name})>0, FIND("Source Type",{Field Name})>0, FIND("Language",{Field Name})>0, FIND("Publisher",{Field Name})>0, FIND("Subject(s)",{Field Name})>0)';
+
+  try {
+    await axios
+      .get("/", {
+        params,
       })
       .then(response => {
         cachedRecords = response.data;

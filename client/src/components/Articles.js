@@ -65,28 +65,32 @@ const Articles = props => {
         },
       })
       .then(response => {
-        const {
-          countryFilterItems,
-          languageFilterItems,
-          publisherFilterItems,
-          sourceTypeFilterItems,
-          subjectTypeFilterItems,
-        } = response?.data?.filterCategoryItems;
-
         setData(data.concat(response.data.records));
-        setFilterValues({
-          country: countryFilterItems,
-          language: languageFilterItems,
-          publisher: publisherFilterItems,
-          sourceType: sourceTypeFilterItems,
-          subjectType: subjectTypeFilterItems,
-        });
         setDataOffset(response.data.offset);
       });
   };
 
+  const requestMetaData = () => {
+    axios
+      .get("/api/v1/covic-data/metadata", {
+        params: { baseType: "Metadata", offset: 0, requestAmount: 50 },
+      })
+      .then(response => {
+        const filterValuesObject = {};
+        response.data.records.forEach(record => {
+          if (record?.fields["Field Options"]) {
+            filterValuesObject[record.fields["Field Name"]] =
+              record?.fields["Field Options"]?.split(", ");
+          }
+        });
+        setFilterValues(filterValuesObject);
+
+        requestData();
+      });
+  };
+
   useEffect(() => {
-    requestData();
+    requestMetaData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -115,7 +119,7 @@ const Articles = props => {
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
     if (item?.fields["Figure Count (Figures relation)"] === 0) return null;
-    const imgList = item?.fields["Image (from Figures relation)"].map(
+    const imgList = item?.fields["Image (from Figures relation)"]?.map(
       (figure, index) => {
         if (figure.thumbnails && index <= 3) {
           return (
@@ -132,9 +136,9 @@ const Articles = props => {
       }
     );
     if (isModal) {
-      return imgList.length > 0 ? imgList : null;
+      return imgList?.length > 0 ? imgList : null;
     } else {
-      return imgList.length > 0 ? imgList[0] : null;
+      return imgList?.length > 0 ? imgList[0] : null;
     }
   };
 
@@ -218,10 +222,10 @@ const Articles = props => {
                     <Grid
                       item
                       xs={12}
-                      sm={6}
-                      md={4}
-                      lg={4}
-                      xl={3}
+                      sm={12}
+                      md={data.length < 4 ? 12 : 6}
+                      lg={data.length < 4 ? 12 : 4}
+                      xl={data.length < 4 ? 12 : 3}
                       key={item.id}
                     >
                       <Paper className={classes.paper}>

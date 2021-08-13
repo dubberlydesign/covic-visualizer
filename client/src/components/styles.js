@@ -24,6 +24,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     textAlign: "left",
     padding: "20px",
+    minWidth: "420px",
   },
 
   cardButtons: {

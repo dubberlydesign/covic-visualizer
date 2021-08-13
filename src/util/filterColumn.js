@@ -38,7 +38,13 @@ const appendToFilter = (obj, filterQuery, place) => {
 const isFilterInactive = obj => {
   const isInActiveArray = [];
   Object.keys(obj).forEach(key => {
-    isInActiveArray.push(obj[key].length === 0);
+    console.log("key", key);
+    console.log("obj[key].length", obj[key].length);
+    if (key === "dateRange" || key === "isDateFilter") {
+      isInActiveArray.push(true);
+    } else {
+      isInActiveArray.push(obj[key].length === 0);
+    }
   });
 
   return isInActiveArray.every(e => e === true);
