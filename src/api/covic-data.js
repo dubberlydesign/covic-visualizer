@@ -154,6 +154,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       .then(response => {
         cachedRecords = response.data;
         cacheLogTime = Date.now();
+
         return res.json(response.data);
       });
   } catch (error) {

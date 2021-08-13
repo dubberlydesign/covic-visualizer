@@ -40,8 +40,8 @@ const Articles = props => {
   const [dataOffset, setDataOffset] = useState("");
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
-
-  const requestAmount = 50;
+  const [isLoading, setIsLoading] = useState(true);
+  const requestAmount = 100;
 
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
@@ -52,6 +52,7 @@ const Articles = props => {
     term = "",
     fieldCol = ""
   ) => {
+    setIsLoading(true);
     axios
       .get("/api/v1/covic-data", {
         params: {
@@ -65,6 +66,7 @@ const Articles = props => {
         },
       })
       .then(response => {
+        setIsLoading(false);
         setData(data.concat(response.data.records));
         setDataOffset(response.data.offset);
       });
@@ -206,6 +208,7 @@ const Articles = props => {
           />
         </AppBar>
       </ElevationScroll>
+      {isLoading && <CircularProgress className={classes.initLoader} />}
       <Container maxWidth={false} className={classes.containerScroll}>
         <Box my={6}>
           <Grid container spacing={3} style={{ padding: 20 }}>
@@ -214,59 +217,78 @@ const Articles = props => {
               next={data.length === 0 ? () => {} : handleScroll}
               hasMore={data.length === 0 ? false : true}
               className={classes.box}
-              loader={<CircularProgress className={classes.loader} />}
             >
               {data.map(item => {
-                if (item.fields && item.fields["Subject Present"] === "okay") {
-                  return (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={12}
-                      md={data.length < 4 ? 12 : 6}
-                      lg={data.length < 4 ? 12 : 4}
-                      xl={data.length < 4 ? 12 : 3}
-                      key={item.id}
-                    >
-                      <Paper className={classes.paper}>
-                        <Card key={item.id}>
-                          <CardContent className={classes.cardContainer}>
-                            {renderImg(item)}
-                            <Typography
-                              variant='body2'
-                              color='textSecondary'
-                              component='p'
-                            >
+                return (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={12}
+                    md={data.length < 4 ? 12 : 6}
+                    lg={data.length < 4 ? 12 : 4}
+                    xl={data.length < 4 ? 12 : 3}
+                    key={item.id}
+                  >
+                    <Paper className={classes.paper}>
+                      <Card key={item.id}>
+                        <CardContent className={classes.cardContainer}>
+                          {renderImg(item)}
+                          <Typography
+                            variant='body2'
+                            color='textSecondary'
+                            component='p'
+                          >
+                            <p className={classes.cardTitle}>
+                              <b>Title: </b>
                               {item?.fields["Title"]}
-                            </Typography>
-                            <div className={classes.cardButtons}>
-                              <Button
-                                variant='contained'
-                                disableElevation
-                                className={classes.links}
-                                onClick={() => handleOpen(item)}
-                                target='_blank'
-                              >
-                                Quick Look
-                              </Button>
-                              <Button
-                                variant='contained'
-                                disableElevation
-                                className={classes.links}
-                                href={item.fields["URL"]}
-                                target='_blank'
-                              >
-                                Visit
-                              </Button>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Paper>
-                    </Grid>
-                  );
-                } else {
-                  return null;
-                }
+                            </p>
+                          </Typography>
+                          <Typography
+                            variant='body2'
+                            color='textSecondary'
+                            component='p'
+                          >
+                            <b>Published: </b> {item?.fields["Date"]}
+                          </Typography>
+                          <Typography
+                            variant='body2'
+                            color='textSecondary'
+                            component='p'
+                          >
+                            <b>Publisher: </b> {item?.fields["Publisher"]}
+                          </Typography>
+                          <Typography
+                            variant='body2'
+                            color='textSecondary'
+                            component='p'
+                          >
+                            <b>Country: </b> {item?.fields["Country"]}
+                          </Typography>
+                          <div className={classes.cardButtons}>
+                            <Button
+                              variant='contained'
+                              disableElevation
+                              className={classes.links}
+                              onClick={() => handleOpen(item)}
+                              target='_blank'
+                            >
+                              Quick Look
+                            </Button>
+                            <Button
+                              variant='contained'
+                              disableElevation
+                              className={classes.links}
+                              href={item.fields["URL"]}
+                              target='_blank'
+                            >
+                              Visit
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Paper>
+                  </Grid>
+                );
               })}
             </InfiniteScroll>
           </Grid>
@@ -297,7 +319,10 @@ const Articles = props => {
                   </IconButton>
                 </div>
                 <div className={classes.modalChipHolder}>
-                  <Chip className={classes.chip} label='Government' clickable />
+                  <Chip
+                    className={classes.chip}
+                    label={curItem?.fields["Source Type"]}
+                  />
                   <Typography
                     variant='body2'
                     color='textSecondary'
@@ -347,7 +372,15 @@ const Articles = props => {
                   component='p'
                   className={classes.modalTextHolderLast}
                 >
-                  <b>Date Recorded:</b> {curItem?.fields["Date Recorded"]}
+                  <b>Subject(s):</b>{" "}
+                  {curItem?.fields["Subject(s)"].map(
+                    (subject, index) =>
+                      `${subject}${
+                        index === curItem?.fields["Subject(s)"].length - 1
+                          ? ""
+                          : ", "
+                      }`
+                  )}
                 </Typography>
 
                 <div className={classes.modalImagesHolder}>

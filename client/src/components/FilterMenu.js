@@ -24,7 +24,6 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 
-import { SOURCE_NAMES, SUBJECTS } from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
 
 const getStyles = (name, nameType, theme) => {

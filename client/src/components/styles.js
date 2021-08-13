@@ -4,7 +4,7 @@ export const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     background: "#F6F4F2",
-    height: "auto",
+    height: "100vh",
   },
 
   paper: {
@@ -24,7 +24,6 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     textAlign: "left",
     padding: "20px",
-    minWidth: "420px",
   },
 
   cardButtons: {
@@ -64,6 +63,17 @@ export const useStyles = makeStyles(theme => ({
     overflowWrap: "break-word",
     width: "500px",
     paddingTop: "10px",
+  },
+
+  cardTitle: {
+    marginBottom: "10px",
+  },
+
+  initLoader: {
+    position: "fixed",
+    top: "250px",
+    left: "49.5%",
+    color: "#C6AD8F",
   },
 
   loader: {
@@ -148,7 +158,8 @@ export const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "center",
     overflow: "scroll",
-    paddingTop: 150,
+    position: "absolute",
+    top: "25%",
   },
 
   modalTextHolder: {
