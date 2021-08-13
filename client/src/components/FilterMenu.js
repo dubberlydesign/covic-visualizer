@@ -160,8 +160,8 @@ const FilterMenu = props => {
 
   const renderFilterCategories = () =>
     FILTER_CATEGORIES.map(
-      ({ filterLabel, filterName, setFilter, filterData }) => (
-        <>
+      ({ filterLabel, filterName, setFilter, filterData }, index) => (
+        <div key={index}>
           <div>
             <FormControl className={classes.formControl}>
               <InputLabel id='mutiple-chip-label'>{filterLabel}</InputLabel>
@@ -198,7 +198,7 @@ const FilterMenu = props => {
             </FormControl>
           </div>
           <Divider />
-        </>
+        </div>
       )
     );
 

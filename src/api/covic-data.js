@@ -29,9 +29,11 @@ axios.defaults.headers[
   "Authorization"
 ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
-const setSearchParams = (params, term) => {
+const setSearchParams = (params, term, fieldReset) => {
   const locParams = params;
-  locParams.offset = "";
+  if (fieldReset === "true") {
+    locParams.offset = "";
+  }
   locParams.filterByFormula = `OR(
     FIND('${term}',{ID})>0,
     FIND('${term}',{Student Coder})>0,
@@ -79,7 +81,11 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   }
 
   if (req.query.queryType === "search") {
-    const searchParams = setSearchParams(params, req.query.term);
+    const searchParams = setSearchParams(
+      params,
+      req.query.term,
+      req.query.fieldReset
+    );
     params = { ...params, searchParams };
 
     if (req.query.term === "") {
@@ -142,8 +148,11 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
       params.filterByFormula = "";
     }
-
-    params.offset = "";
+    if (req.query.fieldReset === "true") {
+      params.offset = "";
+    } else {
+      params.offset = req.query.offset;
+    }
   }
 
   try {

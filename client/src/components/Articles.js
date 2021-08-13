@@ -32,6 +32,9 @@ import Fade from "@material-ui/core/Fade";
 import Chip from "@material-ui/core/Chip";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
+let globFilter = {};
+let resetField = false;
+
 const Articles = props => {
   const theme = createTheme();
 
@@ -45,7 +48,7 @@ const Articles = props => {
 
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
-
+  const [isMoreEntries, setIsMoreEntries] = useState(true);
   const requestData = (
     queryType = "",
     filterType = "",
@@ -63,12 +66,16 @@ const Articles = props => {
           filterType,
           term,
           fieldCol,
+          fieldReset: resetField,
         },
       })
       .then(response => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
         setDataOffset(response.data.offset);
+        if (response.data.offset === undefined) {
+          setIsMoreEntries(false);
+        }
       });
   };
 
@@ -98,16 +105,26 @@ const Articles = props => {
 
   useEffect(() => {}, [filteringValues]);
 
+  const isEmpty = obj => {
+    return Object.keys(obj).length === 0;
+  };
+
   const handleScroll = () => {
+    resetField = false;
     if (searchValue !== "") {
       requestData("search", "FIND", searchValue);
     } else {
-      requestData();
+      if (isEmpty(globFilter)) {
+        requestData();
+      } else {
+        requestData("filter", "FIND", globFilter);
+      }
     }
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    resetField = true;
     setData(data.splice(0, data.length));
     requestData("search", "FIND", searchValue);
   };
@@ -145,6 +162,9 @@ const Articles = props => {
   };
 
   const handleApplyFilter = filterObject => {
+    globFilter = filterObject;
+    resetField = true;
+    setIsMoreEntries(true);
     setData(data.splice(0, data.length));
     requestData("filter", "FIND", filterObject);
   };
@@ -215,7 +235,7 @@ const Articles = props => {
             <InfiniteScroll
               dataLength={data.length}
               next={data.length === 0 ? () => {} : handleScroll}
-              hasMore={data.length === 0 ? false : true}
+              hasMore={isMoreEntries}
               className={classes.box}
             >
               {data.map(item => {
@@ -236,7 +256,7 @@ const Articles = props => {
                           <Typography
                             variant='body2'
                             color='textSecondary'
-                            component='p'
+                            component='div'
                           >
                             <p className={classes.cardTitle}>
                               <b>Title: </b>
