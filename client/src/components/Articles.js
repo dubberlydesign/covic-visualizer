@@ -328,7 +328,7 @@ const Articles = props => {
         }}
       >
         <Fade in={open}>
-          <Paper className={classes.paper}>
+          <Paper className={classes.paperModal}>
             <Card>
               <CardContent className={classes.cardContainer}>
                 <div className={classes.modalIconHolder}>
