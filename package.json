@@ -21,8 +21,11 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@date-io/date-fns": "1.x",
+    "@material-ui/pickers": "^3.3.10",
     "axios": "^0.21.1",
     "cors": "^2.8.5",
+    "date-fns": "^2.23.0",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.3.0",

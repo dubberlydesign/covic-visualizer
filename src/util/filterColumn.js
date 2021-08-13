@@ -1,11 +1,16 @@
 const getFilter = (filterTypeArray, filterCol, filterQuery) => {
   let localFilterQuery = filterQuery;
-  filterTypeArray.forEach((filter, index) => {
-    localFilterQuery += `FIND('${filter}',{${filterCol}})>0`;
-    if (index !== filterTypeArray.length - 1) {
-      localFilterQuery += ",";
-    }
-  });
+
+  if (filterCol === "Date") {
+    localFilterQuery += `AND(IS_AFTER({${filterCol}}, DATETIME_PARSE('${filterTypeArray[0]}')), IS_BEFORE({${filterCol}}, DATETIME_PARSE('${filterTypeArray[1]}')))`;
+  } else {
+    filterTypeArray.forEach((filter, index) => {
+      localFilterQuery += `FIND('${filter}',{${filterCol}})>0`;
+      if (index !== filterTypeArray.length - 1) {
+        localFilterQuery += ",";
+      }
+    });
+  }
   return localFilterQuery;
 };
 

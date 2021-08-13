@@ -85,4 +85,14 @@ export const useStyles = makeStyles(theme => ({
     color: "white",
     width: "150px",
   },
+
+  dateRange: {
+    padding: "35px 0px 0 25px",
+  },
+
+  datePickers: {
+    margin: "8px 40px 24px 40px",
+    minWidth: 120,
+    width: "92%",
+  },
 }));

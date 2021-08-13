@@ -17,6 +17,13 @@ import IconButton from "@material-ui/core/IconButton";
 import FilterListIcon from "@material-ui/icons/FilterList";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import { format } from "date-fns";
+
 import { SOURCE_NAMES, SUBJECTS } from "./utils/FilterValues";
 import { useStyles } from "./filterMenuStyles";
 
@@ -56,6 +63,8 @@ const FilterMenu = props => {
   const [languageName, setLanguageName] = useState([]);
   const [publisherName, setPublisherName] = useState([]);
   const [subjectName, setSubjectName] = useState([]);
+  const initialStartDate = "2020-02-01T21:11:54";
+  const dateFormatting = "MM/dd/yyyy";
 
   const FILTER_CATEGORIES = [
     {
@@ -111,9 +120,15 @@ const FilterMenu = props => {
       languageType: languageName,
       publisherType: publisherName,
       subjectType: subjectName,
+      isDateFilter:
+        format(selectedDateBefore, dateFormatting) !==
+        format(new Date(initialStartDate), dateFormatting),
+      dateRange: [
+        format(selectedDateBefore, dateFormatting),
+        format(selectedDateAfter, dateFormatting),
+      ],
     };
 
-    console.log("handle filter apply", filterObject);
     props.handleApplyFilter(filterObject);
   };
 
@@ -128,18 +143,29 @@ const FilterMenu = props => {
     setState({ ...state, [anchor]: open });
   };
 
+  const [selectedDateBefore, setSelectedDateBefore] = useState(
+    new Date(initialStartDate)
+  );
+  const [selectedDateAfter, setSelectedDateAfter] = useState(new Date());
+
+  const handleDateChangeBefore = date => {
+    setSelectedDateBefore(date);
+  };
+
+  const handleDateChangeAfter = date => {
+    setSelectedDateAfter(date);
+  };
+
   const renderFilterCategories = () =>
     FILTER_CATEGORIES.map(
       ({ filterLabel, filterName, setFilter, filterData }) => (
         <>
           <div>
             <FormControl className={classes.formControl}>
-              <InputLabel id='demo-mutiple-chip-label'>
-                {filterLabel}
-              </InputLabel>
+              <InputLabel id='mutiple-chip-label'>{filterLabel}</InputLabel>
               <Select
-                labelId='demo-mutiple-chip-label'
-                id='demo-mutiple-chip'
+                labelId='mutiple-chip-label'
+                id='mutiple-chip'
                 multiple
                 value={filterName}
                 onChange={e => handleFilterChange(e, setFilter, filterData)}
@@ -174,6 +200,49 @@ const FilterMenu = props => {
       )
     );
 
+  const renderDateFilter = () => {
+    return (
+      <>
+        <div>
+          <InputLabel id='mutiple-chip-label' className={classes.dateRange}>
+            Date Range
+          </InputLabel>
+          <FormControl className={classes.datePickers}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDatePicker
+                disableToolbar
+                variant='inline'
+                format='MM/dd/yyyy'
+                margin='normal'
+                id='date-picker-inline'
+                label='From'
+                value={selectedDateBefore}
+                onChange={handleDateChangeBefore}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+              <KeyboardDatePicker
+                disableToolbar
+                variant='inline'
+                format='MM/dd/yyyy'
+                margin='normal'
+                id='date-picker-inline'
+                label='To'
+                value={selectedDateAfter}
+                onChange={handleDateChangeAfter}
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </FormControl>
+          <Divider />
+        </div>
+      </>
+    );
+  };
+
   const list = anchor => (
     <div
       className={clsx(classes.list, {
@@ -193,7 +262,7 @@ const FilterMenu = props => {
         </IconButton>
       </div>
       {renderFilterCategories()}
-
+      {renderDateFilter()}
       <div className={classes.infoIconHolder}>
         <Button
           variant='contained'

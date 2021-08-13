@@ -93,7 +93,8 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
 
   if (req.query.queryType === "filter") {
     const obj = JSON.parse(req.query.term);
-    let filterQuery = "OR(";
+    let filterQuery = "IF(OR(";
+
     filterQuery = filterColumn.useFilterType(
       obj.sourceType,
       0,
@@ -129,8 +130,16 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       filterQuery,
       obj
     );
-    filterQuery += ")";
 
+    filterQuery = filterColumn.useFilterType(
+      obj.dateRange,
+      5,
+      "Date",
+      filterQuery,
+      obj
+    );
+
+    filterQuery += "), 'true')";
     params.filterByFormula = filterQuery;
     if (filterColumn.isFilterInactive(obj)) {
       params.filterByFormula = "";
