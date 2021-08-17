@@ -67,7 +67,6 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
-    view: "Article Gallery",
   };
 
   if (
