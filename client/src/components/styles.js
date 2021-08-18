@@ -67,7 +67,9 @@ export const useStyles = makeStyles(theme => ({
   },
 
   cardTitle: {
-    marginBottom: "10px",
+    marginBottom: "20px",
+    fontWeight: 700,
+    fontSize: "18px",
   },
 
   initLoader: {
@@ -181,10 +183,6 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 700,
     fontSize: 20,
     marginBottom: 10,
-    maxWidth: "400px",
-    textOverflow: "ellipsis",
-    overflow: "hidden",
-    whiteSpace: "nowrap",
   },
 
   modalChipHolder: {

@@ -48,6 +48,7 @@ const Articles = props => {
 
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
+  const [curFigureData, setCurFigureData] = useState("");
   const [isMoreEntries, setIsMoreEntries] = useState(true);
 
   const requestData = (
@@ -171,8 +172,38 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
-    setCurItem(item);
-    setOpen(true);
+    console.log("REQUEST", item?.fields.ID);
+    axios
+      .get("/api/v1/covic-data/figures", {
+        params: {
+          baseType: "Figures",
+          offset: 0,
+          requestAmount: 3,
+          queryType: item?.fields.ID,
+        },
+      })
+      .then(response => {
+        console.log("response", response?.data?.records[0]?.fields);
+        console.log(
+          "response",
+          response?.data?.records[0]?.fields["Title (from ID copy)"]
+        );
+        setCurItem(item);
+        if (
+          response?.data?.records[0]?.fields["Title"] ||
+          response?.data?.records[0]?.fields["Title (from ID copy)"]
+        ) {
+          const valueForTitle =
+            response?.data?.records[0]?.fields["Title"] ||
+            response?.data?.records[0]?.fields["Title (from ID copy)"][0];
+          setCurFigureData(valueForTitle);
+        } else {
+          setCurFigureData("");
+        }
+
+        setOpen(true);
+      });
+    // console.log("data figures", item?.fields.ID);
   };
 
   const handleClose = () => {
@@ -260,7 +291,6 @@ const Articles = props => {
                             component='div'
                           >
                             <p className={classes.cardTitle}>
-                              <b>Title: </b>
                               {item?.fields["Title"]}
                             </p>
                           </Typography>
@@ -359,17 +389,7 @@ const Articles = props => {
                   component='p'
                   className={classes.modalTextHolderHeader}
                 >
-                  {curItem?.fields["Data Source"] === "None"
-                    ? curItem?.fields["Publisher"]
-                    : curItem?.fields["Data Source"]}
-                </Typography>
-                <Typography
-                  variant='body2'
-                  color='textSecondary'
-                  component='p'
-                  className={classes.modalTextHolderLast}
-                >
-                  <b>Title:</b> {curItem?.fields["Title"]}
+                  {curItem?.fields["Title"]}
                 </Typography>
                 <Typography
                   variant='body2'
@@ -402,6 +422,14 @@ const Articles = props => {
                           : ", "
                       }`
                   )}
+                </Typography>
+                <Typography
+                  variant='body2'
+                  color='textSecondary'
+                  component='p'
+                  className={classes.modalTextHolder}
+                >
+                  {curFigureData}
                 </Typography>
 
                 <div className={classes.modalImagesHolder}>
