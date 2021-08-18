@@ -74,6 +74,13 @@ export const useStyles = makeStyles(theme => ({
     margin: "0px 75px 20px 20px",
   },
 
+  disableIconHolder: {
+    opacity: ".25",
+    display: "flex",
+    justifyContent: "flex-end",
+    margin: "0px 75px 20px 20px",
+  },
+
   filterInfoIcon: {
     fontSize: 60,
     color: "#C6AD8F",

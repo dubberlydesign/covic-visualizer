@@ -25,7 +25,7 @@ import {
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
-
+import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
 
@@ -68,6 +68,7 @@ const FilterMenu = props => {
   const initialStartDate = "2020-02-01T21:11:54";
   const dateFormatting = "MM/dd/yyyy";
   const initialNewDate = new Date(initialStartDate);
+  const [isDisableFilterApply, setIsDisableFilterApply] = useState(false);
 
   const FILTER_CATEGORIES = [
     {
@@ -152,10 +153,20 @@ const FilterMenu = props => {
 
   const handleDateChangeBefore = date => {
     setSelectedDateBefore(date);
+    if (isValid(date)) {
+      setIsDisableFilterApply(false);
+    } else {
+      setIsDisableFilterApply(true);
+    }
   };
 
   const handleDateChangeAfter = date => {
     setSelectedDateAfter(date);
+    if (isValid(date)) {
+      setIsDisableFilterApply(false);
+    } else {
+      setIsDisableFilterApply(true);
+    }
   };
 
   const handleDelete = (e, value) => {
@@ -306,12 +317,22 @@ const FilterMenu = props => {
       </div>
       {renderFilterCategories()}
       {renderDateFilter()}
-      <div className={classes.infoIconHolder}>
+      <div
+        className={
+          isDisableFilterApply
+            ? classes.disableIconHolder
+            : classes.infoIconHolder
+        }
+      >
         <Button
           variant='contained'
           disableElevation
           className={classes.links}
-          onClick={handleApplyFilterClick(anchor, false)}
+          onClick={
+            isDisableFilterApply
+              ? () => {}
+              : handleApplyFilterClick(anchor, false)
+          }
           target='_blank'
         >
           Apply Filters
