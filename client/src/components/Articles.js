@@ -172,7 +172,6 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
-    console.log("REQUEST", item?.fields.ID);
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
@@ -183,11 +182,6 @@ const Articles = props => {
         },
       })
       .then(response => {
-        console.log("response", response?.data?.records[0]?.fields);
-        console.log(
-          "response",
-          response?.data?.records[0]?.fields["Title (from ID copy)"]
-        );
         setCurItem(item);
         if (
           response?.data?.records[0]?.fields["Title"] ||
@@ -203,7 +197,6 @@ const Articles = props => {
 
         setOpen(true);
       });
-    // console.log("data figures", item?.fields.ID);
   };
 
   const handleClose = () => {
