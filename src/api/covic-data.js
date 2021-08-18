@@ -170,16 +170,24 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   }
 });
 
+let cachedFiguresRecords;
+let cacheFiguresLogTime;
+
+let prevFiguresOffset = "";
+let prevFiguresQuery = "";
+
 router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
   if (
-    cacheLogTime &&
-    cacheLogTime > Date.now() - 30 * 1000 &&
-    prevOffset === req.query.offset
+    cacheFiguresLogTime &&
+    cacheFiguresLogTime > Date.now() - 30 * 1000 &&
+    prevFiguresOffset === req.query.offset &&
+    prevFiguresQuery === req.query.queryType
   ) {
-    return res.json(cachedRecords);
+    return res.json(cachedFiguresRecords);
   }
 
-  prevOffset = req.query.offset;
+  prevFiguresOffset = req.query.offset;
+  prevFiguresQuery = req.query.queryType;
   axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
   try {
@@ -188,11 +196,12 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
         params: {
           offset: req.query.offset,
           pageSize: req.query.requestAmount,
+          filterByFormula: `SEARCH('${req.query.queryType}',{ID})`,
         },
       })
       .then(response => {
-        cachedRecords = response.data;
-        cacheLogTime = Date.now();
+        cachedFiguresRecords = response.data;
+        cacheFiguresLogTime = Date.now();
 
         return res.json(response.data);
       });
@@ -201,15 +210,20 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
   }
 });
 
+let cachedMetaDataRecords;
+let cacheMetaDataLogTime;
+
+let prevMetaDataOffset = "";
+
 router.get("/metadata", limiter, speedLimiter, async (req, res, next) => {
   if (
-    cacheLogTime &&
-    cacheLogTime > Date.now() - 30 * 1000 &&
-    prevOffset === req.query.offset
+    cacheMetaDataLogTime &&
+    cacheMetaDataLogTime > Date.now() - 30 * 1000 &&
+    prevMetaDataOffset === req.query.offset
   ) {
-    return res.json(cachedRecords);
+    return res.json(cachedMetaDataRecords);
   }
-  prevOffset = req.query.offset;
+  prevMetaDataOffset = req.query.offset;
   axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
   let params = {
@@ -227,8 +241,8 @@ router.get("/metadata", limiter, speedLimiter, async (req, res, next) => {
         params,
       })
       .then(response => {
-        cachedRecords = response.data;
-        cacheLogTime = Date.now();
+        cachedMetaDataRecords = response.data;
+        cacheMetaDataLogTime = Date.now();
 
         return res.json(response.data);
       });
