@@ -72,8 +72,14 @@ const Articles = props => {
         },
       })
       .then(response => {
+        const chronological = response.data.records
+          .slice()
+          .sort(
+            (a, b) => new Date(a.fields["Date"]) - new Date(b.fields["Date"])
+          );
+
         setIsLoading(false);
-        setData(data.concat(response.data.records));
+        setData(data.concat(chronological));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -97,7 +103,7 @@ const Articles = props => {
               .sort();
           }
         });
-        console.log("filter", filterValuesObject);
+
         setFilterValues(filterValuesObject);
 
         requestData();
