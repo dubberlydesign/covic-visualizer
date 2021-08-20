@@ -80,7 +80,7 @@ const FilterMenu = props => {
         : props.filteringValues["Source Type"],
     },
     {
-      filterLabel: "Country Type",
+      filterLabel: "Country",
       filterName: countryName,
       setFilter: setCountryName,
       filterData: isEmpty(props.filteringValues)
@@ -88,7 +88,7 @@ const FilterMenu = props => {
         : props.filteringValues["Country"],
     },
     {
-      filterLabel: "Language Type",
+      filterLabel: "Language",
       filterName: languageName,
       setFilter: setLanguageName,
       filterData: isEmpty(props.filteringValues)
@@ -96,7 +96,7 @@ const FilterMenu = props => {
         : props.filteringValues["Language"],
     },
     {
-      filterLabel: "Publisher Type",
+      filterLabel: "Publisher",
       filterName: publisherName,
       setFilter: setPublisherName,
       filterData: isEmpty(props.filteringValues)
@@ -104,7 +104,7 @@ const FilterMenu = props => {
         : props.filteringValues["Publisher"],
     },
     {
-      filterLabel: "Subject Type",
+      filterLabel: "Subject",
       filterName: subjectName,
       setFilter: setSubjectName,
       filterData: isEmpty(props.filteringValues)
