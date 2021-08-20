@@ -90,10 +90,14 @@ const Articles = props => {
         const filterValuesObject = {};
         response.data.records.forEach(record => {
           if (record?.fields["Field Options"]) {
-            filterValuesObject[record.fields["Field Name"]] =
-              record?.fields["Field Options"]?.split(", ");
+            filterValuesObject[record.fields["Field Name"]] = record?.fields[
+              "Field Options"
+            ]
+              ?.split(", ")
+              .sort();
           }
         });
+        console.log("filter", filterValuesObject);
         setFilterValues(filterValuesObject);
 
         requestData();
