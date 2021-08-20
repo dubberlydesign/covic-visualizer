@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const rateLimit = require("express-rate-limit");
 const slowDown = require("express-slow-down");
-
+const { format } = require("date-fns");
 const filterColumn = require("../util/filterColumn");
 
 const limiter = rateLimit({
@@ -76,7 +76,8 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   ) {
     params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
   } else {
-    params.filterByFormula = "";
+    const today = format(new Date(), "yyyy-MM-dd");
+    params.filterByFormula = `AND(IS_AFTER({Date}, DATETIME_PARSE('2020-02-01')), IS_BEFORE({Date}, DATETIME_PARSE('${today}')))`;
   }
 
   if (req.query.queryType === "search") {
