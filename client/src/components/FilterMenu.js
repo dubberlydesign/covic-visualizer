@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useLayoutEffect, useState, Fragment } from "react";
 import clsx from "clsx";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
@@ -28,6 +28,19 @@ import { format } from "date-fns";
 import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
+
+function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
 
 const getStyles = (name, nameType, theme) => {
   return {
@@ -80,7 +93,7 @@ const FilterMenu = props => {
         : props.filteringValues["Source Type"],
     },
     {
-      filterLabel: "Country Type",
+      filterLabel: "Country",
       filterName: countryName,
       setFilter: setCountryName,
       filterData: isEmpty(props.filteringValues)
@@ -88,7 +101,7 @@ const FilterMenu = props => {
         : props.filteringValues["Country"],
     },
     {
-      filterLabel: "Language Type",
+      filterLabel: "Language",
       filterName: languageName,
       setFilter: setLanguageName,
       filterData: isEmpty(props.filteringValues)
@@ -96,7 +109,7 @@ const FilterMenu = props => {
         : props.filteringValues["Language"],
     },
     {
-      filterLabel: "Publisher Type",
+      filterLabel: "Publisher",
       filterName: publisherName,
       setFilter: setPublisherName,
       filterData: isEmpty(props.filteringValues)
@@ -104,7 +117,7 @@ const FilterMenu = props => {
         : props.filteringValues["Publisher"],
     },
     {
-      filterLabel: "Subject Type",
+      filterLabel: "Subject",
       filterName: subjectName,
       setFilter: setSubjectName,
       filterData: isEmpty(props.filteringValues)
@@ -340,6 +353,7 @@ const FilterMenu = props => {
       </div>
     </div>
   );
+  const [width, height] = useWindowSize();
 
   return ["bottom"].map(anchor => (
     <Fragment key={anchor}>
@@ -351,9 +365,10 @@ const FilterMenu = props => {
         FILTER
       </Button>
       <Drawer
-        anchor={anchor}
+        anchor={width > 1280 ? "left" : anchor}
         open={state[anchor]}
         onClose={toggleDrawer(anchor, false)}
+        {...(width > 1280 ? {variant: "permanent"} : null)}
       >
         {list(anchor)}
       </Drawer>

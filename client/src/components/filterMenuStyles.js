@@ -6,13 +6,25 @@ export const useStyles = makeStyles(theme => ({
   },
 
   fullList: {
+    backgroundColor: "#F6F4F2",
     width: "auto",
+    [theme.breakpoints.up("lg")]: {
+      height: "100%",
+      overflowY: "scroll",
+      paddingLeft: "20px",
+      "& hr": {
+        display: "none"
+      }
+    },
   },
 
   formControl: {
     margin: "8px 24px 24px 24px",
     minWidth: 120,
     width: "95%",
+    [theme.breakpoints.up("lg")]: {
+      margin: 0
+    },
   },
 
   chips: {
@@ -50,6 +62,9 @@ export const useStyles = makeStyles(theme => ({
     borderColor: "#C6AD8F",
     margin: "5px 20px 0 20px",
     cursor: "pointer",
+    [theme.breakpoints.up("lg")]: {
+      visibility: "hidden"
+    },
   },
 
   filterBtnIcon: {
@@ -61,6 +76,10 @@ export const useStyles = makeStyles(theme => ({
     fontSize: 16,
     fontWeight: 700,
     color: "#425664",
+    [theme.breakpoints.up("lg")]: {
+      visibility: "hidden"
+    },
+
   },
 
   filterIcon: {
@@ -72,6 +91,10 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "flex-end",
     margin: "0px 75px 20px 20px",
+    [theme.breakpoints.up("lg")]: {
+      justifyContent: "center",
+      margin: "0 0 20px 0"
+    }
   },
 
   disableIconHolder: {
@@ -90,7 +113,7 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "20px",
     backgroundColor: "#C6AD8F",
     color: "white",
-    width: "150px",
+    width: "150px"
   },
 
   dateRange: {
@@ -101,5 +124,8 @@ export const useStyles = makeStyles(theme => ({
     margin: "8px 40px 24px 40px",
     minWidth: 120,
     width: "92%",
+    [theme.breakpoints.up('md')]: {
+      margin: 0
+    },
   },
 }));

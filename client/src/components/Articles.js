@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -34,6 +34,19 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 let globFilter = {};
 let resetField = false;
+
+function useWindowSize() {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
 
 const Articles = props => {
   const theme = createTheme();
@@ -72,8 +85,14 @@ const Articles = props => {
         },
       })
       .then(response => {
+        const chronological = response.data.records
+          .slice()
+          .sort(
+            (a, b) => new Date(a.fields["Date"]) - new Date(b.fields["Date"])
+          );
+
         setIsLoading(false);
-        setData(data.concat(response.data.records));
+        setData(data.concat(chronological));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -90,10 +109,14 @@ const Articles = props => {
         const filterValuesObject = {};
         response.data.records.forEach(record => {
           if (record?.fields["Field Options"]) {
-            filterValuesObject[record.fields["Field Name"]] =
-              record?.fields["Field Options"]?.split(", ");
+            filterValuesObject[record.fields["Field Name"]] = record?.fields[
+              "Field Options"
+            ]
+              ?.split(", ")
+              .sort();
           }
         });
+
         setFilterValues(filterValuesObject);
 
         requestData();
@@ -203,6 +226,8 @@ const Articles = props => {
     setOpen(false);
   };
 
+  const [width, height] = useWindowSize();
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -253,10 +278,16 @@ const Articles = props => {
           />
         </AppBar>
       </ElevationScroll>
-      {isLoading && <CircularProgress className={classes.initLoader} />}
+      {isLoading && <CircularProgress className={classes.initLoader} style={{...(width > 1280 ? {left: "58%"} : null)}} />}
       <Container maxWidth={false} className={classes.containerScroll}>
         <Box my={6}>
-          <Grid container spacing={3} style={{ padding: 20 }}>
+          <Grid
+            container
+            spacing={3}
+            style={{
+              padding: width > 1280 ? "20px 20px 20px 344px" : 20
+            }}
+          >
             <InfiniteScroll
               dataLength={data.length}
               next={data.length === 0 ? () => {} : handleScroll}
