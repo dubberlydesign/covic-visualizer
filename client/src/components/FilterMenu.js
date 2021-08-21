@@ -188,6 +188,41 @@ const FilterMenu = props => {
     setState({ ...state, [anchor]: open });
   };
 
+  const handleResetFilter = (anchor, open) => event => {
+    setSourceName([]);
+    setCountryName([]);
+    //setLanguageName([]);
+    setPublisherName([]);
+    setPublisherName([]);
+    setSubjectName([]);
+    setVisualizationName([]);
+    setVisualTechName([]);
+    setInteractionName([]);
+    //setArticleTechName([]);
+
+    const filterObject = {
+      sourceType: [],
+      countryType: [],
+      // languageType: [],
+      publisherType: [],
+      subjectType: [],
+      visualizationType: [],
+      visualTechType: [],
+      interactionType: [],
+      // articleTechType: [],
+      isDateFilter:
+        format(selectedDateBefore, dateFormatting) !==
+        format(initialNewDate, dateFormatting),
+      dateRange: [
+        format(selectedDateBefore, dateFormatting),
+        format(selectedDateAfter, dateFormatting),
+      ],
+    };
+
+    props.handleApplyFilter(filterObject);
+    setState({ ...state, [anchor]: open });
+  };
+
   const [selectedDateBefore, setSelectedDateBefore] = useState(initialNewDate);
   const [selectedDateAfter, setSelectedDateAfter] = useState(new Date());
 
@@ -369,26 +404,37 @@ const FilterMenu = props => {
       </div>
       {renderFilterCategories()}
       {renderDateFilter()}
-      <div
-        className={
-          isDisableFilterApply
-            ? classes.disableIconHolder
-            : classes.infoIconHolder
-        }
-      >
-        <Button
-          variant='contained'
-          disableElevation
-          className={classes.links}
-          onClick={
+      <div className={classes.filterButtonsHolder}>
+        <div className={classes.resetIconHolder}>
+          <Button
+            variant='contained'
+            disableElevation
+            className={classes.links}
+            onClick={handleResetFilter(anchor, false)}
+          >
+            Reset Filters
+          </Button>
+        </div>
+        <div
+          className={
             isDisableFilterApply
-              ? () => {}
-              : handleApplyFilterClick(anchor, false)
+              ? classes.disableIconHolder
+              : classes.infoIconHolder
           }
-          target='_blank'
         >
-          Apply Filters
-        </Button>
+          <Button
+            variant='contained'
+            disableElevation
+            className={classes.links}
+            onClick={
+              isDisableFilterApply
+                ? () => {}
+                : handleApplyFilterClick(anchor, false)
+            }
+          >
+            Apply Filters
+          </Button>
+        </div>
       </div>
     </div>
   );
