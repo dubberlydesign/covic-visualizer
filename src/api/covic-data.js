@@ -68,7 +68,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
   };
-  console.log("req", req.query);
+
   if (
     req.query.filterType !== "" &&
     req.query.queryType !== "search" &&
@@ -91,7 +91,6 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     if (req.query.term === "") {
       params.filterByFormula = "";
     }
-    console.log("params", params);
   }
 
   if (req.query.queryType === "filter") {
