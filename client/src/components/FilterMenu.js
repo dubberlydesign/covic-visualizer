@@ -65,6 +65,10 @@ const FilterMenu = props => {
   const [languageName, setLanguageName] = useState([]);
   const [publisherName, setPublisherName] = useState([]);
   const [subjectName, setSubjectName] = useState([]);
+  const [visualizationName, setVisualizationName] = useState([]);
+  const [visualTechName, setVisualTechName] = useState([]);
+  const [interactionName, setInteractionName] = useState([]);
+  const [articleTechName, setArticleTechName] = useState([]);
   const initialStartDate = "2020-02-01T21:11:54";
   const dateFormatting = "MM/dd/yyyy";
   const initialNewDate = new Date(initialStartDate);
@@ -110,6 +114,38 @@ const FilterMenu = props => {
       filterData: isEmpty(props.filteringValues)
         ? []
         : props.filteringValues["Subject(s)"],
+    },
+    {
+      filterLabel: "Visualization Type",
+      filterName: visualizationName,
+      setFilter: setVisualizationName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Visualization Type"],
+    },
+    {
+      filterLabel: "Visual Technique",
+      filterName: visualTechName,
+      setFilter: setVisualTechName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Visual Technique"],
+    },
+    {
+      filterLabel: "Interaction Technique",
+      filterName: interactionName,
+      setFilter: setInteractionName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Interaction Technique"],
+    },
+    {
+      filterLabel: "Article Technique",
+      filterName: articleTechName,
+      setFilter: setArticleTechName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Article Technique"],
     },
   ];
 
@@ -188,6 +224,18 @@ const FilterMenu = props => {
     }
     if (subjectName.includes(value)) {
       setSubjectName(current => _without(current, value));
+    }
+    if (visualizationName.includes(value)) {
+      setVisualizationName(current => _without(current, value));
+    }
+    if (visualTechName.includes(value)) {
+      setVisualTechName(current => _without(current, value));
+    }
+    if (interactionName.includes(value)) {
+      setInteractionName(current => _without(current, value));
+    }
+    if (articleTechName.includes(value)) {
+      setArticleTechName(current => _without(current, value));
     }
   };
 

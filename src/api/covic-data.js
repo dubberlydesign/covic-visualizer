@@ -233,8 +233,15 @@ router.get("/metadata", limiter, speedLimiter, async (req, res, next) => {
     view: "Grid view",
   };
 
-  params.filterByFormula =
-    'OR(FIND("Country",{Field Name})>0, FIND("Source Type",{Field Name})>0, FIND("Language",{Field Name})>0, FIND("Publisher",{Field Name})>0, FIND("Subject(s)",{Field Name})>0)';
+  params.filterByFormula = `OR(FIND("Country",{Field Name})>0, 
+    FIND("Source Type",{Field Name})>0, 
+    FIND("Language",{Field Name})>0, 
+    FIND("Publisher",{Field Name})>0, 
+    FIND("Subject(s)",{Field Name})>0, 
+    FIND("Visualization Type",{Field Name})>0, 
+    FIND("Visual Technique",{Field Name})>0, 
+    FIND("Interaction Technique",{Field Name})>0, 
+    FIND("Article Technique",{Field Name})>0)`;
 
   try {
     await axios
