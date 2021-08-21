@@ -1,7 +1,7 @@
 const getFilter = (filterTypeArray, filterCol, filterQuery) => {
   let localFilterQuery = filterQuery;
 
-  if (filterCol === "Date") {
+  if (filterCol === "Date (from Article)") {
     localFilterQuery += `AND(IS_AFTER({${filterCol}}, DATETIME_PARSE('${filterTypeArray[0]}')), IS_BEFORE({${filterCol}}, DATETIME_PARSE('${filterTypeArray[1]}')))`;
   } else {
     filterTypeArray.forEach((filter, index) => {
@@ -38,8 +38,6 @@ const appendToFilter = (obj, filterQuery, place) => {
 const isFilterInactive = obj => {
   const isInActiveArray = [];
   Object.keys(obj).forEach(key => {
-    console.log("key", key);
-    console.log("obj[key].length", obj[key].length);
     if (key === "dateRange" || key === "isDateFilter") {
       isInActiveArray.push(true);
     } else {
