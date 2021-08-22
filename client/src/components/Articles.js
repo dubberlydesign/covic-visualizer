@@ -219,7 +219,7 @@ const Articles = props => {
         setCurItem(item);
         setCurFigureData([]);
 
-        response?.data?.records?.map(record => {
+        response?.data?.records?.forEach(record => {
           if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
             setCurFigureData(curFigureData => [
               ...curFigureData,
@@ -358,7 +358,7 @@ const Articles = props => {
                               variant='contained'
                               disableElevation
                               className={classes.links}
-                              // href={item.fields["URL (from ID copy)"]}
+                              href={item.fields["URL (from ID copy)"][0]}
                               target='_blank'
                             >
                               Visit
@@ -473,7 +473,7 @@ const Articles = props => {
                     variant='contained'
                     disableElevation
                     className={classes.links}
-                    // href={curItem?.fields["URL (from ID copy)"]}
+                    href={curItem?.fields["URL (from ID copy)"][0]}
                     target='_blank'
                   >
                     Visit
