@@ -151,7 +151,7 @@ const Articles = props => {
 
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
-    if (item?.fields["Figure Count (Figures relation)"] === 0) return null;
+
     const imgList = item?.fields["Image"]?.map((figure, index) => {
       if (figure.thumbnails && index <= 3) {
         return (
@@ -163,14 +163,38 @@ const Articles = props => {
           />
         );
       } else {
-        return [];
+        return (
+          <div className={classes.altMediaFormat}>
+            <div>
+              <b>Media Type: </b>
+              {figure.type}
+            </div>
+            <div>
+              <b>FileName: </b>
+              {figure.filename}
+            </div>
+          </div>
+        );
       }
     });
-    if (isModal) {
-      return imgList?.length > 0 ? imgList : null;
-    } else {
-      return imgList?.length > 0 ? imgList[0] : null;
-    }
+
+    return imgList?.length > 0 ? imgList[0] : null;
+  };
+
+  const renderImgModal = (item, isModal = false) => {
+    if (curFigureData.length === 0) return [];
+    const imgList = curFigureData.map((figure, index) => {
+      return (
+        <img
+          src={figure}
+          alt=''
+          className={isModal ? classes.cardImageModal : classes.cardImage}
+          key={Math.random() * 100}
+        />
+      );
+    });
+
+    return imgList?.length > 0 ? imgList : null;
   };
 
   const handleApplyFilter = filterObject => {
@@ -193,17 +217,16 @@ const Articles = props => {
       })
       .then(response => {
         setCurItem(item);
-        if (
-          response?.data?.records[0]?.fields["Title"] ||
-          response?.data?.records[0]?.fields["Title (from ID copy)"]
-        ) {
-          const valueForTitle =
-            response?.data?.records[0]?.fields["Title"] ||
-            response?.data?.records[0]?.fields["Title (from ID copy)"][0];
-          setCurFigureData(valueForTitle);
-        } else {
-          setCurFigureData("");
-        }
+        setCurFigureData([]);
+
+        response?.data?.records?.forEach(record => {
+          if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
+            setCurFigureData(curFigureData => [
+              ...curFigureData,
+              record?.fields?.Image[0]?.thumbnails?.large?.url,
+            ]);
+          }
+        });
 
         setOpen(true);
       });
@@ -335,7 +358,7 @@ const Articles = props => {
                               variant='contained'
                               disableElevation
                               className={classes.links}
-                              href={item.fields["URL (from ID copy)"]}
+                              href={item.fields["URL (from ID copy)"][0]}
                               target='_blank'
                             >
                               Visit
@@ -442,7 +465,7 @@ const Articles = props => {
                 </Typography>
 
                 <div className={classes.modalImagesHolder}>
-                  {renderImg(curItem, true)}
+                  {renderImgModal(curItem, true)}
                 </div>
 
                 <div className={classes.modalButtonHolder}>
@@ -450,7 +473,7 @@ const Articles = props => {
                     variant='contained'
                     disableElevation
                     className={classes.links}
-                    href={curItem?.fields["URL (from ID copy)"]}
+                    href={curItem?.fields["URL (from ID copy)"][0]}
                     target='_blank'
                   >
                     Visit
