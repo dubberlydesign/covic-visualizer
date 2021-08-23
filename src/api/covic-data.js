@@ -111,60 +111,60 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       filterQuery,
       obj
     );
-    // filterQuery = filterColumn.useFilterType(
-    //   obj.languageType,
-    //   2,
-    //   "Language",
-    //   filterQuery,
-    //   obj
-    // );
+    filterQuery = filterColumn.useFilterType(
+      obj.languageType,
+      2,
+      "Language (from Article)",
+      filterQuery,
+      obj
+    );
     filterQuery = filterColumn.useFilterType(
       obj.publisherType,
-      2,
+      3,
       "Publisher (from ID Copy)",
       filterQuery,
       obj
     );
     filterQuery = filterColumn.useFilterType(
       obj.subjectType,
-      3,
+      4,
       "Subject(s) (from Article)",
       filterQuery,
       obj
     );
     filterQuery = filterColumn.useFilterType(
       obj.visualizationType,
-      4,
+      5,
       "Visualization Type",
       filterQuery,
       obj
     );
     filterQuery = filterColumn.useFilterType(
       obj.visualTechType,
-      5,
+      6,
       "Visual Technique",
       filterQuery,
       obj
     );
     filterQuery = filterColumn.useFilterType(
       obj.interactionType,
-      6,
+      7,
       "Interaction Technique",
       filterQuery,
       obj
     );
-    // filterQuery = filterColumn.useFilterType(
-    //   obj.articleTechType,
-    //   8,
-    //   "Article Technique",
-    //   filterQuery,
-    //   obj
-    // );
+    filterQuery = filterColumn.useFilterType(
+      obj.articleTechType,
+      8,
+      "Article Technique (from Article)",
+      filterQuery,
+      obj
+    );
 
     if (obj.isDateFilter) {
       filterQuery = filterColumn.useFilterType(
         obj.dateRange,
-        7,
+        9,
         "Date (from Article)",
         filterQuery,
         obj
