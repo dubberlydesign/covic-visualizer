@@ -75,9 +75,13 @@ const FilterMenu = props => {
 
   const [sourceName, setSourceName] = useState([]);
   const [countryName, setCountryName] = useState([]);
-  const [languageName, setLanguageName] = useState([]);
+  // const [languageName, setLanguageName] = useState([]);
   const [publisherName, setPublisherName] = useState([]);
   const [subjectName, setSubjectName] = useState([]);
+  const [visualizationName, setVisualizationName] = useState([]);
+  const [visualTechName, setVisualTechName] = useState([]);
+  const [interactionName, setInteractionName] = useState([]);
+  // const [articleTechName, setArticleTechName] = useState([]);
   const initialStartDate = "2020-02-01T21:11:54";
   const dateFormatting = "MM/dd/yyyy";
   const initialNewDate = new Date(initialStartDate);
@@ -100,14 +104,14 @@ const FilterMenu = props => {
         ? []
         : props.filteringValues["Country"],
     },
-    {
-      filterLabel: "Language",
-      filterName: languageName,
-      setFilter: setLanguageName,
-      filterData: isEmpty(props.filteringValues)
-        ? []
-        : props.filteringValues["Language"],
-    },
+    // {
+    //   filterLabel: "Language",
+    //   filterName: languageName,
+    //   setFilter: setLanguageName,
+    //   filterData: isEmpty(props.filteringValues)
+    //     ? []
+    //     : props.filteringValues["Language"],
+    // },
     {
       filterLabel: "Publisher",
       filterName: publisherName,
@@ -124,6 +128,38 @@ const FilterMenu = props => {
         ? []
         : props.filteringValues["Subject(s)"],
     },
+    {
+      filterLabel: "Visualization Type",
+      filterName: visualizationName,
+      setFilter: setVisualizationName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Visualization Type"],
+    },
+    {
+      filterLabel: "Visual Technique",
+      filterName: visualTechName,
+      setFilter: setVisualTechName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Visual Technique"],
+    },
+    {
+      filterLabel: "Interaction Technique",
+      filterName: interactionName,
+      setFilter: setInteractionName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Interaction Technique"],
+    },
+    // {
+    //   filterLabel: "Article Technique",
+    //   filterName: articleTechName,
+    //   setFilter: setArticleTechName,
+    //   filterData: isEmpty(props.filteringValues)
+    //     ? []
+    //     : props.filteringValues["Article Technique"],
+    // },
   ];
 
   const handleFilterChange = (event, setFilter, filterData) => {
@@ -138,9 +174,13 @@ const FilterMenu = props => {
     const filterObject = {
       sourceType: sourceName,
       countryType: countryName,
-      languageType: languageName,
+      // languageType: languageName,
       publisherType: publisherName,
       subjectType: subjectName,
+      visualizationType: visualizationName,
+      visualTechType: visualTechName,
+      interactionType: interactionName,
+      // articleTechType: articleTechName,
       isDateFilter:
         format(selectedDateBefore, dateFormatting) !==
         format(initialNewDate, dateFormatting),
@@ -158,6 +198,41 @@ const FilterMenu = props => {
       return;
     }
 
+    setState({ ...state, [anchor]: open });
+  };
+
+  const handleResetFilter = (anchor, open) => event => {
+    setSourceName([]);
+    setCountryName([]);
+    //setLanguageName([]);
+    setPublisherName([]);
+    setPublisherName([]);
+    setSubjectName([]);
+    setVisualizationName([]);
+    setVisualTechName([]);
+    setInteractionName([]);
+    //setArticleTechName([]);
+
+    const filterObject = {
+      sourceType: [],
+      countryType: [],
+      // languageType: [],
+      publisherType: [],
+      subjectType: [],
+      visualizationType: [],
+      visualTechType: [],
+      interactionType: [],
+      // articleTechType: [],
+      isDateFilter:
+        format(selectedDateBefore, dateFormatting) !==
+        format(initialNewDate, dateFormatting),
+      dateRange: [
+        format(selectedDateBefore, dateFormatting),
+        format(selectedDateAfter, dateFormatting),
+      ],
+    };
+
+    props.handleApplyFilter(filterObject);
     setState({ ...state, [anchor]: open });
   };
 
@@ -190,9 +265,9 @@ const FilterMenu = props => {
     if (countryName.includes(value)) {
       setCountryName(current => _without(current, value));
     }
-    if (languageName.includes(value)) {
-      setLanguageName(current => _without(current, value));
-    }
+    // if (languageName.includes(value)) {
+    //   setLanguageName(current => _without(current, value));
+    // }
     if (publisherName.includes(value)) {
       setPublisherName(current => _without(current, value));
     }
@@ -202,6 +277,18 @@ const FilterMenu = props => {
     if (subjectName.includes(value)) {
       setSubjectName(current => _without(current, value));
     }
+    if (visualizationName.includes(value)) {
+      setVisualizationName(current => _without(current, value));
+    }
+    if (visualTechName.includes(value)) {
+      setVisualTechName(current => _without(current, value));
+    }
+    if (interactionName.includes(value)) {
+      setInteractionName(current => _without(current, value));
+    }
+    // if (articleTechName.includes(value)) {
+    //   setArticleTechName(current => _without(current, value));
+    // }
   };
 
   const toggleDrawer = (anchor, open) => event => {
@@ -330,26 +417,37 @@ const FilterMenu = props => {
       </div>
       {renderFilterCategories()}
       {renderDateFilter()}
-      <div
-        className={
-          isDisableFilterApply
-            ? classes.disableIconHolder
-            : classes.infoIconHolder
-        }
-      >
-        <Button
-          variant='contained'
-          disableElevation
-          className={classes.links}
-          onClick={
+      <div className={classes.filterButtonsHolder}>
+        <div className={classes.resetIconHolder}>
+          <Button
+            variant='contained'
+            disableElevation
+            className={classes.links}
+            onClick={handleResetFilter(anchor, false)}
+          >
+            Reset Filters
+          </Button>
+        </div>
+        <div
+          className={
             isDisableFilterApply
-              ? () => {}
-              : handleApplyFilterClick(anchor, false)
+              ? classes.disableIconHolder
+              : classes.infoIconHolder
           }
-          target='_blank'
         >
-          Apply Filters
-        </Button>
+          <Button
+            variant='contained'
+            disableElevation
+            className={classes.links}
+            onClick={
+              isDisableFilterApply
+                ? () => {}
+                : handleApplyFilterClick(anchor, false)
+            }
+          >
+            Apply Filters
+          </Button>
+        </div>
       </div>
     </div>
   );

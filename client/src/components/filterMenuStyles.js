@@ -87,7 +87,7 @@ export const useStyles = makeStyles(theme => ({
     color: "#425664",
   },
 
-  infoIconHolder: {
+  filterButtonsHolder: {
     display: "flex",
     justifyContent: "flex-end",
     margin: "0px 75px 20px 20px",
@@ -97,11 +97,17 @@ export const useStyles = makeStyles(theme => ({
     }
   },
 
+  resetIconHolder: {
+    margin: "0px 10px 20px 20px",
+  },
+
+  infoIconHolder: {
+    margin: "0px 66px 20px 20px",
+  },
+
   disableIconHolder: {
     opacity: ".25",
-    display: "flex",
-    justifyContent: "flex-end",
-    margin: "0px 75px 20px 20px",
+    margin: "0px 66px 20px 20px",
   },
 
   filterInfoIcon: {

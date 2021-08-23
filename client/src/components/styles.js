@@ -54,6 +54,12 @@ export const useStyles = makeStyles(theme => ({
     maxWidth: "200px",
   },
 
+  altMediaFormat: {
+    fontWeight: 900,
+    color: "#C6AD8F",
+    marginBottom: "10px",
+  },
+
   modalImagesHolder: {
     display: "flex",
     flexWrap: "wrap",

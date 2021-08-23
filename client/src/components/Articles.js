@@ -74,7 +74,7 @@ const Articles = props => {
     axios
       .get("/api/v1/covic-data", {
         params: {
-          baseType: "Articles",
+          baseType: "Figures",
           offset: dataOffset,
           requestAmount,
           queryType,
@@ -88,7 +88,9 @@ const Articles = props => {
         const chronological = response.data.records
           .slice()
           .sort(
-            (a, b) => new Date(a.fields["Date"]) - new Date(b.fields["Date"])
+            (a, b) =>
+              new Date(a.fields["Date (from Article)"]) -
+              new Date(b.fields["Date (from Article)"])
           );
 
         setIsLoading(false);
@@ -162,28 +164,50 @@ const Articles = props => {
 
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
-    if (item?.fields["Figure Count (Figures relation)"] === 0) return null;
-    const imgList = item?.fields["Image (from Figures relation)"]?.map(
-      (figure, index) => {
-        if (figure.thumbnails && index <= 3) {
-          return (
-            <img
-              src={figure.thumbnails.large.url}
-              alt=''
-              className={isModal ? classes.cardImageModal : classes.cardImage}
-              key={Math.random() * 100}
-            />
-          );
-        } else {
-          return [];
-        }
+
+    const imgList = item?.fields["Image"]?.map((figure, index) => {
+      if (figure.thumbnails && index <= 3) {
+        return (
+          <img
+            src={figure.thumbnails.large.url}
+            alt=''
+            className={isModal ? classes.cardImageModal : classes.cardImage}
+            key={Math.random() * 100}
+          />
+        );
+      } else {
+        return (
+          <div className={classes.altMediaFormat}>
+            <div>
+              <b>Media Type: </b>
+              {figure.type}
+            </div>
+            <div>
+              <b>FileName: </b>
+              {figure.filename}
+            </div>
+          </div>
+        );
       }
-    );
-    if (isModal) {
-      return imgList?.length > 0 ? imgList : null;
-    } else {
-      return imgList?.length > 0 ? imgList[0] : null;
-    }
+    });
+
+    return imgList?.length > 0 ? imgList[0] : null;
+  };
+
+  const renderImgModal = (item, isModal = false) => {
+    if (curFigureData.length === 0) return [];
+    const imgList = curFigureData.map((figure, index) => {
+      return (
+        <img
+          src={figure}
+          alt=''
+          className={isModal ? classes.cardImageModal : classes.cardImage}
+          key={Math.random() * 100}
+        />
+      );
+    });
+
+    return imgList?.length > 0 ? imgList : null;
   };
 
   const handleApplyFilter = filterObject => {
@@ -206,17 +230,16 @@ const Articles = props => {
       })
       .then(response => {
         setCurItem(item);
-        if (
-          response?.data?.records[0]?.fields["Title"] ||
-          response?.data?.records[0]?.fields["Title (from ID copy)"]
-        ) {
-          const valueForTitle =
-            response?.data?.records[0]?.fields["Title"] ||
-            response?.data?.records[0]?.fields["Title (from ID copy)"][0];
-          setCurFigureData(valueForTitle);
-        } else {
-          setCurFigureData("");
-        }
+        setCurFigureData([]);
+
+        response?.data?.records?.forEach(record => {
+          if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
+            setCurFigureData(curFigureData => [
+              ...curFigureData,
+              record?.fields?.Image[0]?.thumbnails?.large?.url,
+            ]);
+          }
+        });
 
         setOpen(true);
       });
@@ -323,21 +346,24 @@ const Articles = props => {
                             color='textSecondary'
                             component='p'
                           >
-                            <b>Published: </b> {item?.fields["Date"]}
+                            <b>Published: </b>{" "}
+                            {item?.fields["Date (from Article)"]}
                           </Typography>
                           <Typography
                             variant='body2'
                             color='textSecondary'
                             component='p'
                           >
-                            <b>Publisher: </b> {item?.fields["Publisher"]}
+                            <b>Publisher: </b>{" "}
+                            {item?.fields["Publisher (from ID copy)"]}
                           </Typography>
                           <Typography
                             variant='body2'
                             color='textSecondary'
                             component='p'
                           >
-                            <b>Country: </b> {item?.fields["Country"]}
+                            <b>Country: </b>{" "}
+                            {item?.fields["Country (from ID copy)"]}
                           </Typography>
                           <div className={classes.cardButtons}>
                             <Button
@@ -353,7 +379,7 @@ const Articles = props => {
                               variant='contained'
                               disableElevation
                               className={classes.links}
-                              href={item.fields["URL"]}
+                              href={item.fields["URL (from ID copy)"][0]}
                               target='_blank'
                             >
                               Visit
@@ -421,7 +447,8 @@ const Articles = props => {
                   component='p'
                   className={classes.modalTextHolder}
                 >
-                  <b>Publisher:</b> {curItem?.fields["Publisher"]}
+                  <b>Publisher:</b>{" "}
+                  {curItem?.fields["Publisher (from ID copy)"]}
                 </Typography>
                 <Typography
                   variant='body2'
@@ -429,7 +456,7 @@ const Articles = props => {
                   component='p'
                   className={classes.modalTextHolder}
                 >
-                  <b>Published:</b> {curItem?.fields["Date"]}
+                  <b>Published:</b> {curItem?.fields["Date (from Article)"]}
                 </Typography>
                 <Typography
                   variant='body2'
@@ -438,10 +465,11 @@ const Articles = props => {
                   className={classes.modalTextHolderLast}
                 >
                   <b>Subject(s):</b>{" "}
-                  {curItem?.fields["Subject(s)"]?.map(
+                  {curItem?.fields["Subject(s) (from Article)"]?.map(
                     (subject, index) =>
                       `${subject}${
-                        index === curItem?.fields["Subject(s)"].length - 1
+                        index ===
+                        curItem?.fields["Subject(s) (from Article)"].length - 1
                           ? ""
                           : ", "
                       }`
@@ -453,11 +481,12 @@ const Articles = props => {
                   component='p'
                   className={classes.modalTextHolder}
                 >
-                  {curFigureData}
+                  {/* {curFigureData} */}
+                  {curItem?.fields["Title (from ID copy)"]}
                 </Typography>
 
                 <div className={classes.modalImagesHolder}>
-                  {renderImg(curItem, true)}
+                  {renderImgModal(curItem, true)}
                 </div>
 
                 <div className={classes.modalButtonHolder}>
@@ -465,7 +494,7 @@ const Articles = props => {
                     variant='contained'
                     disableElevation
                     className={classes.links}
-                    href={curItem?.fields["URL"]}
+                    href={curItem?.fields["URL (from ID copy)"][0]}
                     target='_blank'
                   >
                     Visit

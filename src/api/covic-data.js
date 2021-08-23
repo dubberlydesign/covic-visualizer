@@ -36,19 +36,19 @@ const setSearchParams = (params, term, fieldReset) => {
   }
   locParams.filterByFormula = `OR(
     FIND('${term}',{ID})>0,
-    FIND('${term}',{Student Coder})>0,
-    FIND('${term}',{Title})>0,
-    FIND('${term}',{URL})>0,
-    FIND('${term}',{Publisher})>0,
-    FIND('${term}',{Language})>0,
-    FIND('${term}',{Country})>0,
+    FIND('${term}',{Coder})>0,
+    FIND('${term}',{Title (from ID copy)})>0,
+    FIND('${term}',{File Name})>0,
+    FIND('${term}',{Visualization Type})>0,
+    FIND('${term}',{Visual Technique})>0,
+    FIND('${term}',{Interaction Technique})>0,
+    FIND('${term}',{Notes})>0,
+    FIND('${term}',{Country (from ID copy)})>0,
+    FIND('${term}',{Publisher (from ID copy)})>0,
+    FIND('${term}',{URL (from ID copy)})>0,
     FIND('${term}',{Source Type})>0,
-    FIND('${term}',{Date Recorded})>0,
-    FIND('${term}',{Date})>0,
-    FIND('${term}',{Data Source})>0,
-    FIND('${term}',{Article Technique})>0,
-    FIND('${term}',{Subject(s)})>0,
-    FIND('${term}',{Notes})>0)`;
+    FIND('${term}',{Date (from Article)})>0,
+    FIND('${term}',{Subject(s) (from Article)})>0)`;
 
   return locParams;
 };
@@ -77,7 +77,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
   } else {
     const today = format(new Date(), "yyyy-MM-dd");
-    params.filterByFormula = `AND(IS_AFTER({Date}, DATETIME_PARSE('2020-02-01')), IS_BEFORE({Date}, DATETIME_PARSE('${today}')))`;
+    params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-02-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
   }
 
   if (req.query.queryType === "search") {
@@ -107,37 +107,65 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     filterQuery = filterColumn.useFilterType(
       obj.countryType,
       1,
-      "Country",
+      "Country (from ID Copy)",
       filterQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
-      obj.languageType,
-      2,
-      "Language",
-      filterQuery,
-      obj
-    );
+    // filterQuery = filterColumn.useFilterType(
+    //   obj.languageType,
+    //   2,
+    //   "Language",
+    //   filterQuery,
+    //   obj
+    // );
     filterQuery = filterColumn.useFilterType(
       obj.publisherType,
-      3,
-      "Publisher",
+      2,
+      "Publisher (from ID Copy)",
       filterQuery,
       obj
     );
     filterQuery = filterColumn.useFilterType(
       obj.subjectType,
-      4,
-      "Subject(s)",
+      3,
+      "Subject(s) (from Article)",
       filterQuery,
       obj
     );
+    filterQuery = filterColumn.useFilterType(
+      obj.visualizationType,
+      4,
+      "Visualization Type",
+      filterQuery,
+      obj
+    );
+    filterQuery = filterColumn.useFilterType(
+      obj.visualTechType,
+      5,
+      "Visual Technique",
+      filterQuery,
+      obj
+    );
+    filterQuery = filterColumn.useFilterType(
+      obj.interactionType,
+      6,
+      "Interaction Technique",
+      filterQuery,
+      obj
+    );
+    // filterQuery = filterColumn.useFilterType(
+    //   obj.articleTechType,
+    //   8,
+    //   "Article Technique",
+    //   filterQuery,
+    //   obj
+    // );
 
     if (obj.isDateFilter) {
       filterQuery = filterColumn.useFilterType(
         obj.dateRange,
-        5,
-        "Date",
+        7,
+        "Date (from Article)",
         filterQuery,
         obj
       );
@@ -233,8 +261,15 @@ router.get("/metadata", limiter, speedLimiter, async (req, res, next) => {
     view: "Grid view",
   };
 
-  params.filterByFormula =
-    'OR(FIND("Country",{Field Name})>0, FIND("Source Type",{Field Name})>0, FIND("Language",{Field Name})>0, FIND("Publisher",{Field Name})>0, FIND("Subject(s)",{Field Name})>0)';
+  params.filterByFormula = `OR(FIND("Country",{Field Name})>0, 
+    FIND("Source Type",{Field Name})>0, 
+    FIND("Language",{Field Name})>0, 
+    FIND("Publisher",{Field Name})>0, 
+    FIND("Subject(s)",{Field Name})>0, 
+    FIND("Visualization Type",{Field Name})>0, 
+    FIND("Visual Technique",{Field Name})>0, 
+    FIND("Interaction Technique",{Field Name})>0, 
+    FIND("Article Technique",{Field Name})>0)`;
 
   try {
     await axios
