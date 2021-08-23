@@ -35,7 +35,7 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 let globFilter = {};
 let resetField = false;
 
-function useWindowSize() {
+const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
   useLayoutEffect(() => {
     function updateSize() {
@@ -249,7 +249,7 @@ const Articles = props => {
     setOpen(false);
   };
 
-  const [width, height] = useWindowSize();
+  const [width] = useWindowSize();
 
   return (
     <div className={classes.root}>

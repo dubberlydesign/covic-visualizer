@@ -29,7 +29,7 @@ import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
 
-function useWindowSize() {
+const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
   useLayoutEffect(() => {
     function updateSize() {
@@ -451,7 +451,7 @@ const FilterMenu = props => {
       </div>
     </div>
   );
-  const [width, height] = useWindowSize();
+  const [width] = useWindowSize();
 
   return ["bottom"].map(anchor => (
     <Fragment key={anchor}>

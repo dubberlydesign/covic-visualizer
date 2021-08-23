@@ -12,6 +12,7 @@ export const useStyles = makeStyles(theme => ({
       height: "100%",
       overflowY: "scroll",
       paddingLeft: "20px",
+      width: "344px",
       "& hr": {
         display: "none"
       }
@@ -93,7 +94,8 @@ export const useStyles = makeStyles(theme => ({
     margin: "0px 75px 20px 20px",
     [theme.breakpoints.up("lg")]: {
       justifyContent: "center",
-      margin: "0 0 20px 0"
+      margin: "0 0 20px 0",
+      width: "344px"
     }
   },
 
@@ -124,13 +126,16 @@ export const useStyles = makeStyles(theme => ({
 
   dateRange: {
     padding: "35px 0px 0 25px",
+    [theme.breakpoints.up('lg')]: {
+      paddingLeft: 0
+    }
   },
 
   datePickers: {
     margin: "8px 40px 24px 40px",
     minWidth: 120,
     width: "92%",
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('lg')]: {
       margin: 0
     },
   },

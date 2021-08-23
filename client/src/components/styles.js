@@ -31,6 +31,14 @@ export const useStyles = makeStyles(theme => ({
   cardButtons: {
     display: "flex",
     justifyContent: "center",
+    [theme.breakpoints.up("lg")]: {
+      "& > button > span": {
+        fontSize: "10px"
+      },
+      "& > button ~ a": {
+        fontSize: "10px"
+      }
+    }
   },
 
   cardImage: {
