@@ -407,9 +407,10 @@ const Articles = props => {
                     variant='body2'
                     color='textSecondary'
                     component='p'
-                    className={classes.modalTextHolder}
+                    className={classes.modalTextHolderCountryLang}
                   >
-                    {curItem?.fields["Country"]} - {curItem?.fields["Language"]}
+                    {curItem?.fields["Country (from ID copy)"]} -{" "}
+                    {curItem?.fields["Language (from Article)"]}
                   </Typography>
                 </div>
                 <Typography
@@ -458,10 +459,9 @@ const Articles = props => {
                   variant='body2'
                   color='textSecondary'
                   component='p'
-                  className={classes.modalTextHolder}
+                  className={classes.modalTextHolderImg}
                 >
-                  {/* {curFigureData} */}
-                  {curItem?.fields["Title (from ID copy)"]}
+                  <i>{curItem?.fields["Title (from ID copy)"]}</i>
                 </Typography>
 
                 <div className={classes.modalImagesHolder}>
