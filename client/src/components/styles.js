@@ -192,6 +192,14 @@ export const useStyles = makeStyles(theme => ({
     maxWidth: "600px",
   },
 
+  modalTextHolderCountryLang: {
+    paddingRight: "30px",
+  },
+
+  modalTextHolderImg: {
+    paddingLeft: "20px",
+  },
+
   modalTextHolderLast: {
     maxWidth: "600px",
     marginBottom: 20,
