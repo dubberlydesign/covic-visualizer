@@ -93,6 +93,7 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
     margin: "0px 75px 20px 20px",
     [theme.breakpoints.up("lg")]: {
+      flexDirection: "column",
       justifyContent: "space-between",
       margin: "0 0 20px 0",
       width: "100%"
@@ -102,12 +103,15 @@ export const useStyles = makeStyles(theme => ({
   resetIconHolder: {
     margin: "0px 10px 20px 20px",
     [theme.breakpoints.up("lg")]: {
-      margin: "0 0 20px 0"
+      margin: "20px 0 20px 0"
     }
   },
 
   infoIconHolder: {
     margin: "0px 66px 20px 20px",
+    [theme.breakpoints.up("lg")]: {
+      margin: 0
+    }
   },
 
   disableIconHolder: {
@@ -124,7 +128,11 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "20px",
     backgroundColor: "#C6AD8F",
     color: "white",
-    width: "150px"
+    width: "150px",
+    [theme.breakpoints.up("lg")]: {
+      marginTop: 0,
+      width: "92%"
+    }
   },
 
   dateRange: {
