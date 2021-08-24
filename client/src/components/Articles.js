@@ -323,9 +323,9 @@ const Articles = props => {
                     item
                     xs={12}
                     sm={12}
-                    md={data.length < 4 ? 12 : 6}
-                    lg={data.length < 4 ? 12 : 4}
-                    xl={data.length < 4 ? 12 : 3}
+                    md={data.length < 4 ? 12 : 12}
+                    lg={data.length < 4 ? 12 : 6}
+                    xl={data.length < 4 ? 12 : 4}
                     key={item.id}
                   >
                     <Paper className={classes.paper}>
