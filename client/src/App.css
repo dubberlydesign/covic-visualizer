@@ -5,6 +5,6 @@
 }
 
 html,
-body {
-  background-color: "#F6F4F2";
+:root > body {
+  background-color: #F6F4F2;
 }

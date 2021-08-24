@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useLayoutEffect, useState, Fragment } from "react";
 import clsx from "clsx";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
@@ -28,6 +28,19 @@ import { format } from "date-fns";
 import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
+
+const useWindowSize = () => {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
 
 const getStyles = (name, nameType, theme) => {
   return {
@@ -440,6 +453,7 @@ const FilterMenu = props => {
       </div>
     </div>
   );
+  const [width] = useWindowSize();
 
   return ["bottom"].map(anchor => (
     <Fragment key={anchor}>
@@ -451,9 +465,10 @@ const FilterMenu = props => {
         FILTER
       </Button>
       <Drawer
-        anchor={anchor}
+        anchor={width > 1280 ? "left" : anchor}
         open={state[anchor]}
         onClose={toggleDrawer(anchor, false)}
+        {...(width > 1280 ? {variant: "permanent"} : null)}
       >
         {list(anchor)}
       </Drawer>

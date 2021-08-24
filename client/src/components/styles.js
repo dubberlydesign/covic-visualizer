@@ -109,6 +109,9 @@ export const useStyles = makeStyles(theme => ({
     width: "80%",
     margin: "0 auto",
     paddingTop: "50px",
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "344px"
+    },
   },
 
   inputText: {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
 
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -34,6 +34,19 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 let globFilter = {};
 let resetField = false;
+
+const useWindowSize = () => {
+  const [size, setSize] = useState([0, 0]);
+  useLayoutEffect(() => {
+    function updateSize() {
+      setSize([window.innerWidth, window.innerHeight]);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+  return size;
+}
 
 const Articles = props => {
   const theme = createTheme();
@@ -236,6 +249,8 @@ const Articles = props => {
     setOpen(false);
   };
 
+  const [width] = useWindowSize();
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -286,10 +301,16 @@ const Articles = props => {
           />
         </AppBar>
       </ElevationScroll>
-      {isLoading && <CircularProgress className={classes.initLoader} />}
+      {isLoading && <CircularProgress className={classes.initLoader} style={{...(width > 1280 ? {left: "58%"} : null)}} />}
       <Container maxWidth={false} className={classes.containerScroll}>
         <Box my={6}>
-          <Grid container spacing={3} style={{ padding: 20 }}>
+          <Grid
+            container
+            spacing={3}
+            style={{
+              padding: width > 1280 ? "20px 20px 20px 344px" : 20
+            }}
+          >
             <InfiniteScroll
               dataLength={data.length}
               next={data.length === 0 ? () => {} : handleScroll}
@@ -302,9 +323,9 @@ const Articles = props => {
                     item
                     xs={12}
                     sm={12}
-                    md={data.length < 4 ? 12 : 6}
-                    lg={data.length < 4 ? 12 : 4}
-                    xl={data.length < 4 ? 12 : 3}
+                    md={data.length < 4 ? 12 : 12}
+                    lg={data.length < 4 ? 12 : 6}
+                    xl={data.length < 4 ? 12 : 4}
                     key={item.id}
                   >
                     <Paper className={classes.paper}>
