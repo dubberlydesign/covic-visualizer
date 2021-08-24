@@ -4,7 +4,6 @@ export const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     background: "#F6F4F2",
-    overflowY: "scroll",
     height: "100vh",
   },
 
@@ -31,14 +30,6 @@ export const useStyles = makeStyles(theme => ({
   cardButtons: {
     display: "flex",
     justifyContent: "center",
-    [theme.breakpoints.up("lg")]: {
-      "& > button > span": {
-        fontSize: "10px"
-      },
-      "& > button ~ a": {
-        fontSize: "10px"
-      }
-    }
   },
 
   cardImage: {
