@@ -93,14 +93,17 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
     margin: "0px 75px 20px 20px",
     [theme.breakpoints.up("lg")]: {
-      justifyContent: "center",
+      justifyContent: "space-between",
       margin: "0 0 20px 0",
-      width: "344px"
+      width: "100%"
     }
   },
 
   resetIconHolder: {
     margin: "0px 10px 20px 20px",
+    [theme.breakpoints.up("lg")]: {
+      margin: "0 0 20px 0"
+    }
   },
 
   infoIconHolder: {
