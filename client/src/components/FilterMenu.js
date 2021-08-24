@@ -199,6 +199,8 @@ const FilterMenu = props => {
     setVisualTechName([]);
     setInteractionName([]);
     setArticleTechName([]);
+    setSelectedDateBefore(initialNewDate);
+    setSelectedDateAfter(new Date());
 
     const filterObject = {
       sourceType: [],
@@ -214,8 +216,8 @@ const FilterMenu = props => {
         format(selectedDateBefore, dateFormatting) !==
         format(initialNewDate, dateFormatting),
       dateRange: [
-        format(selectedDateBefore, dateFormatting),
-        format(selectedDateAfter, dateFormatting),
+        format(initialNewDate, dateFormatting),
+        format(new Date(), dateFormatting),
       ],
     };
 
