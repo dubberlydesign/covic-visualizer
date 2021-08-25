@@ -82,7 +82,6 @@ const Articles = props => {
           term,
           fieldCol,
           fieldReset: resetField,
-          sort: "Date (from Article)",
         },
       })
       .then(response => {
