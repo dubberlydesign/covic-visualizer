@@ -41,12 +41,12 @@ const useWindowSize = () => {
     function updateSize() {
       setSize([window.innerWidth, window.innerHeight]);
     }
-    window.addEventListener('resize', updateSize);
+    window.addEventListener("resize", updateSize);
     updateSize();
-    return () => window.removeEventListener('resize', updateSize);
+    return () => window.removeEventListener("resize", updateSize);
   }, []);
   return size;
-}
+};
 
 const Articles = props => {
   const theme = createTheme();
@@ -85,16 +85,8 @@ const Articles = props => {
         },
       })
       .then(response => {
-        const chronological = response.data.records
-          .slice()
-          .sort(
-            (a, b) =>
-              new Date(a.fields["Date (from Article)"]) -
-              new Date(b.fields["Date (from Article)"])
-          );
-
         setIsLoading(false);
-        setData(data.concat(chronological));
+        setData(data.concat(response.data.records));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -301,14 +293,19 @@ const Articles = props => {
           />
         </AppBar>
       </ElevationScroll>
-      {isLoading && <CircularProgress className={classes.initLoader} style={{...(width > 1280 ? {left: "58%"} : null)}} />}
+      {isLoading && (
+        <CircularProgress
+          className={classes.initLoader}
+          style={{ ...(width > 1280 ? { left: "58%" } : null) }}
+        />
+      )}
       <Container maxWidth={false} className={classes.containerScroll}>
         <Box my={6}>
           <Grid
             container
             spacing={3}
             style={{
-              padding: width > 1280 ? "20px 20px 20px 344px" : 20
+              padding: width > 1280 ? "20px 20px 20px 344px" : 20,
             }}
           >
             <InfiniteScroll
@@ -329,7 +326,7 @@ const Articles = props => {
                     key={item.id}
                   >
                     <Paper className={classes.paper}>
-                      <Card key={item.id}>
+                      <Card key={item.id} elevation={0}>
                         <CardContent className={classes.cardContainer}>
                           {renderImg(item)}
                           <Typography
@@ -476,15 +473,6 @@ const Articles = props => {
                       }`
                   )}
                 </Typography>
-                <Typography
-                  variant='body2'
-                  color='textSecondary'
-                  component='p'
-                  className={classes.modalTextHolderImg}
-                >
-                  <i>{curItem?.fields["Title (from ID copy)"]}</i>
-                </Typography>
-
                 <div className={classes.modalImagesHolder}>
                   {renderImgModal(curItem, true)}
                 </div>

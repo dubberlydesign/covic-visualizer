@@ -67,6 +67,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
+    view: "API [DO NOT EDIT]",
   };
 
   if (
@@ -258,7 +259,7 @@ router.get("/metadata", limiter, speedLimiter, async (req, res, next) => {
   let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
-    view: "Grid view",
+    view: "API [DO NOT EDIT]",
   };
 
   params.filterByFormula = `OR(FIND("Country",{Field Name})>0, 
