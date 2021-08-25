@@ -176,7 +176,7 @@ export const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     textAlign: "left",
     color: "white",
-    backgroundColor: "#425664",
+    backgroundColor: "#b3bbc1",
   },
 
   modalTextHolder: {
