@@ -406,7 +406,7 @@ const Articles = props => {
       >
         <Fade in={open}>
           <Paper className={classes.paperModal}>
-            <Card>
+            <Card elevation={0}>
               <CardContent className={classes.cardContainer}>
                 <div className={classes.modalIconHolder}>
                   <IconButton
