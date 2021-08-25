@@ -437,7 +437,7 @@ const Articles = props => {
                   component='p'
                   className={classes.modalTextHolderHeader}
                 >
-                  {curItem?.fields["Title"]}
+                  {curItem?.fields["Title (from ID copy)"]}
                 </Typography>
                 <Typography
                   variant='body2'
