@@ -310,7 +310,7 @@ const FilterMenu = props => {
         <div key={index}>
           <div>
             <FormControl className={classes.formControl}>
-              <InputLabel id='mutiple-chip-label'>{filterLabel}</InputLabel>
+              <InputLabel id='mutiple-chip-label'>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
               <Select
                 labelId='mutiple-chip-label'
                 id='mutiple-chip'
@@ -332,7 +332,7 @@ const FilterMenu = props => {
                           />
                         }
                         onDelete={e => handleDelete(e, value)}
-                        onClick={() => console.log("clicked chip")}
+                        onClick={() => {}}
                       />
                     ))}
                   </div>
