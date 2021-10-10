@@ -28,6 +28,7 @@ import { format } from "date-fns";
 import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
+import SearchMenu from './SearchMenu';
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -401,7 +402,7 @@ const FilterMenu = props => {
     );
   };
 
-  const list = anchor => (
+  const list = (anchor, handleSubmit, handleChange)  => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === "bottom",
@@ -417,6 +418,10 @@ const FilterMenu = props => {
           <HighlightOffIcon className={classes.filterBtnIcon} />
         </IconButton>
       </div>
+      <SearchMenu 
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+      />
       {renderFilterCategories()}
       {renderDateFilter()}
       <div className={classes.filterButtonsHolder}>
@@ -470,7 +475,7 @@ const FilterMenu = props => {
         onClose={toggleDrawer(anchor, false)}
         {...(width > 1280 ? {variant: "permanent"} : null)}
       >
-        {list(anchor)}
+        {list(anchor, props.handleSubmit, props.handleChange)}
       </Drawer>
     </Fragment>
   ));
