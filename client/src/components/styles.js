@@ -104,21 +104,15 @@ export const useStyles = makeStyles(theme => ({
     padding: "20px",
   },
 
-  formHolder: {
+  formHolderSide: {
     display: "flex",
-    width: "80%",
     margin: "0 auto",
-    paddingTop: "50px",
-    [theme.breakpoints.up("lg")]: {
-      paddingLeft: "344px"
-    },
   },
 
   inputText: {
     fontFamily: "sans-serif",
-    fontSize: 50,
+    fontSize: 16,
     color: "#C6AD8F",
-    letterSpacing: "-2.5px",
     borderColor: "#C6AD8F",
   },
 
@@ -161,7 +155,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   containerScroll: {
-    marginTop: "220px",
+    marginTop: "80px",
     maxWidth: "none",
   },
 

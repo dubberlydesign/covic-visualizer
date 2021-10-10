@@ -248,48 +248,11 @@ const Articles = props => {
       <CssBaseline />
       <ElevationScroll {...props}>
         <AppBar className={classes.appBar}>
-          <>
-            <form className={classes.formHolder}>
-              <TextField
-                id='standard-full-width'
-                style={{ margin: 8 }}
-                placeholder='Search Visualizations...'
-                helperText='Search'
-                fullWidth
-                margin='normal'
-                FormHelperTextProps={{
-                  className: classes.helperText,
-                }}
-                InputProps={{
-                  className: classes.inputText,
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        style={{
-                          padding: "0",
-                        }}
-                        onClick={handleSubmit}
-                        type='submit'
-                      >
-                        <SearchOutlinedIcon
-                          style={{
-                            fontSize: 65,
-                            color: "#C6AD8F",
-                            letterSpacing: "-2.5px",
-                            opacity: ".5",
-                          }}
-                        />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={handleChange}
-              />
-            </form>
-          </>
           <FilterMenu
             handleApplyFilter={handleApplyFilter}
             filteringValues={filteringValues}
+            handleSubmit={handleSubmit}
+            handleChange={handleChange}
           />
         </AppBar>
       </ElevationScroll>
