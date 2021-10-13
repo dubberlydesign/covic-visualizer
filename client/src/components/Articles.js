@@ -24,6 +24,7 @@ import Container from "@material-ui/core/Container";
 import ElevationScroll from "./ElavationScroll";
 
 import FilterMenu from "./FilterMenu";
+import ToggleMenu from "./ToggleMenu/ToggleMenu";
 import { useStyles } from "./styles";
 
 import Modal from "@material-ui/core/Modal";
@@ -242,12 +243,13 @@ const Articles = props => {
   };
 
   const [width] = useWindowSize();
-
+  
   return (
     <div className={classes.root}>
       <CssBaseline />
       <ElevationScroll {...props}>
         <AppBar className={classes.appBar}>
+          <ToggleMenu />
           <FilterMenu
             handleApplyFilter={handleApplyFilter}
             filteringValues={filteringValues}
@@ -261,14 +263,14 @@ const Articles = props => {
           className={classes.initLoader}
           style={{ ...(width > 1280 ? { left: "58%" } : null) }}
         />
-      )}
+      )} 
       <Container maxWidth={false} className={classes.containerScroll}>
         <Box my={6}>
           <Grid
             container
             spacing={3}
             style={{
-              padding: width > 1280 ? "20px 20px 20px 344px" : 20,
+              padding: width > 1280 ? "40px 20px 20px 344px" : "80px 20px 20px 20px",
             }}
           >
             <InfiniteScroll
