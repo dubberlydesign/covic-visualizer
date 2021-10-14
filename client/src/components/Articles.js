@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
+import classNames from "classnames";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import { createTheme } from "@material-ui/core/styles";
@@ -64,12 +65,15 @@ const Articles = props => {
   const [curItem, setCurItem] = useState(null);
   const [curFigureData, setCurFigureData] = useState("");
   const [isMoreEntries, setIsMoreEntries] = useState(true);
+  const [toggleOrder, setToggleOrder] = useState(false);
+  const [toggleLabels, setToggleLabels] = useState(false);
 
   const requestData = (
     queryType = "",
     filterType = "",
     term = "",
-    fieldCol = ""
+    fieldCol = "",
+    inOrderDisplay = false,
   ) => {
     setIsLoading(true);
     axios
@@ -83,6 +87,7 @@ const Articles = props => {
           term,
           fieldCol,
           fieldReset: resetField,
+          inOrderDisplay,
         },
       })
       .then(response => {
@@ -243,13 +248,28 @@ const Articles = props => {
   };
 
   const [width] = useWindowSize();
-  
+  const toggleArticleOrder = (checked) => {
+    setToggleOrder(checked);
+    requestData("", "", "", "", checked);
+  }
+
+  const toggleArticleLabel = (checked) => {
+    setToggleLabels(checked);
+  }
+
+  const getDisplayLabels = () => {
+    return toggleLabels ? classes.hideLabelsForToggle : '';
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
       <ElevationScroll {...props}>
         <AppBar className={classes.appBar}>
-          <ToggleMenu />
+          <ToggleMenu 
+            toggleOrder={toggleArticleOrder}
+            toggleLabel={toggleArticleLabel}
+          />
           <FilterMenu
             handleApplyFilter={handleApplyFilter}
             filteringValues={filteringValues}
@@ -292,21 +312,23 @@ const Articles = props => {
                   >
                     <Paper className={classes.paper}>
                       <Card key={item.id} elevation={0}>
-                        <CardContent className={classes.cardContainer}>
+                        <CardContent className={classNames(classes.cardContainer, toggleLabels ? classes.cardIconSet : '')} onClick={() => { if (toggleLabels) { handleOpen(item) }}}>
                           {renderImg(item)}
                           <Typography
                             variant='body2'
                             color='textSecondary'
                             component='div'
+                            className={getDisplayLabels()}
                           >
                             <p className={classes.cardTitle}>
-                              {item?.fields["Title"]}
+                              {item?.fields["Title (from ID copy)"]}
                             </p>
                           </Typography>
                           <Typography
                             variant='body2'
                             color='textSecondary'
                             component='p'
+                            className={getDisplayLabels()}
                           >
                             <b>Published: </b>{" "}
                             {item?.fields["Date (from Article)"]}
@@ -315,6 +337,7 @@ const Articles = props => {
                             variant='body2'
                             color='textSecondary'
                             component='p'
+                            className={getDisplayLabels()}
                           >
                             <b>Publisher: </b>{" "}
                             {item?.fields["Publisher (from ID copy)"]}
@@ -323,11 +346,12 @@ const Articles = props => {
                             variant='body2'
                             color='textSecondary'
                             component='p'
+                            className={getDisplayLabels()}
                           >
                             <b>Country: </b>{" "}
                             {item?.fields["Country (from ID copy)"]}
                           </Typography>
-                          <div className={classes.cardButtons}>
+                          <div className={classNames(classes.cardButtons, getDisplayLabels())}>
                             <Button
                               variant='contained'
                               disableElevation

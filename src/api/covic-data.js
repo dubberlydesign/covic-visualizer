@@ -67,7 +67,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
-    view: "API [DO NOT EDIT]",
+    view: req.query.inOrderDisplay ? "API [DO NOT EDIT]" : "API [DO NOT EDIT]",
   };
 
   if (
