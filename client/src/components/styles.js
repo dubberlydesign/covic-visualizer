@@ -222,4 +222,12 @@ export const useStyles = makeStyles(theme => ({
   modalButtonHolder: {
     display: "flex",
   },
+
+  hideLabelsForToggle: {
+    display: "none",
+  },
+
+  cardIconSet: {
+    cursor: "pointer",
+  }
 }));
