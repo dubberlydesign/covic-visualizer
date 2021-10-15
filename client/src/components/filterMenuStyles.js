@@ -150,4 +150,9 @@ export const useStyles = makeStyles(theme => ({
       margin: 0
     },
   },
+
+  filterHeaders: {
+    margin: "40px 0 10px 0",
+    fontWeight: "700",
+  }
 }));
