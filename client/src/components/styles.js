@@ -229,5 +229,13 @@ export const useStyles = makeStyles(theme => ({
 
   cardIconSet: {
     cursor: "pointer",
+  },
+  
+  mainHeader: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "space-around",
+    left: "10%",
+    marginTop: "10px",
   }
 }));

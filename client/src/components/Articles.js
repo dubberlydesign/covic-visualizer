@@ -19,6 +19,7 @@ import ElevationScroll from "./ElavationScroll";
 
 import FilterMenu from "./FilterMenu";
 import ToggleMenu from "./ToggleMenu/ToggleMenu";
+import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
 import GridContent from "./GridContent";
 import ModalHolder from "./ModalHolder";
 import { useStyles } from "./styles";
@@ -239,6 +240,9 @@ const Articles = props => {
   const [width] = useWindowSize();
   const toggleArticleOrder = (checked) => {
     setToggleOrder(checked);
+    resetField = true;
+    data.splice(0, data.length);
+    setData(data);
     requestData("", "", "", "", checked);
   }
 
@@ -255,10 +259,13 @@ const Articles = props => {
       <CssBaseline />
       <ElevationScroll {...props}>
         <AppBar className={classes.appBar}>
-          <ToggleMenu 
-            toggleOrder={toggleArticleOrder}
-            toggleLabel={toggleArticleLabel}
-          />
+          <div className={classes.mainHeader}>
+            <CovicExternalNav />
+            <ToggleMenu 
+              toggleOrder={toggleArticleOrder}
+              toggleLabel={toggleArticleLabel}
+            />
+          </div>
           <FilterMenu
             handleApplyFilter={handleApplyFilter}
             filteringValues={filteringValues}
@@ -279,7 +286,7 @@ const Articles = props => {
             container
             spacing={3}
             style={{
-              padding: width > 1280 ? "40px 20px 20px 344px" : "80px 20px 20px 20px",
+              padding: width > 1280 ? "60px 20px 20px 344px" : "100px 20px 20px 20px",
             }}
           >
             <InfiniteScroll

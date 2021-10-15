@@ -24,11 +24,11 @@ const ToggleMenu = ({toggleOrder, toggleLabel}) => {
   };
 
   return (
-    <div className={classes.ToggleMenuHolder}>
+    <div>
       <FormControlLabel
         control={
           <Switch 
-            className={classes.ToggleSwitchOrder} 
+            className={classes.toggleSwitchOrder} 
             checked={checkedOrder} 
             onChange={handleSwitchChangeOrder} 
             name="checkedOrder" 
@@ -36,13 +36,13 @@ const ToggleMenu = ({toggleOrder, toggleLabel}) => {
           /> 
         }
         label="Published Date"
-        className={classes.ToggleSwitchOrderLabel}
+        className={classes.toggleSwitchOrderLabel}
         labelPlacement="top"
       />
       <FormControlLabel
         control={
           <Switch 
-            className={classes.ToggleSwitchOrder} 
+            className={classes.toggleSwitchOrder} 
             checked={checkedLabel} 
             onChange={handleSwitchChangeLabel} 
             name="checkedLabel"
@@ -50,7 +50,7 @@ const ToggleMenu = ({toggleOrder, toggleLabel}) => {
           /> 
         }
         label="Labels"
-        className={classes.ToggleSwitchOrderLabel}
+        className={classes.toggleSwitchOrderLabel}
         labelPlacement="top"
       />
     </div>
