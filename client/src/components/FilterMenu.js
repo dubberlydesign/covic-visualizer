@@ -88,7 +88,7 @@ const FilterMenu = props => {
   const initialNewDate = new Date(initialStartDate);
   const [isDisableFilterApply, setIsDisableFilterApply] = useState(false);
 
-  const FILTER_CATEGORIES = [
+  const FILTER_CATEGORIES_ARTICLE = [
     {
       filterLabel: "Source Type",
       filterName: sourceName,
@@ -130,6 +130,17 @@ const FilterMenu = props => {
         : props.filteringValues["Subject(s)"],
     },
     {
+      filterLabel: "Article Technique",
+      filterName: articleTechName,
+      setFilter: setArticleTechName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Article Technique"],
+    },
+  ];
+
+  const FILTER_CATEGORIES_FIGURE = [
+    {
       filterLabel: "Visualization Type",
       filterName: visualizationName,
       setFilter: setVisualizationName,
@@ -152,14 +163,6 @@ const FilterMenu = props => {
       filterData: isEmpty(props.filteringValues)
         ? []
         : props.filteringValues["Interaction Technique"],
-    },
-    {
-      filterLabel: "Article Technique",
-      filterName: articleTechName,
-      setFilter: setArticleTechName,
-      filterData: isEmpty(props.filteringValues)
-        ? []
-        : props.filteringValues["Article Technique"],
     },
   ];
 
@@ -305,10 +308,62 @@ const FilterMenu = props => {
     setState({ ...state, [anchor]: open });
   };
 
-  const renderFilterCategories = () =>
-    FILTER_CATEGORIES.map(
+  const renderArticleFilterCategories = () => 
+    FILTER_CATEGORIES_ARTICLE.map(
       ({ filterLabel, filterName, setFilter, filterData }, index) => (
         <div key={index}>
+          <div>
+            <FormControl className={classes.formControl}>
+              <InputLabel id='mutiple-chip-label'>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
+              <Select
+                labelId='mutiple-chip-label'
+                id='mutiple-chip'
+                multiple
+                value={filterName}
+                onChange={e => handleFilterChange(e, setFilter, filterData)}
+                input={<Input id='select-multiple-chip' />}
+                renderValue={selected => (
+                  <div className={classes.chips}>
+                    {selected.map(value => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        className={classes.chip}
+                        clickable
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={event => event.stopPropagation()}
+                          />
+                        }
+                        onDelete={e => handleDelete(e, value)}
+                        onClick={() => {}}
+                      />
+                    ))}
+                  </div>
+                )}
+                MenuProps={MenuProps}
+              >
+                {filterData.map(name => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, filterName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <Divider />
+        </div>
+      )
+    );
+
+  const renderFigureFilterCategories = () => 
+    FILTER_CATEGORIES_FIGURE.map(
+      ({ filterLabel, filterName, setFilter, filterData }, index) => (
+        <div key={index} className={classes.figureFilterMenu}>
           <div>
             <FormControl className={classes.formControl}>
               <InputLabel id='mutiple-chip-label'>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
@@ -422,8 +477,11 @@ const FilterMenu = props => {
         handleSubmit={handleSubmit}
         handleChange={handleChange}
       />
-      {renderFilterCategories()}
+      <div className={classes.filterHeaders}>ARTICLE ATTRIBUTES</div>
+      {renderArticleFilterCategories()}
       {renderDateFilter()}
+      <div className={classes.filterHeaders}>FIGURE ATTRIBUTES</div>
+      {renderFigureFilterCategories()}
       <div className={classes.filterButtonsHolder}>
         <div className={classes.resetIconHolder}>
           <Button
