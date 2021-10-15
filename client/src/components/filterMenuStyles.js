@@ -95,7 +95,7 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("lg")]: {
       flexDirection: "column",
       justifyContent: "space-between",
-      margin: "0 0 20px 0",
+      margin: "40px 0 20px 0",
       width: "100%"
     }
   },
@@ -154,5 +154,6 @@ export const useStyles = makeStyles(theme => ({
   filterHeaders: {
     margin: "40px 0 10px 0",
     fontWeight: "700",
-  }
+    color: "#C6AD8F"
+  },
 }));

@@ -363,7 +363,7 @@ const FilterMenu = props => {
   const renderFigureFilterCategories = () => 
     FILTER_CATEGORIES_FIGURE.map(
       ({ filterLabel, filterName, setFilter, filterData }, index) => (
-        <div key={index}>
+        <div key={index} className={classes.figureFilterMenu}>
           <div>
             <FormControl className={classes.formControl}>
               <InputLabel id='mutiple-chip-label'>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
