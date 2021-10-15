@@ -83,7 +83,7 @@ const FilterMenu = props => {
   const [visualTechName, setVisualTechName] = useState([]);
   const [interactionName, setInteractionName] = useState([]);
   const [articleTechName, setArticleTechName] = useState([]);
-  const initialStartDate = "2020-02-01T21:11:54";
+  const initialStartDate = "2020-01-01T21:11:54";
   const dateFormatting = "MM/dd/yyyy";
   const initialNewDate = new Date(initialStartDate);
   const [isDisableFilterApply, setIsDisableFilterApply] = useState(false);
@@ -184,7 +184,7 @@ const FilterMenu = props => {
       articleTechType: articleTechName,
       isDateFilter:
         format(selectedDateBefore, dateFormatting) !==
-        format(initialNewDate, dateFormatting),
+        format(initialNewDate, dateFormatting) || format(selectedDateAfter, dateFormatting) !== format(new Date(), dateFormatting),
       dateRange: [
         format(selectedDateBefore, dateFormatting),
         format(selectedDateAfter, dateFormatting),
@@ -215,7 +215,7 @@ const FilterMenu = props => {
     setArticleTechName([]);
     setSelectedDateBefore(initialNewDate);
     setSelectedDateAfter(new Date());
-
+    
     const filterObject = {
       sourceType: [],
       countryType: [],

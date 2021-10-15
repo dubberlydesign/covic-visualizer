@@ -78,7 +78,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
   } else {
     const today = format(new Date(), "yyyy-MM-dd");
-    params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-02-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
+    params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-01-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
   }
 
   if (req.query.queryType === "search") {
