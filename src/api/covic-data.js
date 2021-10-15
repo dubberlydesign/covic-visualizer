@@ -22,6 +22,7 @@ let cachedRecords;
 let cacheLogTime;
 
 let prevOffset = "";
+let prevOrderDisplay = "";
 
 const baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/`;
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -57,17 +58,19 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
     cacheLogTime > Date.now() - 30 * 1000 &&
-    prevOffset === req.query.offset
+    prevOffset === req.query.offset &&
+    prevOrderDisplay === req.query.inOrderDisplay
   ) {
     return res.json(cachedRecords);
   }
   prevOffset = req.query.offset;
+  prevOrderDisplay = req.query.inOrderDisplay;
   axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
   let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
-    view: req.query.inOrderDisplay ? "API [DO NOT EDIT]" : "API [DO NOT EDIT]",
+    view: req.query.inOrderDisplay === "true" ? "API [DO NOT EDIT] old-new" : "API [DO NOT EDIT]",
   };
 
   if (
