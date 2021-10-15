@@ -23,6 +23,7 @@ import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
 import GridContent from "./GridContent";
 import ModalHolder from "./ModalHolder";
 import { useStyles } from "./styles";
+import { format } from "date-fns";
 
 let globFilter = {};
 let resetField = false;
@@ -238,12 +239,40 @@ const Articles = props => {
   };
 
   const [width] = useWindowSize();
+  const getFilterObjectReset = () => {
+    const initialStartDate = "2020-01-01T21:11:54";
+    const dateFormatting = "MM/dd/yyyy";
+    const initialNewDate = new Date(initialStartDate);
+    const filterObject = {
+      sourceType: [],
+      countryType: [],
+      languageType: [],
+      publisherType: [],
+      subjectType: [],
+      visualizationType: [],
+      visualTechType: [],
+      interactionType: [],
+      articleTechType: [],
+      isDateFilter: false,
+      dateRange: [
+        format(initialNewDate, dateFormatting),
+        format(new Date(), dateFormatting),
+      ],
+    };
+
+    return filterObject;
+  }
+
   const toggleArticleOrder = (checked) => {
+    const filterObject = getFilterObjectReset();
     setToggleOrder(checked);
+
+    globFilter = filterObject;
     resetField = true;
-    data.splice(0, data.length);
-    setData(data);
-    requestData("", "", "", "", checked);
+    setIsMoreEntries(true);
+    setData(data.splice(0, data.length));
+  
+    requestData("filter", "FIND", filterObject, "", checked);
   }
 
   const toggleArticleLabel = (checked) => {
