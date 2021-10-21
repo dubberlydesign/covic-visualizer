@@ -35,13 +35,29 @@ const setSearchParams = (params, term, fieldReset) => {
   if (fieldReset === "true") {
     locParams.offset = "";
   }
+  const capTerm = term.charAt(0).toUpperCase() + term.slice(1);
+  const upperTerm = term.toUpperCase();
+  const lowerTerm = term.toLowerCase();
+
   locParams.filterByFormula = `OR(
     FIND('${term}',{ID}),
     FIND('${term}',{File Name}),
+    FIND('${lowerTerm}',{File Name}),
+    FIND('${capTerm}',{File Name}),
+    FIND('${upperTerm}',{File Name}),
     FIND('${term}',{Notes}),
+    FIND('${lowerTerm}',{Notes}),
+    FIND('${capTerm}',{Notes}),
+    FIND('${upperTerm}',{Notes}),
     FIND('${term}',{URL (from ID copy)}),
     FIND('${term}',{Figure Caption}),
-    FIND('${term}',{Title}))`;
+    FIND('${lowerTerm}',{Figure Caption}),
+    FIND('${capTerm}',{Figure Caption}),
+    FIND('${upperTerm}',{Figure Caption}),
+    FIND('${term}',{Title}),
+    FIND('${lowerTerm}',{Title}),
+    FIND('${capTerm}',{Title}),
+    FIND('${upperTerm}',{Title}))`;
 
   return locParams;
 };
@@ -169,6 +185,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
 
     filterQuery += "), 'true')";
     params.filterByFormula = filterQuery;
+
     if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
       params.filterByFormula = "";
     }
