@@ -36,20 +36,12 @@ const setSearchParams = (params, term, fieldReset) => {
     locParams.offset = "";
   }
   locParams.filterByFormula = `OR(
-    FIND('${term}',{ID})>0,
-    FIND('${term}',{Coder})>0,
-    FIND('${term}',{Title (from ID copy)})>0,
-    FIND('${term}',{File Name})>0,
-    FIND('${term}',{Visualization Type})>0,
-    FIND('${term}',{Visual Technique})>0,
-    FIND('${term}',{Interaction Technique})>0,
-    FIND('${term}',{Notes})>0,
-    FIND('${term}',{Country (from ID copy)})>0,
-    FIND('${term}',{Publisher (from ID copy)})>0,
-    FIND('${term}',{URL (from ID copy)})>0,
-    FIND('${term}',{Source Type})>0,
-    FIND('${term}',{Date (from Article)})>0,
-    FIND('${term}',{Subject(s) (from Article)})>0)`;
+    FIND('${term}',{ID}),
+    FIND('${term}',{File Name}),
+    FIND('${term}',{Notes}),
+    FIND('${term}',{URL (from ID copy)}),
+    FIND('${term}',{Figure Caption}),
+    FIND('${term}',{Title}))`;
 
   return locParams;
 };
@@ -91,7 +83,7 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       req.query.fieldReset
     );
     params = { ...params, searchParams };
-
+    
     if (req.query.term === "") {
       params.filterByFormula = "";
     }
