@@ -1,5 +1,6 @@
 import React from 'react';
 import { createTheme } from "@material-ui/core/styles";
+import _uniqueId from "lodash/uniqueId";
 
 import { useStyles } from "./stylesCovicExternalNav";
 
@@ -23,7 +24,7 @@ const CovicExternalNav = () => {
   }
 
   const renderNavItems = () => MENU_ITEMS.map(item => (
-      <li className={classes.covicExternalNavListItem}>
+      <li className={classes.covicExternalNavListItem} key={_uniqueId()}>
         {item === "logo" 
           ? <img className={classes.covicLogo} src="./assets/logo.svg" alt="" />
           : <div className={classes.covicMenuLabel} onClick={handleMenuClick}>{item}</div>
