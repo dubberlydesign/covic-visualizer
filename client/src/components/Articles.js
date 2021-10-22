@@ -24,6 +24,7 @@ import GridContent from "./GridContent";
 import ModalHolder from "./ModalHolder";
 import { useStyles } from "./styles";
 import { format } from "date-fns";
+import _uniqueId from "lodash/uniqueId";
 
 let globFilter = {};
 let resetField = false;
@@ -161,7 +162,7 @@ const Articles = props => {
             src={figure.thumbnails.large.url}
             alt=''
             className={isModal ? classes.cardImageModal : classes.cardImage}
-            key={Math.random() * 100}
+            key={_uniqueId()}
           />
         );
       } else {
@@ -191,7 +192,7 @@ const Articles = props => {
           src={figure}
           alt=''
           className={isModal ? classes.cardImageModal : classes.cardImage}
-          key={Math.random() * 100}
+          key={_uniqueId()}
         />
       );
     });
