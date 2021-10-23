@@ -62,6 +62,10 @@ const setSearchParams = (params, term, fieldReset) => {
   return locParams;
 };
 
+const appendToFilterQuery = (filterCol) => {
+  return filterCol !== '' ? `${filterCol},` : '';
+}
+
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
@@ -104,87 +108,102 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       params.filterByFormula = "";
     }
   }
-
   if (req.query.queryType === "filter") {
     const obj = JSON.parse(req.query.term);
-    let filterQuery = "IF(OR(";
 
-    filterQuery = filterColumn.useFilterType(
+    const queryObject = {
+      'sourceTypeQuery': '',
+      'countryTypeQuery': '',
+      'languageTypeQuery': '',
+      'publisherTypeQuery': '',
+      'subjectTypeQuery': '',
+      'visualizationTypeQuery': '',
+      'visualTechniqueTypeQuery': '',
+      'interactionTechniquerTypeQuery': '',
+      'articleTechniqueTypeQuery': '',
+      'dataTypeQuery': '',
+    }
+
+    queryObject['sourceTypeQuery'] = filterColumn.useFilterType(
       obj.sourceType,
       0,
       "Source Type",
-      filterQuery,
+      queryObject['sourceTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['countryTypeQuery'] = filterColumn.useFilterType(
       obj.countryType,
       1,
       "Country (from ID Copy)",
-      filterQuery,
+      queryObject['countryTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['languageTypeQuery'] = filterColumn.useFilterType(
       obj.languageType,
       2,
       "Language (from Article)",
-      filterQuery,
+      queryObject['languageTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['publisherTypeQuery'] = filterColumn.useFilterType(
       obj.publisherType,
       3,
       "Publisher (from ID Copy)",
-      filterQuery,
+      queryObject['publisherTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['subjectTypeQuery'] = filterColumn.useFilterType(
       obj.subjectType,
       4,
       "Subject(s) (from Article)",
-      filterQuery,
+      queryObject['subjectTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['visualizationTypeQuery'] = filterColumn.useFilterType(
       obj.visualizationType,
       5,
       "Visualization Type",
-      filterQuery,
+      queryObject['visualizationTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['visualTechniqueTypeQuery'] = filterColumn.useFilterType(
       obj.visualTechType,
       6,
       "Visual Technique",
-      filterQuery,
+      queryObject['visualTechniqueTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['interactionTechniquerTypeQuery'] = filterColumn.useFilterType(
       obj.interactionType,
       7,
       "Interaction Technique",
-      filterQuery,
+      queryObject['interactionTechniquerTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['articleTechniqueTypeQuery'] = filterColumn.useFilterType(
       obj.articleTechType,
       8,
       "Article Technique (from Article)",
-      filterQuery,
+      queryObject['articleTechniqueTypeQuery'],
       obj
     );
 
     if (obj.isDateFilter) {
-      filterQuery = filterColumn.useFilterType(
+      queryObject['dataTypeQuery'] = filterColumn.useFilterType(
         obj.dateRange,
         9,
         "Date (from Article)",
-        filterQuery,
+        queryObject['dataTypeQuery'],
         obj
       );
     }
 
-    filterQuery += "), 'true')";
-    params.filterByFormula = filterQuery;
+    params.filterByFormula = 'AND(';
+    Object.keys(queryObject).forEach(key => {
+      params.filterByFormula += appendToFilterQuery(queryObject[key]);
+    })
+    params.filterByFormula += ')';
+    params.filterByFormula = params.filterByFormula.replace(',)', ')');
 
     if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
       params.filterByFormula = "";
