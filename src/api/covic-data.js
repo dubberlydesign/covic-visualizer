@@ -62,6 +62,10 @@ const setSearchParams = (params, term, fieldReset) => {
   return locParams;
 };
 
+const appendToFilterQuery = (filterCol) => {
+  return filterCol !== '' ? `${filterCol},` : '';
+}
+
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
@@ -104,87 +108,96 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
       params.filterByFormula = "";
     }
   }
-
   if (req.query.queryType === "filter") {
     const obj = JSON.parse(req.query.term);
-    let filterQuery = "IF(OR(";
 
-    filterQuery = filterColumn.useFilterType(
+    let sourceTypeQuery = '';
+    let countryTypeQuery = '';
+    let languageTypeQuery = '';
+    let publisherTypeQuery = '';
+    let subjectTypeQuery = '';
+    let visualizationTypeQuery = '';
+    let visualTechniqueTypeQuery = '';
+    let interactionTechniquerTypeQuery = '';
+    let articleTechcniqueTypeQuery = '';
+    let dataTypeQuery = '';
+
+    sourceTypeQuery = filterColumn.useFilterType(
       obj.sourceType,
       0,
       "Source Type",
-      filterQuery,
+      sourceTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    countryTypeQuery = filterColumn.useFilterType(
       obj.countryType,
       1,
       "Country (from ID Copy)",
-      filterQuery,
+      countryTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    languageTypeQuery = filterColumn.useFilterType(
       obj.languageType,
       2,
       "Language (from Article)",
-      filterQuery,
+      languageTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    publisherTypeQuery = filterColumn.useFilterType(
       obj.publisherType,
       3,
       "Publisher (from ID Copy)",
-      filterQuery,
+      publisherTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    subjectTypeQuery = filterColumn.useFilterType(
       obj.subjectType,
       4,
       "Subject(s) (from Article)",
-      filterQuery,
+      subjectTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    visualizationTypeQuery = filterColumn.useFilterType(
       obj.visualizationType,
       5,
       "Visualization Type",
-      filterQuery,
+      visualizationTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    visualTechniqueTypeQuery = filterColumn.useFilterType(
       obj.visualTechType,
       6,
       "Visual Technique",
-      filterQuery,
+      visualTechniqueTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    interactionTechniquerTypeQuery = filterColumn.useFilterType(
       obj.interactionType,
       7,
       "Interaction Technique",
-      filterQuery,
+      interactionTechniquerTypeQuery,
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    articleTechcniqueTypeQuery = filterColumn.useFilterType(
       obj.articleTechType,
       8,
       "Article Technique (from Article)",
-      filterQuery,
+      articleTechcniqueTypeQuery,
       obj
     );
 
     if (obj.isDateFilter) {
-      filterQuery = filterColumn.useFilterType(
+      dataTypeQuery = filterColumn.useFilterType(
         obj.dateRange,
         9,
         "Date (from Article)",
-        filterQuery,
+        dataTypeQuery,
         obj
       );
     }
 
-    filterQuery += "), 'true')";
-    params.filterByFormula = filterQuery;
+    params.filterByFormula = `AND(${appendToFilterQuery(sourceTypeQuery)}${appendToFilterQuery(countryTypeQuery)}${appendToFilterQuery(languageTypeQuery)}${appendToFilterQuery(publisherTypeQuery)}${appendToFilterQuery(subjectTypeQuery)}${appendToFilterQuery(visualizationTypeQuery)}${appendToFilterQuery(visualTechniqueTypeQuery)}${appendToFilterQuery(interactionTechniquerTypeQuery)}${appendToFilterQuery(articleTechcniqueTypeQuery)}${appendToFilterQuery(dataTypeQuery)})`;
+    params.filterByFormula = params.filterByFormula.replace(',)', ')');
 
     if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
       params.filterByFormula = "";
