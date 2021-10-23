@@ -111,92 +111,98 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (req.query.queryType === "filter") {
     const obj = JSON.parse(req.query.term);
 
-    let sourceTypeQuery = '';
-    let countryTypeQuery = '';
-    let languageTypeQuery = '';
-    let publisherTypeQuery = '';
-    let subjectTypeQuery = '';
-    let visualizationTypeQuery = '';
-    let visualTechniqueTypeQuery = '';
-    let interactionTechniquerTypeQuery = '';
-    let articleTechcniqueTypeQuery = '';
-    let dataTypeQuery = '';
+    const queryObject = {
+      'sourceTypeQuery': '',
+      'countryTypeQuery': '',
+      'languageTypeQuery': '',
+      'publisherTypeQuery': '',
+      'subjectTypeQuery': '',
+      'visualizationTypeQuery': '',
+      'visualTechniqueTypeQuery': '',
+      'interactionTechniquerTypeQuery': '',
+      'articleTechniqueTypeQuery': '',
+      'dataTypeQuery': '',
+    }
 
-    sourceTypeQuery = filterColumn.useFilterType(
+    queryObject['sourceTypeQuery'] = filterColumn.useFilterType(
       obj.sourceType,
       0,
       "Source Type",
-      sourceTypeQuery,
+      queryObject['sourceTypeQuery'],
       obj
     );
-    countryTypeQuery = filterColumn.useFilterType(
+    queryObject['countryTypeQuery'] = filterColumn.useFilterType(
       obj.countryType,
       1,
       "Country (from ID Copy)",
-      countryTypeQuery,
+      queryObject['countryTypeQuery'],
       obj
     );
-    languageTypeQuery = filterColumn.useFilterType(
+    queryObject['languageTypeQuery'] = filterColumn.useFilterType(
       obj.languageType,
       2,
       "Language (from Article)",
-      languageTypeQuery,
+      queryObject['languageTypeQuery'],
       obj
     );
-    publisherTypeQuery = filterColumn.useFilterType(
+    queryObject['publisherTypeQuery'] = filterColumn.useFilterType(
       obj.publisherType,
       3,
       "Publisher (from ID Copy)",
-      publisherTypeQuery,
+      queryObject['publisherTypeQuery'],
       obj
     );
-    subjectTypeQuery = filterColumn.useFilterType(
+    queryObject['subjectTypeQuery'] = filterColumn.useFilterType(
       obj.subjectType,
       4,
       "Subject(s) (from Article)",
-      subjectTypeQuery,
+      queryObject['subjectTypeQuery'],
       obj
     );
-    visualizationTypeQuery = filterColumn.useFilterType(
+    queryObject['visualizationTypeQuery'] = filterColumn.useFilterType(
       obj.visualizationType,
       5,
       "Visualization Type",
-      visualizationTypeQuery,
+      queryObject['visualizationTypeQuery'],
       obj
     );
-    visualTechniqueTypeQuery = filterColumn.useFilterType(
+    queryObject['visualTechniqueTypeQuery'] = filterColumn.useFilterType(
       obj.visualTechType,
       6,
       "Visual Technique",
-      visualTechniqueTypeQuery,
+      queryObject['visualTechniqueTypeQuery'],
       obj
     );
-    interactionTechniquerTypeQuery = filterColumn.useFilterType(
+    queryObject['interactionTechniquerTypeQuery'] = filterColumn.useFilterType(
       obj.interactionType,
       7,
       "Interaction Technique",
-      interactionTechniquerTypeQuery,
+      queryObject['interactionTechniquerTypeQuery'],
       obj
     );
-    articleTechcniqueTypeQuery = filterColumn.useFilterType(
+    queryObject['articleTechniqueTypeQuery'] = filterColumn.useFilterType(
       obj.articleTechType,
       8,
       "Article Technique (from Article)",
-      articleTechcniqueTypeQuery,
+      queryObject['articleTechniqueTypeQuery'],
       obj
     );
 
     if (obj.isDateFilter) {
-      dataTypeQuery = filterColumn.useFilterType(
+      queryObject['dataTypeQuery'] = filterColumn.useFilterType(
         obj.dateRange,
         9,
         "Date (from Article)",
-        dataTypeQuery,
+        queryObject['dataTypeQuery'],
         obj
       );
     }
 
-    params.filterByFormula = `AND(${appendToFilterQuery(sourceTypeQuery)}${appendToFilterQuery(countryTypeQuery)}${appendToFilterQuery(languageTypeQuery)}${appendToFilterQuery(publisherTypeQuery)}${appendToFilterQuery(subjectTypeQuery)}${appendToFilterQuery(visualizationTypeQuery)}${appendToFilterQuery(visualTechniqueTypeQuery)}${appendToFilterQuery(interactionTechniquerTypeQuery)}${appendToFilterQuery(articleTechcniqueTypeQuery)}${appendToFilterQuery(dataTypeQuery)})`;
+    params.filterByFormula = 'AND(';
+    Object.keys(queryObject).forEach(key => {
+      params.filterByFormula += appendToFilterQuery(queryObject[key]);
+    })
+    params.filterByFormula += ')';
     params.filterByFormula = params.filterByFormula.replace(',)', ')');
 
     if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
