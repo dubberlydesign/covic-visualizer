@@ -17,7 +17,7 @@ const ModalHolder = ({
   curItem,
   data,
   handleClose,
-  handleOpen,
+  // handleOpen,
   modalIndex,
   open,
   renderImgArticleFiguresModal,

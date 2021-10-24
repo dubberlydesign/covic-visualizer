@@ -166,6 +166,10 @@ export const useStyles = makeStyles(theme => ({
     padding: "100px",
   },
 
+  modalPageView: {
+    outline: 0,
+  },
+
   paperModal: {
     padding: theme.spacing(2),
     margin: theme.spacing(2),

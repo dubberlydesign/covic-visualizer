@@ -1,17 +1,18 @@
 import React from 'react';
-import Button from "@material-ui/core/Button";
+
+import ModalHeader from './ModalHeader';
 
 const ModalPageImage = ({classes, curItem, renderImgPageModal, setModalState}) => {
   return (
     <>
+      <ModalHeader
+        classes={classes}
+        curItem={curItem}
+        handleClose={() => setModalState('article figures')}
+      />
       <div className={classes.modalImagesHolder}>
         {renderImgPageModal(curItem, true)}
       </div>
-      <Button
-          onClick={() => setModalState('article figures')}
-      >
-        Trigger
-      </Button>
     </>
   );
 };
