@@ -6,7 +6,6 @@ import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 const ModalArticleFigures = ({classes, curItem, renderImgArticleFiguresModal, setModalState}) => {
   return (
     <>
-      <h1>article figures</h1>
       <div className={classes.modalImagesHolder}>
         {renderImgArticleFiguresModal(curItem, true)}
       </div>

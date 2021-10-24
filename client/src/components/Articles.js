@@ -47,7 +47,9 @@ const Articles = props => {
 
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
+  const [dataIds, setDataIds] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
+  const [modalIndex, setModalIndex] = useState(null);
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +87,8 @@ const Articles = props => {
       .then(response => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
+        // do we need to make this work w/ pagination?
+        setDataIds(response.data.records.map(record => record.id));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -185,8 +189,7 @@ const Articles = props => {
   };
 
   const renderImgModal = (item, isModal = false) => {
-    console.log(curFigureData);
-    if (curFigureData.video) {
+    if (curFigureData?.video) {
       return (
         <video width="100%" controls>
           <source src={curFigureData.video} type="video/mp4" />
@@ -196,7 +199,7 @@ const Articles = props => {
     }
     return (
       <img
-        src={curFigureData.figures[0]}
+        src={curFigureData?.figures[0]}
         alt=''
         className={isModal ? classes.cardImageModal : classes.cardImage}
         key={_uniqueId()}
@@ -240,6 +243,10 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
+    // console.log(setModalIndex)
+    setModalIndex(dataIds.indexOf(item.id));
+console.log('open');
+console.log(dataIds.indexOf(item.id));
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
@@ -260,8 +267,6 @@ console.log(response);
         response?.data?.records?.forEach((record, index) => {
           // set the main image
           if (record?.fields?.Image[0].type === 'video/mp4') {
-            console.log('video');
-            console.log(record?.fields?.Image[0]?.url);
             curFigObject.video = record?.fields?.Image[0]?.url;
           // if (index === 0) {
           //   curFigObject.mainImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
@@ -326,7 +331,9 @@ console.log(response);
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
-
+// console.log('return');
+// console.log(data);
+// console.log(dataIds);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -401,9 +408,12 @@ console.log(response);
       </Container>
       <ModalHolder 
         classes={classes}
-        open={open} 
-        handleClose={handleClose}
         curItem={curItem}
+        data={data}
+        handleOpen={handleOpen}
+        handleClose={handleClose}
+        modalIndex={modalIndex}
+        open={open}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
         renderImgModal={renderImgModal}
         renderImgPageModal={renderImgPageModal}

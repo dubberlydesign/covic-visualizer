@@ -5,7 +5,16 @@ import Button from "@material-ui/core/Button";
 import Chip from "@material-ui/core/Chip";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-const ModalFigures = ({classes, curItem, handleClose, renderImgModal, setModalState}) => {
+const ModalFigures = ({
+  classes,
+  curItem,
+  data,
+  handleClose,
+  handleOpen,
+  modalIndex,
+  renderImgModal,
+  setModalState
+}) => {
   return (
     <>
       <div className={classes.modalIconHolder}>
@@ -91,6 +100,14 @@ const ModalFigures = ({classes, curItem, handleClose, renderImgModal, setModalSt
           onClick={() => setModalState('article figures')}
         >
           Trigger
+        </Button>
+        <Button
+          onClick={() => {
+            console.log(modalIndex);
+            handleOpen(data[modalIndex + 1])
+          }}
+        >
+          Next
         </Button>
       </div>
     </>

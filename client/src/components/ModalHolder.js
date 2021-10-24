@@ -15,7 +15,10 @@ import ModalPageImage from './ModalPageImage';
 const ModalHolder = ({
   classes,
   curItem,
+  data,
   handleClose,
+  handleOpen,
+  modalIndex,
   open,
   renderImgArticleFiguresModal,
   renderImgModal,
@@ -44,7 +47,10 @@ const ModalHolder = ({
                 <ModalFigures
                   classes={classes}
                   curItem={curItem}
+                  data={data}
                   handleClose={handleClose}
+                  handleOpen={handleOpen}
+                  modalIndex={modalIndex}
                   renderImgModal={renderImgModal}
                   setModalState={setModalState}
                 />
