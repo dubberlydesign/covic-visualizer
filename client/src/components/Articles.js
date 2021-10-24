@@ -146,7 +146,8 @@ const Articles = props => {
   const handleSubmit = e => {
     e.preventDefault();
     resetField = true;
-    setData(data.splice(0, data.length));
+    data.splice(0, data.length);
+    setData(data);
     requestData("search", "FIND", searchValue);
   };
 
@@ -238,7 +239,8 @@ const Articles = props => {
     globFilter = filterObject;
     resetField = true;
     setIsMoreEntries(true);
-    setData(data.splice(0, data.length));
+    data.splice(0, data.length);
+    setData(data);
     requestData("filter", "FIND", filterObject);
   };
 
@@ -318,8 +320,8 @@ console.log(response);
     globFilter = filterObject;
     resetField = true;
     setIsMoreEntries(true);
-    setData(data.splice(0, data.length));
-  
+    data.splice(0, data.length);
+    setData(data);
     requestData("filter", "FIND", filterObject, "", checked);
   }
 
