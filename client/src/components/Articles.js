@@ -87,8 +87,8 @@ const Articles = props => {
       .then(response => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
-        // do we need to make this work w/ pagination?
-        setDataIds(response.data.records.map(record => record.id));
+        // for modal paging
+        // setDataIds(response.data.records.map(record => record.id));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -243,16 +243,15 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
-    // console.log(setModalIndex)
-    setModalIndex(dataIds.indexOf(item.id));
-console.log('open');
-console.log(dataIds.indexOf(item.id));
+    // for in modal paging
+    // setModalIndex(dataIds.indexOf(item.id));
+
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
           baseType: "Figures",
           offset: 0,
-          requestAmount: 3,
+          // requestAmount: 3,
           queryType: item?.fields.ID,
         },
       })
@@ -410,7 +409,7 @@ console.log(response);
         classes={classes}
         curItem={curItem}
         data={data}
-        handleOpen={handleOpen}
+        // handleOpen={handleOpen}
         handleClose={handleClose}
         modalIndex={modalIndex}
         open={open}

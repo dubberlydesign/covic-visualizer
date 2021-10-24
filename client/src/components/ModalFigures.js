@@ -10,7 +10,7 @@ const ModalFigures = ({
   curItem,
   data,
   handleClose,
-  handleOpen,
+  // handleOpen,
   modalIndex,
   renderImgModal,
   setModalState
@@ -101,14 +101,14 @@ const ModalFigures = ({
         >
           Trigger
         </Button>
-        <Button
+        {/* <Button
           onClick={() => {
             console.log(modalIndex);
             handleOpen(data[modalIndex + 1])
           }}
         >
           Next
-        </Button>
+        </Button> */}
       </div>
     </>
   );
