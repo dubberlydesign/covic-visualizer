@@ -47,7 +47,9 @@ const Articles = props => {
 
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
+  const [dataIds, setDataIds] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
+  const [modalIndex, setModalIndex] = useState(null);
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -85,6 +87,8 @@ const Articles = props => {
       .then(response => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
+        // for modal paging
+        // setDataIds(response.data.records.map(record => record.id));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -154,6 +158,10 @@ const Articles = props => {
 
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
+// if (item?.fields["File Name"].indexOf('.mp4') > -1) {
+//   console.log('mp4');
+//   console.log(item);
+// }
 
     const imgList = item?.fields["Image"]?.map((figure, index) => {
       if (figure.thumbnails && index <= 3) {
@@ -168,14 +176,10 @@ const Articles = props => {
       } else {
         return (
           <div className={classes.altMediaFormat}>
-            <div>
-              <b>Media Type: </b>
-              {figure.type}
-            </div>
-            <div>
-              <b>FileName: </b>
-              {figure.filename}
-            </div>
+            <video width="100%" controls>
+              <source src={figure.url} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
           </div>
         );
       }
@@ -185,8 +189,27 @@ const Articles = props => {
   };
 
   const renderImgModal = (item, isModal = false) => {
-    if (curFigureData.length === 0) return [];
-    const imgList = curFigureData.map((figure, index) => {
+    if (curFigureData?.video) {
+      return (
+        <video width="100%" controls>
+          <source src={curFigureData.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    }
+    return (
+      <img
+        src={curFigureData?.figures[0]}
+        alt=''
+        className={isModal ? classes.cardImageModal : classes.cardImage}
+        key={_uniqueId()}
+      />
+    );
+  };
+
+  const renderImgArticleFiguresModal = (item, isModal = false) => {
+    if (curFigureData.figures.length === 0) return [];
+    const imgList = curFigureData.figures.map((figure, index) => {
       return (
         <img
           src={figure}
@@ -200,6 +223,17 @@ const Articles = props => {
     return imgList?.length > 0 ? imgList : null;
   };
 
+  const renderImgPageModal = (item, isModal = false) => {
+    return (
+      <img
+        src={curFigureData.pageImage}
+        alt=''
+        className={isModal ? classes.cardImageModal : classes.cardImage}
+        key={_uniqueId()}
+      />
+    );
+  };
+
   const handleApplyFilter = filterObject => {
     globFilter = filterObject;
     resetField = true;
@@ -209,28 +243,41 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
+    // for in modal paging
+    // setModalIndex(dataIds.indexOf(item.id));
+
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
           baseType: "Figures",
           offset: 0,
-          requestAmount: 3,
+          // requestAmount: 3,
           queryType: item?.fields.ID,
         },
       })
       .then(response => {
         setCurItem(item);
-        setCurFigureData([]);
+        setCurFigureData(null);
+console.log('response data');
+console.log(response);
+        const curFigObject = {};
+        curFigObject.figures = [];
 
-        response?.data?.records?.forEach(record => {
-          if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
-            setCurFigureData(curFigureData => [
-              ...curFigureData,
-              record?.fields?.Image[0]?.thumbnails?.large?.url,
-            ]);
+        response?.data?.records?.forEach((record, index) => {
+          // set the main image
+          if (record?.fields?.Image[0].type === 'video/mp4') {
+            curFigObject.video = record?.fields?.Image[0]?.url;
+          // if (index === 0) {
+          //   curFigObject.mainImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+          // // set the page image
+          } else if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
+            curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+          // add to article figures array
+          } else {
+            curFigObject.figures.push(record?.fields?.Image[0]?.thumbnails?.large?.url);
           }
         });
-
+        setCurFigureData(curFigObject);
         setOpen(true);
       });
   };
@@ -358,10 +405,15 @@ const Articles = props => {
       </Container>
       <ModalHolder 
         classes={classes}
-        open={open} 
-        handleClose={handleClose}
         curItem={curItem}
+        data={data}
+        // handleOpen={handleOpen}
+        handleClose={handleClose}
+        modalIndex={modalIndex}
+        open={open}
+        renderImgArticleFiguresModal={renderImgArticleFiguresModal}
         renderImgModal={renderImgModal}
+        renderImgPageModal={renderImgPageModal}
       />
     </div>
   );

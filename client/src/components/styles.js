@@ -49,8 +49,9 @@ export const useStyles = makeStyles(theme => ({
     objectFit: "cover",
     boxSizing: "border-box",
     border: "1px solid #333",
-    margin: "20px",
-    maxWidth: "200px",
+    // margin: "20px",
+    // maxWidth: "200px",
+    width: "100%"
   },
 
   altMediaFormat: {
@@ -165,6 +166,10 @@ export const useStyles = makeStyles(theme => ({
     padding: "100px",
   },
 
+  modalPageView: {
+    outline: 0,
+  },
+
   paperModal: {
     padding: theme.spacing(2),
     margin: theme.spacing(2),
@@ -221,6 +226,14 @@ export const useStyles = makeStyles(theme => ({
 
   modalButtonHolder: {
     display: "flex",
+  },
+
+  modalButton: {
+    marginTop: "30px",
+    backgroundColor: "#C6AD8F",
+    color: "white",
+    width: "auto",
+    marginRight: "10px",
   },
 
   hideLabelsForToggle: {
