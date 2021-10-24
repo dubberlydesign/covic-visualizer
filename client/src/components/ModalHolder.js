@@ -12,7 +12,15 @@ import ModalFigures from './ModalFigures';
 import ModalArticleFigures from './ModalArticleFigures';
 import ModalPageImage from './ModalPageImage';
 
-const ModalHolder = ({classes, open, handleClose, curItem, renderImgModal, renderImgArticleFiguresModal}) => {
+const ModalHolder = ({
+  classes,
+  curItem,
+  handleClose,
+  open,
+  renderImgArticleFiguresModal,
+  renderImgModal,
+  renderImgPageModal
+}) => {
   const [modalState, setModalState] = useState('figures');
   return (
     <Modal
@@ -51,6 +59,9 @@ const ModalHolder = ({classes, open, handleClose, curItem, renderImgModal, rende
               }
               {modalState === 'page image' &&
                 <ModalPageImage
+                  classes={classes}
+                  curItem={curItem}
+                  renderImgPageModal={renderImgPageModal}
                   setModalState={setModalState}
                 />
               }

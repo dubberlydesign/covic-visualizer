@@ -185,10 +185,18 @@ const Articles = props => {
   };
 
   const renderImgModal = (item, isModal = false) => {
-    // if (curFigureData.mainFigure) return [];
+    console.log(curFigureData);
+    if (curFigureData.video) {
+      return (
+        <video width="100%" controls>
+          <source src={curFigureData.video} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      );
+    }
     return (
       <img
-        src={curFigureData.mainImage}
+        src={curFigureData.figures[0]}
         alt=''
         className={isModal ? classes.cardImageModal : classes.cardImage}
         key={_uniqueId()}
@@ -197,11 +205,8 @@ const Articles = props => {
   };
 
   const renderImgArticleFiguresModal = (item, isModal = false) => {
-    console.log('img articles');
-    console.log(curFigureData);
     if (curFigureData.figures.length === 0) return [];
     const imgList = curFigureData.figures.map((figure, index) => {
-      console.log('img articles');
       return (
         <img
           src={figure}
@@ -213,6 +218,17 @@ const Articles = props => {
     });
 
     return imgList?.length > 0 ? imgList : null;
+  };
+
+  const renderImgPageModal = (item, isModal = false) => {
+    return (
+      <img
+        src={curFigureData.pageImage}
+        alt=''
+        className={isModal ? classes.cardImageModal : classes.cardImage}
+        key={_uniqueId()}
+      />
+    );
   };
 
   const handleApplyFilter = filterObject => {
@@ -242,31 +258,19 @@ console.log(response);
         curFigObject.figures = [];
 
         response?.data?.records?.forEach((record, index) => {
-          if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
-            console.log('for each');
-            console.log(index);
-            console.log(record);
-            // set the main image
-            if (index === 0) {
-              curFigObject.mainImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
-            } else if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
-              curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
-            } else {
-              console.log('push');
-              curFigObject.figures.push(record?.fields?.Image[0]?.thumbnails?.large?.url);
-              console.log(curFigObject);
-            }
-            // let test = [
-            //   ...curFigureData,
-            //   record?.fields?.Image[0]?.thumbnails?.large?.url,
-            // ]
-            // console.log('test');
-            // console.log(test);
-
-            /* setCurFigureData(curFigureData => [
-              ...curFigureData,
-              record?.fields?.Image[0]?.thumbnails?.large?.url,
-            ]); */
+          // set the main image
+          if (record?.fields?.Image[0].type === 'video/mp4') {
+            console.log('video');
+            console.log(record?.fields?.Image[0]?.url);
+            curFigObject.video = record?.fields?.Image[0]?.url;
+          // if (index === 0) {
+          //   curFigObject.mainImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+          // // set the page image
+          } else if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
+            curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+          // add to article figures array
+          } else {
+            curFigObject.figures.push(record?.fields?.Image[0]?.thumbnails?.large?.url);
           }
         });
         setCurFigureData(curFigObject);
@@ -322,8 +326,7 @@ console.log(response);
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
-  console.log('render');
-  console.log(curFigureData);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -401,8 +404,9 @@ console.log(response);
         open={open} 
         handleClose={handleClose}
         curItem={curItem}
-        renderImgModal={renderImgModal}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
+        renderImgModal={renderImgModal}
+        renderImgPageModal={renderImgPageModal}
       />
     </div>
   );
