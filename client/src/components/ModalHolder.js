@@ -12,7 +12,7 @@ import ModalFigures from './ModalFigures';
 import ModalArticleFigures from './ModalArticleFigures';
 import ModalPageImage from './ModalPageImage';
 
-const ModalHolder = ({classes, open, handleClose, curItem, renderImgModal}) => {
+const ModalHolder = ({classes, open, handleClose, curItem, renderImgModal, renderImgArticleFiguresModal}) => {
   const [modalState, setModalState] = useState('figures');
   return (
     <Modal
@@ -20,6 +20,7 @@ const ModalHolder = ({classes, open, handleClose, curItem, renderImgModal}) => {
         aria-describedby='transition-modal-description'
         className={classes.modal}
         open={open}
+        onBackdropClick={() => setModalState('figures')}
         onClose={handleClose}
         closeAfterTransition
         BackdropComponent={Backdrop}
@@ -43,6 +44,8 @@ const ModalHolder = ({classes, open, handleClose, curItem, renderImgModal}) => {
               {modalState === 'article figures' &&
                 <ModalArticleFigures
                   classes={classes}
+                  curItem={curItem}
+                  renderImgArticleFiguresModal={renderImgArticleFiguresModal}
                   setModalState={setModalState}
                 />
               }

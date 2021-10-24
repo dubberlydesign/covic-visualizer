@@ -154,13 +154,12 @@ const Articles = props => {
 
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
-if (item?.fields["File Name"].indexOf('.mp4') > -1) {
-  console.log('mp4');
-  console.log(item);
-}
+// if (item?.fields["File Name"].indexOf('.mp4') > -1) {
+//   console.log('mp4');
+//   console.log(item);
+// }
 
     const imgList = item?.fields["Image"]?.map((figure, index) => {
-      console.log(figure);
       if (figure.thumbnails && index <= 3) {
         return (
           <img
@@ -177,14 +176,6 @@ if (item?.fields["File Name"].indexOf('.mp4') > -1) {
               <source src={figure.url} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
-            {/* <div>
-              <b>Media Type: </b>
-              {figure.type}
-            </div>
-            <div>
-              <b>FileName: </b>
-              {figure.filename}
-            </div> */}
           </div>
         );
       }
@@ -194,12 +185,23 @@ if (item?.fields["File Name"].indexOf('.mp4') > -1) {
   };
 
   const renderImgModal = (item, isModal = false) => {
-    if (curFigureData.length === 0) return [];
-    const imgList = curFigureData.map((figure, index) => {
-      console.log('renderImgModal');
-      console.log(curFigureData);
-      // console.log(figure);
-      // console.log(curItem);
+    // if (curFigureData.mainFigure) return [];
+    return (
+      <img
+        src={curFigureData.mainImage}
+        alt=''
+        className={isModal ? classes.cardImageModal : classes.cardImage}
+        key={_uniqueId()}
+      />
+    );
+  };
+
+  const renderImgArticleFiguresModal = (item, isModal = false) => {
+    console.log('img articles');
+    console.log(curFigureData);
+    if (curFigureData.figures.length === 0) return [];
+    const imgList = curFigureData.figures.map((figure, index) => {
+      console.log('img articles');
       return (
         <img
           src={figure}
@@ -233,18 +235,41 @@ if (item?.fields["File Name"].indexOf('.mp4') > -1) {
       })
       .then(response => {
         setCurItem(item);
-        setCurFigureData([]);
+        setCurFigureData(null);
 console.log('response data');
 console.log(response);
-        response?.data?.records?.forEach(record => {
+        const curFigObject = {};
+        curFigObject.figures = [];
+
+        response?.data?.records?.forEach((record, index) => {
           if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
-            setCurFigureData(curFigureData => [
+            console.log('for each');
+            console.log(index);
+            console.log(record);
+            // set the main image
+            if (index === 0) {
+              curFigObject.mainImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+            } else if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
+              curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+            } else {
+              console.log('push');
+              curFigObject.figures.push(record?.fields?.Image[0]?.thumbnails?.large?.url);
+              console.log(curFigObject);
+            }
+            // let test = [
+            //   ...curFigureData,
+            //   record?.fields?.Image[0]?.thumbnails?.large?.url,
+            // ]
+            // console.log('test');
+            // console.log(test);
+
+            /* setCurFigureData(curFigureData => [
               ...curFigureData,
               record?.fields?.Image[0]?.thumbnails?.large?.url,
-            ]);
+            ]); */
           }
         });
-
+        setCurFigureData(curFigObject);
         setOpen(true);
       });
   };
@@ -297,7 +322,8 @@ console.log(response);
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
-
+  console.log('render');
+  console.log(curFigureData);
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -376,6 +402,7 @@ console.log(response);
         handleClose={handleClose}
         curItem={curItem}
         renderImgModal={renderImgModal}
+        renderImgArticleFiguresModal={renderImgArticleFiguresModal}
       />
     </div>
   );

@@ -49,8 +49,9 @@ export const useStyles = makeStyles(theme => ({
     objectFit: "cover",
     boxSizing: "border-box",
     border: "1px solid #333",
-    margin: "20px",
-    maxWidth: "200px",
+    // margin: "20px",
+    // maxWidth: "200px",
+    width: "100%"
   },
 
   altMediaFormat: {
