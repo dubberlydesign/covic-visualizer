@@ -17,8 +17,8 @@ const ModalHolder = ({
   curItem,
   data,
   handleClose,
-  // handleOpen,
-  modalIndex,
+  hasArticleFiguresModal,
+  hasPageImageModal,
   open,
   renderImgArticleFiguresModal,
   renderImgModal,
@@ -49,8 +49,9 @@ const ModalHolder = ({
                   curItem={curItem}
                   data={data}
                   handleClose={handleClose}
-                  // handleOpen={handleOpen}
-                  modalIndex={modalIndex}
+                  hasArticleFiguresModal={hasArticleFiguresModal}
+                  hasPageImageModal={hasPageImageModal}
+                  modalState={modalState}
                   renderImgModal={renderImgModal}
                   setModalState={setModalState}
                 />
@@ -59,6 +60,10 @@ const ModalHolder = ({
                 <ModalArticleFigures
                   classes={classes}
                   curItem={curItem}
+                  handleClose={handleClose}
+                  hasArticleFiguresModal={hasArticleFiguresModal}
+                  hasPageImageModal={hasPageImageModal}
+                  modalState={modalState}
                   renderImgArticleFiguresModal={renderImgArticleFiguresModal}
                   setModalState={setModalState}
                 />
@@ -67,6 +72,10 @@ const ModalHolder = ({
                 <ModalPageImage
                   classes={classes}
                   curItem={curItem}
+                  handleClose={handleClose}
+                  hasArticleFiguresModal={hasArticleFiguresModal}
+                  hasPageImageModal={hasPageImageModal}
+                  modalState={modalState}
                   renderImgPageModal={renderImgPageModal}
                   setModalState={setModalState}
                 />

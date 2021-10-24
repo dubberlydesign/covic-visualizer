@@ -57,7 +57,7 @@ const Articles = props => {
 
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
-  const [curFigureData, setCurFigureData] = useState("");
+  const [curFigureData, setCurFigureData] = useState(null);
   const [isMoreEntries, setIsMoreEntries] = useState(true);
   const [toggleOrder, setToggleOrder] = useState(false);
   const [toggleLabels, setToggleLabels] = useState(false);
@@ -257,7 +257,7 @@ const Articles = props => {
       })
       .then(response => {
         setCurItem(item);
-        setCurFigureData(null);
+        // setCurFigureData(null);
 console.log('response data');
 console.log(response);
         const curFigObject = {};
@@ -330,6 +330,9 @@ console.log(response);
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
+
+  const hasArticleFiguresModal = curFigureData?.figures.length > 1;
+  const hasPageImageModal = curFigureData?.pageImage;
 
   return (
     <div className={classes.root}>
@@ -407,8 +410,9 @@ console.log(response);
         classes={classes}
         curItem={curItem}
         data={data}
-        // handleOpen={handleOpen}
         handleClose={handleClose}
+        hasArticleFiguresModal={hasArticleFiguresModal}
+        hasPageImageModal={hasPageImageModal}
         modalIndex={modalIndex}
         open={open}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}

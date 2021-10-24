@@ -2,13 +2,26 @@ import React from 'react';
 
 import ModalHeader from './ModalHeader';
 
-const ModalPageImage = ({classes, curItem, renderImgPageModal, setModalState}) => {
+const ModalPageImage = ({
+  classes,
+  curItem, 
+  handleClose,
+  hasArticleFiguresModal,
+  hasPageImageModal,
+  modalState,
+  renderImgPageModal,
+  setModalState
+}) => {
   return (
     <>
       <ModalHeader
         classes={classes}
         curItem={curItem}
-        handleClose={() => setModalState('article figures')}
+        handleClose={handleClose}
+        hasArticleFiguresModal={hasArticleFiguresModal}
+        hasPageImageModal={hasPageImageModal}
+        modalState={modalState}
+        setModalState={setModalState}
       />
       <div className={classes.modalImagesHolder}>
         {renderImgPageModal(curItem, true)}

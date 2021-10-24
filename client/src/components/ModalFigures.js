@@ -10,46 +10,28 @@ import ModalHeader from './ModalHeader';
 const ModalFigures = ({
   classes,
   curItem,
-  // data,
   handleClose,
-  // handleOpen,
-  // modalIndex,
+  hasArticleFiguresModal,
+  hasPageImageModal,
+  modalState,
   renderImgModal,
   setModalState
 }) => {
+  console.log('modal figures modal');
+  console.log(curItem);
   return (
     <>
-      <ModalHeader classes={classes} curItem={curItem} handleClose={handleClose} />
+      <ModalHeader
+        classes={classes}
+        curItem={curItem}
+        handleClose={handleClose}
+        hasArticleFiguresModal={hasArticleFiguresModal}
+        hasPageImageModal={hasPageImageModal}
+        modalState={modalState}
+        setModalState={setModalState}
+      />
       <div className={classes.modalImagesHolder}>
         {renderImgModal(curItem, true)}
-      </div>
-
-      <div className={classes.modalButtonHolder}>
-        <Button
-          variant='contained'
-          disableElevation
-          className={classes.links}
-          href={curItem?.fields["URL (from ID copy)"][0]}
-          target='_blank'
-        >
-          Visit
-        </Button>
-        <Button
-          variant='contained'
-          disableElevation
-          className={classes.modalButton}
-          onClick={() => setModalState('article figures')}
-        >
-          Article Figures
-        </Button>
-        {/* <Button
-          onClick={() => {
-            console.log(modalIndex);
-            handleOpen(data[modalIndex + 1])
-          }}
-        >
-          Next
-        </Button> */}
       </div>
     </>
   );

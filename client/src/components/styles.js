@@ -224,10 +224,6 @@ export const useStyles = makeStyles(theme => ({
     cursor: "pointer",
   },
 
-  modalButtonHolder: {
-    display: "flex",
-  },
-
   modalButton: {
     marginTop: "30px",
     backgroundColor: "#C6AD8F",
