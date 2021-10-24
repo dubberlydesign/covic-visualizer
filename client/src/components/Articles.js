@@ -154,8 +154,13 @@ const Articles = props => {
 
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
+if (item?.fields["File Name"].indexOf('.mp4') > -1) {
+  console.log('mp4');
+  console.log(item);
+}
 
     const imgList = item?.fields["Image"]?.map((figure, index) => {
+      console.log(figure);
       if (figure.thumbnails && index <= 3) {
         return (
           <img
@@ -168,14 +173,18 @@ const Articles = props => {
       } else {
         return (
           <div className={classes.altMediaFormat}>
-            <div>
+            <video width="100%" controls>
+              <source src={figure.url} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+            {/* <div>
               <b>Media Type: </b>
               {figure.type}
             </div>
             <div>
               <b>FileName: </b>
               {figure.filename}
-            </div>
+            </div> */}
           </div>
         );
       }
@@ -187,6 +196,10 @@ const Articles = props => {
   const renderImgModal = (item, isModal = false) => {
     if (curFigureData.length === 0) return [];
     const imgList = curFigureData.map((figure, index) => {
+      console.log('renderImgModal');
+      console.log(curFigureData);
+      // console.log(figure);
+      // console.log(curItem);
       return (
         <img
           src={figure}
@@ -221,7 +234,8 @@ const Articles = props => {
       .then(response => {
         setCurItem(item);
         setCurFigureData([]);
-
+console.log('response data');
+console.log(response);
         response?.data?.records?.forEach(record => {
           if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
             setCurFigureData(curFigureData => [
