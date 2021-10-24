@@ -224,6 +224,14 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
   },
 
+  modalButton: {
+    marginTop: "30px",
+    backgroundColor: "#C6AD8F",
+    color: "white",
+    width: "auto",
+    marginRight: "10px",
+  },
+
   hideLabelsForToggle: {
     display: "none",
   },

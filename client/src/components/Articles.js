@@ -330,9 +330,7 @@ console.log(response);
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
-// console.log('return');
-// console.log(data);
-// console.log(dataIds);
+
   return (
     <div className={classes.root}>
       <CssBaseline />
