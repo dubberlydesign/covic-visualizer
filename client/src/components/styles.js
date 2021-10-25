@@ -113,7 +113,7 @@ export const useStyles = makeStyles(theme => ({
   inputText: {
     fontFamily: "sans-serif",
     fontSize: 16,
-    color: "#C6AD8F",
+    color: "#000",
     borderColor: "#C6AD8F",
   },
 

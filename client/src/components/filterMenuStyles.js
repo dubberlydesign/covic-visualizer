@@ -92,8 +92,9 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "flex-end",
     margin: "0px 75px 20px 20px",
+    flexDirection: "column",
     [theme.breakpoints.up("lg")]: {
-      flexDirection: "column",
+      flexDirection: "row",
       justifyContent: "space-between",
       margin: "40px 0 20px 0",
       width: "100%"
@@ -103,14 +104,16 @@ export const useStyles = makeStyles(theme => ({
   resetIconHolder: {
     margin: "0px 10px 20px 20px",
     [theme.breakpoints.up("lg")]: {
-      margin: "20px 0 20px 0"
+      margin: 0,
+      flex: "0 0 50%"
     }
   },
 
   infoIconHolder: {
     margin: "0px 66px 20px 20px",
     [theme.breakpoints.up("lg")]: {
-      margin: 0
+      margin: 0,
+      flex: "0 0 50%"
     }
   },
 
@@ -147,7 +150,9 @@ export const useStyles = makeStyles(theme => ({
     minWidth: 120,
     width: "92%",
     [theme.breakpoints.up('lg')]: {
-      margin: 0
+      margin: "0 8px",
+      display: "flex",
+      flexDirection: "row",
     },
   },
 
@@ -156,4 +161,8 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: "700",
     color: "#C6AD8F"
   },
+
+  datePickerKeyboard: {
+    paddingLeft: "9px",
+  }
 }));
