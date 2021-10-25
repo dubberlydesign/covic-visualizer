@@ -447,6 +447,7 @@ const FilterMenu = props => {
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
+                  className={classes.datePickerKeyboard}
                 />
               </ThemeProvider>
             </MuiPickersUtilsProvider>
@@ -465,7 +466,6 @@ const FilterMenu = props => {
       role='presentation'
     >
       <div className={classes.filterHeaderContainer}>
-        <div className={classes.filterHeader}>Filter Visualizations By...</div>
         <IconButton
           className={classes.filterHeaderClose}
           onClick={toggleDrawer(anchor, false)}
@@ -490,7 +490,7 @@ const FilterMenu = props => {
             className={classes.links}
             onClick={handleResetFilter(anchor, false)}
           >
-            Reset Filters
+            Reset
           </Button>
         </div>
         <div
