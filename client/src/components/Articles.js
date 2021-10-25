@@ -215,7 +215,7 @@ const Articles = props => {
           </div>
           {figure['Visualization Type'].length &&
             <ul className={classes.modalArticleFiguresVizWrapper}>
-              {figure['Visualization Type'].map((visType) => <li>{visType}</li>)}
+              {figure['Visualization Type'].map((visType) => <li key={_uniqueId()}>{visType}</li>)}
             </ul>
           }
         </li>
@@ -225,12 +225,12 @@ const Articles = props => {
     return imgList?.length > 0 ? <ul className={classes.modalArticleFiguresWrapper}>{imgList}</ul> : null;
   };
 
-  const renderImgPageModal = (item, isModal = false) => {
+  const renderImgPageModal = () => {
     return (
       <img
         src={curFigureData.pageImage}
         alt=''
-        className={isModal ? classes.cardImageModal : classes.cardImage}
+        className={classes.modalPageImage}
         key={_uniqueId()}
       />
     );

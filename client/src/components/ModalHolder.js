@@ -25,6 +25,10 @@ const ModalHolder = ({
   renderImgPageModal
 }) => {
   const [modalState, setModalState] = useState('figures');
+  const handleModalHeaderClose = () => {
+    handleClose();
+    setModalState('figures')
+  }
   return (
     <Modal
         aria-labelledby='transition-modal-title'
@@ -48,7 +52,7 @@ const ModalHolder = ({
                   classes={classes}
                   curItem={curItem}
                   data={data}
-                  handleClose={handleClose}
+                  handleClose={handleModalHeaderClose}
                   hasArticleFiguresModal={hasArticleFiguresModal}
                   hasPageImageModal={hasPageImageModal}
                   modalState={modalState}
@@ -60,7 +64,7 @@ const ModalHolder = ({
                 <ModalArticleFigures
                   classes={classes}
                   curItem={curItem}
-                  handleClose={handleClose}
+                  handleClose={handleModalHeaderClose}
                   hasArticleFiguresModal={hasArticleFiguresModal}
                   hasPageImageModal={hasPageImageModal}
                   modalState={modalState}
@@ -72,7 +76,7 @@ const ModalHolder = ({
                 <ModalPageImage
                   classes={classes}
                   curItem={curItem}
-                  handleClose={handleClose}
+                  handleClose={handleModalHeaderClose}
                   hasArticleFiguresModal={hasArticleFiguresModal}
                   hasPageImageModal={hasPageImageModal}
                   modalState={modalState}

@@ -21,7 +21,7 @@ const ModalPageImage = ({
         modalState={modalState}
         setModalState={setModalState}
       />
-      <div className={classes.modalImagesHolder}>
+      <div>
         {renderImgPageModal(curItem, true)}
       </div>
     </>

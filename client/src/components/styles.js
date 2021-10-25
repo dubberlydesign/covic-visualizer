@@ -241,6 +241,11 @@ export const useStyles = makeStyles(theme => ({
     padding: 0,
   },
 
+  modalPageImage: {
+    height: "auto",
+    width: "100%",
+  },
+
   modalHeaderClose: {
     fontFamily: "sans-serif",
     fontSize: 50,
