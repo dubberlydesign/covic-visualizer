@@ -35,7 +35,7 @@ export const useStyles = makeStyles(theme => ({
   cardImage: {
     width: "100%",
     height: "400px",
-    objectFit: "cover",
+    objectFit: "contain",
     margin: "auto",
     display: "block",
     boxSizing: "border-box",
@@ -45,7 +45,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   cardImageModal: {
-    height: "400px",
+    // height: "400px",
     objectFit: "cover",
     boxSizing: "border-box",
     border: "1px solid #333",
