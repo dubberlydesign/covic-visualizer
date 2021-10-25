@@ -214,14 +214,31 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
   },
 
-  modalArticleFiguresHolder: {
-    display: "block",
+  modalArticleFiguresWrapper: {
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+
+  modalArticleFiguresItem: {
+    display: "flex",
+  },
+
+  modalArticleFigureImageWrapper: {
+    flex: "0 0 50%",
   },
 
   modalArticleFigureImage: {
     display: "block",
     height: "auto",
-    width: "50%",
+    width: "100%",
+  },
+
+  modalArticleFiguresVizWrapper: {
+    flex: "0 0 50%",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
   },
 
   modalHeaderClose: {

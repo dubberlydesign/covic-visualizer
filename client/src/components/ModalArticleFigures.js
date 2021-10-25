@@ -22,9 +22,7 @@ const ModalArticleFigures = ({
         modalState={modalState}
         setModalState={setModalState}
       />
-      <div className={classes.modalArticleFiguresHolder}>
-        {renderImgArticleFiguresModal(curItem, true)}
-      </div>
+      {renderImgArticleFiguresModal(curItem, true)}
     </>
   );
 };

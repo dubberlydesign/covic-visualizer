@@ -202,17 +202,9 @@ const Articles = props => {
   const renderImgArticleFiguresModal = () => {
     if (curFigureData.figures.length === 0) return [];
     const imgList = curFigureData.figures.map((figure) => {
-      // return (
-      //   <img
-      //     src={figure}
-      //     alt=''
-      //     className={classes.modalArticleFigureImage}
-      //     key={_uniqueId()}
-      //   />
-      // );
       return (
-        <li>
-          <div>
+        <li className={classes.modalArticleFiguresItem}>
+          <div className={classes.modalArticleFigureImageWrapper}>
             <span>{figure['File Name']}</span>
             <img
               src={figure['Image'][0].thumbnails.large.url}
@@ -222,7 +214,7 @@ const Articles = props => {
             />
           </div>
           {figure['Visualization Type'].length &&
-            <ul>
+            <ul className={classes.modalArticleFiguresVizWrapper}>
               {figure['Visualization Type'].map((visType) => <li>{visType}</li>)}
             </ul>
           }
@@ -230,7 +222,7 @@ const Articles = props => {
       );
     });
 
-    return imgList?.length > 0 ? <ul>{imgList}</ul> : null;
+    return imgList?.length > 0 ? <ul className={classes.modalArticleFiguresWrapper}>{imgList}</ul> : null;
   };
 
   const renderImgPageModal = (item, isModal = false) => {
