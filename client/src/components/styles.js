@@ -214,6 +214,38 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
   },
 
+  modalArticleFiguresWrapper: {
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+
+  modalArticleFiguresItem: {
+    display: "flex",
+  },
+
+  modalArticleFigureImageWrapper: {
+    flex: "0 0 50%",
+  },
+
+  modalArticleFigureImage: {
+    display: "block",
+    height: "auto",
+    width: "100%",
+  },
+
+  modalArticleFiguresVizWrapper: {
+    flex: "0 0 50%",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+
+  modalPageImage: {
+    height: "auto",
+    width: "100%",
+  },
+
   modalHeaderClose: {
     fontFamily: "sans-serif",
     fontSize: 50,
@@ -222,10 +254,6 @@ export const useStyles = makeStyles(theme => ({
     borderColor: "#C6AD8F",
     margin: "0 0 0 0",
     cursor: "pointer",
-  },
-
-  modalButtonHolder: {
-    display: "flex",
   },
 
   modalButton: {

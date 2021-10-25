@@ -47,9 +47,7 @@ const Articles = props => {
 
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
-  const [dataIds, setDataIds] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
-  const [modalIndex, setModalIndex] = useState(null);
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -57,7 +55,7 @@ const Articles = props => {
 
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
-  const [curFigureData, setCurFigureData] = useState("");
+  const [curFigureData, setCurFigureData] = useState(null);
   const [isMoreEntries, setIsMoreEntries] = useState(true);
   const [toggleOrder, setToggleOrder] = useState(false);
   const [toggleLabels, setToggleLabels] = useState(false);
@@ -87,8 +85,6 @@ const Articles = props => {
       .then(response => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
-        // for modal paging
-        // setDataIds(response.data.records.map(record => record.id));
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -158,10 +154,6 @@ const Articles = props => {
 
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
-// if (item?.fields["File Name"].indexOf('.mp4') > -1) {
-//   console.log('mp4');
-//   console.log(item);
-// }
 
     const imgList = item?.fields["Image"]?.map((figure, index) => {
       if (figure.thumbnails && index <= 3) {
@@ -199,7 +191,7 @@ const Articles = props => {
     }
     return (
       <img
-        src={curFigureData?.figures[0]}
+        src={curFigureData?.figures[0]['Image'][0].thumbnails.large.url}
         alt=''
         className={isModal ? classes.cardImageModal : classes.cardImage}
         key={_uniqueId()}
@@ -207,28 +199,38 @@ const Articles = props => {
     );
   };
 
-  const renderImgArticleFiguresModal = (item, isModal = false) => {
+  const renderImgArticleFiguresModal = () => {
     if (curFigureData.figures.length === 0) return [];
-    const imgList = curFigureData.figures.map((figure, index) => {
+    const imgList = curFigureData.figures.map((figure) => {
       return (
-        <img
-          src={figure}
-          alt=''
-          className={isModal ? classes.cardImageModal : classes.cardImage}
-          key={_uniqueId()}
-        />
+        <li className={classes.modalArticleFiguresItem}>
+          <div className={classes.modalArticleFigureImageWrapper}>
+            <span>{figure['File Name']}</span>
+            <img
+              src={figure['Image'][0].thumbnails.large.url}
+              alt=''
+              className={classes.modalArticleFigureImage}
+              key={_uniqueId()}
+            />
+          </div>
+          {figure['Visualization Type'].length &&
+            <ul className={classes.modalArticleFiguresVizWrapper}>
+              {figure['Visualization Type'].map((visType) => <li key={_uniqueId()}>{visType}</li>)}
+            </ul>
+          }
+        </li>
       );
     });
 
-    return imgList?.length > 0 ? imgList : null;
+    return imgList?.length > 0 ? <ul className={classes.modalArticleFiguresWrapper}>{imgList}</ul> : null;
   };
 
-  const renderImgPageModal = (item, isModal = false) => {
+  const renderImgPageModal = () => {
     return (
       <img
         src={curFigureData.pageImage}
         alt=''
-        className={isModal ? classes.cardImageModal : classes.cardImage}
+        className={classes.modalPageImage}
         key={_uniqueId()}
       />
     );
@@ -243,21 +245,17 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
-    // for in modal paging
-    // setModalIndex(dataIds.indexOf(item.id));
-
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
           baseType: "Figures",
           offset: 0,
-          // requestAmount: 3,
           queryType: item?.fields.ID,
         },
       })
       .then(response => {
         setCurItem(item);
-        setCurFigureData(null);
+        // setCurFigureData(null);
 console.log('response data');
 console.log(response);
         const curFigObject = {};
@@ -274,7 +272,7 @@ console.log(response);
             curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
           // add to article figures array
           } else {
-            curFigObject.figures.push(record?.fields?.Image[0]?.thumbnails?.large?.url);
+            curFigObject.figures.push(record?.fields);
           }
         });
         setCurFigureData(curFigObject);
@@ -330,6 +328,8 @@ console.log(response);
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
+
+  const hasPageImageModal = curFigureData?.pageImage;
 
   return (
     <div className={classes.root}>
@@ -407,9 +407,8 @@ console.log(response);
         classes={classes}
         curItem={curItem}
         data={data}
-        // handleOpen={handleOpen}
         handleClose={handleClose}
-        modalIndex={modalIndex}
+        hasPageImageModal={hasPageImageModal}
         open={open}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
         renderImgModal={renderImgModal}

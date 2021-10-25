@@ -17,14 +17,18 @@ const ModalHolder = ({
   curItem,
   data,
   handleClose,
-  // handleOpen,
-  modalIndex,
+  hasArticleFiguresModal,
+  hasPageImageModal,
   open,
   renderImgArticleFiguresModal,
   renderImgModal,
   renderImgPageModal
 }) => {
   const [modalState, setModalState] = useState('figures');
+  const handleModalHeaderClose = () => {
+    handleClose();
+    setModalState('figures')
+  }
   return (
     <Modal
         aria-labelledby='transition-modal-title'
@@ -48,9 +52,10 @@ const ModalHolder = ({
                   classes={classes}
                   curItem={curItem}
                   data={data}
-                  handleClose={handleClose}
-                  // handleOpen={handleOpen}
-                  modalIndex={modalIndex}
+                  handleClose={handleModalHeaderClose}
+                  hasArticleFiguresModal={hasArticleFiguresModal}
+                  hasPageImageModal={hasPageImageModal}
+                  modalState={modalState}
                   renderImgModal={renderImgModal}
                   setModalState={setModalState}
                 />
@@ -59,6 +64,10 @@ const ModalHolder = ({
                 <ModalArticleFigures
                   classes={classes}
                   curItem={curItem}
+                  handleClose={handleModalHeaderClose}
+                  hasArticleFiguresModal={hasArticleFiguresModal}
+                  hasPageImageModal={hasPageImageModal}
+                  modalState={modalState}
                   renderImgArticleFiguresModal={renderImgArticleFiguresModal}
                   setModalState={setModalState}
                 />
@@ -67,6 +76,10 @@ const ModalHolder = ({
                 <ModalPageImage
                   classes={classes}
                   curItem={curItem}
+                  handleClose={handleModalHeaderClose}
+                  hasArticleFiguresModal={hasArticleFiguresModal}
+                  hasPageImageModal={hasPageImageModal}
+                  modalState={modalState}
                   renderImgPageModal={renderImgPageModal}
                   setModalState={setModalState}
                 />

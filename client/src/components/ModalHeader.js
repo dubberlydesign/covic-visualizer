@@ -3,10 +3,54 @@ import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 
-const ModalHeader = ({classes, curItem, handleClose}) => {
+const ModalHeader = ({
+  classes,
+  curItem,
+  handleClose, 
+  hasArticleFiguresModal,
+  hasPageImageModal,
+  modalState,
+  setModalState
+}) => {
   return (
-    <>
+    <div>
+      <div>
+        {modalState !== 'figures' && <Button
+          variant='contained'
+          disableElevation
+          className={classes.modalButton}
+          onClick={() => setModalState('figures')}
+        >
+          Figure
+        </Button>}
+        {modalState !== 'article figures' && <Button
+          variant='contained'
+          disableElevation
+          className={classes.modalButton}
+          onClick={() => setModalState('article figures')}
+        >
+          Figures In Article
+        </Button>}
+        {modalState !== 'page image' && hasPageImageModal && <Button
+          variant='contained'
+          disableElevation
+          className={classes.modalButton}
+          onClick={() => setModalState('page image')}
+        >
+          Page
+        </Button>}
+        <Button
+          variant='contained'
+          disableElevation
+          className={classes.modalButton}
+          href={curItem?.fields["URL (from ID copy)"][0]}
+          target='_blank'
+        >
+          Visit
+        </Button>
+      </div>
       <div className={classes.modalIconHolder}>
         <IconButton
           className={classes.modalHeaderClose}
@@ -72,7 +116,7 @@ const ModalHeader = ({classes, curItem, handleClose}) => {
             }`
         )}
       </Typography>
-    </>
+    </div>
   );
 };
 
