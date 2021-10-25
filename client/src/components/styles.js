@@ -214,6 +214,16 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
   },
 
+  modalArticleFiguresHolder: {
+    display: "block",
+  },
+
+  modalArticleFigureImage: {
+    display: "block",
+    height: "auto",
+    width: "50%",
+  },
+
   modalHeaderClose: {
     fontFamily: "sans-serif",
     fontSize: 50,

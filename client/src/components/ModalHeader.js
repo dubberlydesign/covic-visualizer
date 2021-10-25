@@ -15,7 +15,7 @@ const ModalHeader = ({
   setModalState
 }) => {
   return (
-    <>
+    <div>
       <div>
         {modalState !== 'figures' && <Button
           variant='contained'
@@ -25,13 +25,13 @@ const ModalHeader = ({
         >
           Figure
         </Button>}
-        {modalState !== 'article figures' && hasArticleFiguresModal && <Button
+        {modalState !== 'article figures' && <Button
           variant='contained'
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('article figures')}
         >
-          In Article
+          Figures In Article
         </Button>}
         {modalState !== 'page image' && hasPageImageModal && <Button
           variant='contained'
@@ -116,7 +116,7 @@ const ModalHeader = ({
             }`
         )}
       </Typography>
-    </>
+    </div>
   );
 };
 

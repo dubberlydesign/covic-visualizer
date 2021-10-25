@@ -6,7 +6,6 @@ const ModalPageImage = ({
   classes,
   curItem, 
   handleClose,
-  hasArticleFiguresModal,
   hasPageImageModal,
   modalState,
   renderImgPageModal,
@@ -18,7 +17,6 @@ const ModalPageImage = ({
         classes={classes}
         curItem={curItem}
         handleClose={handleClose}
-        hasArticleFiguresModal={hasArticleFiguresModal}
         hasPageImageModal={hasPageImageModal}
         modalState={modalState}
         setModalState={setModalState}

@@ -7,7 +7,6 @@ const ModalArticleFigures = ({
   classes,
   curItem,
   handleClose,
-  hasArticleFiguresModal,
   hasPageImageModal,
   modalState,
   renderImgArticleFiguresModal,
@@ -19,12 +18,11 @@ const ModalArticleFigures = ({
         classes={classes}
         curItem={curItem}
         handleClose={handleClose}
-        hasArticleFiguresModal={hasArticleFiguresModal}
         hasPageImageModal={hasPageImageModal}
         modalState={modalState}
         setModalState={setModalState}
       />
-      <div className={classes.modalImagesHolder}>
+      <div className={classes.modalArticleFiguresHolder}>
         {renderImgArticleFiguresModal(curItem, true)}
       </div>
     </>
