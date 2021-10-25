@@ -35,8 +35,12 @@ const ModalHolder = ({
         aria-describedby='transition-modal-description'
         className={classes.modal}
         open={open}
-        onBackdropClick={() => setModalState('figures')}
-        onClose={handleClose}
+        onClose={(event, reason) => {
+          handleClose(event);
+          if (reason === "backdropClick") {
+            setModalState('figures')
+          }
+        }}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{

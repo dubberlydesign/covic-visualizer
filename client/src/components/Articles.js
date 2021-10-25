@@ -6,6 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { createTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Card from "@material-ui/core/Card";
@@ -180,22 +181,35 @@ const Articles = props => {
     return imgList?.length > 0 ? imgList[0] : null;
   };
 
-  const renderImgModal = (item, isModal = false) => {
+  const renderImgModal = () => {
     if (curFigureData?.video) {
       return (
-        <video width="100%" controls>
-          <source src={curFigureData.video} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        <>
+          <video width="100%" controls>
+            <source src={curFigureData.video} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </>
       );
     }
     return (
-      <img
-        src={curFigureData?.figures[0]['Image'][0].thumbnails.large.url}
-        alt=''
-        className={isModal ? classes.cardImageModal : classes.cardImage}
-        key={_uniqueId()}
-      />
+      <>
+        <img
+          src={curFigureData?.figures[0]['Image'][0].thumbnails.large.url}
+          alt=''
+          className={classes.cardImageModal}
+          key={_uniqueId()}
+        />
+        {curFigureData?.figures[0]['Visualization Type'].length &&
+          <Typography
+          variant='body2'
+          color='textSecondary'
+          component='span'
+        >
+          {curFigureData?.figures[0]['Visualization Type'].join(', ')}
+        </Typography>
+        }
+      </>
     );
   };
 
@@ -203,19 +217,34 @@ const Articles = props => {
     if (curFigureData.figures.length === 0) return [];
     const imgList = curFigureData.figures.map((figure) => {
       return (
-        <li className={classes.modalArticleFiguresItem}>
+        <li className={classes.modalArticleFiguresItem} key={_uniqueId()}>
           <div className={classes.modalArticleFigureImageWrapper}>
-            <span>{figure['File Name']}</span>
+            <Typography
+              variant='body2'
+              color='textSecondary'
+              component='span'
+            >
+              {figure['File Name']}
+            </Typography>
             <img
               src={figure['Image'][0].thumbnails.large.url}
               alt=''
               className={classes.modalArticleFigureImage}
-              key={_uniqueId()}
             />
           </div>
           {figure['Visualization Type'].length &&
             <ul className={classes.modalArticleFiguresVizWrapper}>
-              {figure['Visualization Type'].map((visType) => <li key={_uniqueId()}>{visType}</li>)}
+              {figure['Visualization Type'].map((visType) => (
+                <li key={_uniqueId()}>
+                  <Typography
+                    variant='body2'
+                    color='textSecondary'
+                    component='span'
+                  >
+                    {visType}
+                  </Typography>
+                </li>
+              ))}
             </ul>
           }
         </li>
@@ -254,12 +283,10 @@ const Articles = props => {
         },
       })
       .then(response => {
-        setCurItem(item);
-        // setCurFigureData(null);
-console.log('response data');
-console.log(response);
         const curFigObject = {};
         curFigObject.figures = [];
+
+        setCurItem(item);
 
         response?.data?.records?.forEach((record, index) => {
           // set the main image

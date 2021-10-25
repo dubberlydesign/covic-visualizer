@@ -222,10 +222,12 @@ export const useStyles = makeStyles(theme => ({
 
   modalArticleFiguresItem: {
     display: "flex",
+    margin: "0 0 20px",
   },
 
   modalArticleFigureImageWrapper: {
     flex: "0 0 50%",
+    textAlign: "center"
   },
 
   modalArticleFigureImage: {
@@ -239,6 +241,7 @@ export const useStyles = makeStyles(theme => ({
     listStyle: "none",
     margin: 0,
     padding: 0,
+    textAlign: "right",
   },
 
   modalPageImage: {
