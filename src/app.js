@@ -20,6 +20,7 @@ app.use(
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
         "img-src": ["'self'", "https://dl.airtable.com/"],
+        "media-src": ["'self'", "https://dl.airtable.com/"],
       },
     },
   })
