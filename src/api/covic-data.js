@@ -89,8 +89,6 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     view: req.query.inOrderDisplay === "true" ? "API [DO NOT EDIT] old-new" : "API [DO NOT EDIT]",
   };
 
-  console.log('req.query', req.query);
-
   if (
     req.query.filterType !== "" &&
     req.query.queryType !== "search" &&
