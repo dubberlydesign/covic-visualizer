@@ -54,14 +54,10 @@ const setSearchParams = (params, term, fieldReset) => {
     FIND('${lowerTerm}',{Figure Caption}),
     FIND('${capTerm}',{Figure Caption}),
     FIND('${upperTerm}',{Figure Caption}),
-    FIND('${term}',{Title (from Article)}),
-    FIND('${lowerTerm}',{Title (from Article)}),
-    FIND('${capTerm}',{Title (from Article)}),
-    FIND('${upperTerm}',{Title (from Article)}),
-    FIND('${term}',{Title}),
-    FIND('${lowerTerm}',{Title}),
-    FIND('${capTerm}',{Title}),
-    FIND('${upperTerm}',{Title}))`;
+    FIND('${term}',{Title 2}),
+    FIND('${lowerTerm}',{Title 2}),
+    FIND('${capTerm}',{Title 2}),
+    FIND('${upperTerm}',{Title 2}))`;
 
   return locParams;
 };

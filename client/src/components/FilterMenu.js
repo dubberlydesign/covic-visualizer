@@ -483,16 +483,6 @@ const FilterMenu = props => {
       <div className={classes.filterHeaders}>FIGURE ATTRIBUTES</div>
       {renderFigureFilterCategories()}
       <div className={classes.filterButtonsHolder}>
-        <div className={classes.resetIconHolder}>
-          <Button
-            variant='contained'
-            disableElevation
-            className={classes.links}
-            onClick={handleResetFilter(anchor, false)}
-          >
-            Reset
-          </Button>
-        </div>
         <div
           className={
             isDisableFilterApply
@@ -511,6 +501,16 @@ const FilterMenu = props => {
             }
           >
             Apply Filters
+          </Button>
+        </div>
+        <div className={classes.resetIconHolder}>
+          <Button
+            variant='contained'
+            disableElevation
+            className={classes.links}
+            onClick={handleResetFilter(anchor, false)}
+          >
+            Reset
           </Button>
         </div>
       </div>
