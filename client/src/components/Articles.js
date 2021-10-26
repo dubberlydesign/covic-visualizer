@@ -252,12 +252,23 @@ const Articles = props => {
   };
 
   const renderImgPageModal = () => {
+    const isPdf = curFigureData.pageImage.Image[0]?.type === 'application/pdf';
+
     return (
       <img
-        src={curFigureData.pageImage}
+        src={curFigureData.pageImage.Image[0]?.thumbnails?.large?.url}
         alt=''
-        className={classes.modalPageImage}
+        className={classNames(
+          classes.modalPageImage,
+          isPdf ? classes.modalPageImagePdf : {}
+        )}
         key={_uniqueId()}
+        onClick={() => {
+          if (isPdf) {
+            window.open(curFigureData.pageImage.Image[0]?.url);
+          }
+          return;
+        }}
       />
     );
   };
@@ -288,7 +299,7 @@ const Articles = props => {
 
         response?.data?.records?.forEach((record) => {
           if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
-            curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
+            curFigObject.pageImage = record?.fields;
           } else {
             curFigObject.figures.push(record?.fields);
           }

@@ -272,6 +272,10 @@ export const useStyles = makeStyles(theme => ({
     width: "100%",
   },
 
+  modalPageImagePdf: {
+    cursor: "pointer"
+  },
+
   modalHeaderClose: {
     fontFamily: "sans-serif",
     fontSize: 50,
