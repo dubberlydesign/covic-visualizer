@@ -80,7 +80,7 @@ const ModalHeader = ({
         component='p'
         className={classes.modalTextHolderHeader}
       >
-        {curItem?.fields["Title (from ID copy)"]}
+        {curItem?.fields["Title (from Article)"]}
       </Typography>
       <Typography
         variant='body2'
