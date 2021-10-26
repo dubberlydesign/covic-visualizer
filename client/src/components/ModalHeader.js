@@ -8,8 +8,7 @@ import Button from "@material-ui/core/Button";
 const ModalHeader = ({
   classes,
   curItem,
-  handleClose, 
-  hasArticleFiguresModal,
+  handleClose,
   hasPageImageModal,
   modalState,
   setModalState
