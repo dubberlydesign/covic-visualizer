@@ -158,60 +158,50 @@ const Articles = props => {
     if (item === null) return [];
 
     const imgList = item?.fields["Image"]?.map((figure, index) => {
-      if (figure.thumbnails && index <= 3) {
-        return (
-          <img
-            src={figure.thumbnails.large.url}
-            alt=''
-            className={isModal ? classes.cardImageModal : classes.cardImage}
-            key={_uniqueId()}
-          />
-        );
-      } else {
-        return (
-          <div className={classes.altMediaFormat}>
-            <video width="100%" controls>
-              <source src={figure.url} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-        );
-      }
+      return (
+        <>
+          {isModal && <Typography
+            variant='body2'
+            color='textSecondary'
+            component='span'
+          >
+            {figure?.filename}
+          </Typography>}
+          {!isModal &&
+            <div className={classes.cardImageOverLay} onClick={() => handleOpen(item)}></div>
+          }
+          { figure.thumbnails && index <= 3 
+            ? <img
+                src={figure.thumbnails.large.url}
+                alt=''
+                className={isModal ? classes.cardImageModal : classes.cardImage}
+                key={_uniqueId()}
+              />
+            : <div className={classes.altMediaFormat}>
+                <video
+                  width="100%"
+                  controls={isModal ? true : false}
+                  className={isModal ? classes.cardVideoModal : classes.cardVideo}
+                >
+                  <source src={figure.url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+          }
+          {item?.fields['Visualization Type']?.length && isModal &&
+            <Typography
+              variant='body2'
+              color='textSecondary'
+              component='span'
+            >
+              {item?.fields['Visualization Type'].join(', ')}
+            </Typography>
+          }
+        </>
+      );
     });
 
     return imgList?.length > 0 ? imgList[0] : null;
-  };
-
-  const renderImgModal = () => {
-    if (curFigureData?.video) {
-      return (
-        <>
-          <video width="100%" controls>
-            <source src={curFigureData.video} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </>
-      );
-    }
-    return (
-      <>
-        <img
-          src={curFigureData?.figures[0]['Image'][0].thumbnails.large.url}
-          alt=''
-          className={classes.cardImageModal}
-          key={_uniqueId()}
-        />
-        {curFigureData?.figures[0]['Visualization Type'].length &&
-          <Typography
-          variant='body2'
-          color='textSecondary'
-          component='span'
-        >
-          {curFigureData?.figures[0]['Visualization Type'].join(', ')}
-        </Typography>
-        }
-      </>
-    );
   };
 
   const renderImgArticleFiguresModal = () => {
@@ -227,11 +217,17 @@ const Articles = props => {
             >
               {figure['File Name']}
             </Typography>
-            <img
-              src={figure['Image'][0].thumbnails.large.url}
-              alt=''
-              className={classes.modalArticleFigureImage}
-            />
+            {figure['Image'][0].type === 'video/mp4'
+              ? <video width="100%" controls>
+                  <source src={figure['Image'][0].url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              : <img
+                  src={figure['Image'][0].thumbnails.large.url}
+                  alt=''
+                  className={classes.modalArticleFigureImage}
+                />
+            }
           </div>
           {figure['Visualization Type'].length &&
             <ul className={classes.modalArticleFiguresVizWrapper}>
@@ -290,16 +286,9 @@ const Articles = props => {
 
         setCurItem(item);
 
-        response?.data?.records?.forEach((record, index) => {
-          // set the main image
-          if (record?.fields?.Image[0].type === 'video/mp4') {
-            curFigObject.video = record?.fields?.Image[0]?.url;
-          // if (index === 0) {
-          //   curFigObject.mainImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
-          // // set the page image
-          } else if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
+        response?.data?.records?.forEach((record) => {
+          if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
             curFigObject.pageImage = record?.fields?.Image[0]?.thumbnails?.large?.url;
-          // add to article figures array
           } else {
             curFigObject.figures.push(record?.fields);
           }
@@ -420,7 +409,6 @@ const Articles = props => {
                             item={item}
                             classes={classes} 
                             getDisplayLabels={getDisplayLabels}
-                            handleOpen={handleOpen}
                           />
                         </CardContent>
                       </Card>
@@ -440,7 +428,7 @@ const Articles = props => {
         hasPageImageModal={hasPageImageModal}
         open={open}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
-        renderImgModal={renderImgModal}
+        renderImg={renderImg}
         renderImgPageModal={renderImgPageModal}
       />
     </div>

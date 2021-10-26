@@ -21,7 +21,7 @@ const ModalHolder = ({
   hasPageImageModal,
   open,
   renderImgArticleFiguresModal,
-  renderImgModal,
+  renderImg,
   renderImgPageModal
 }) => {
   const [modalState, setModalState] = useState('figures');
@@ -60,7 +60,7 @@ const ModalHolder = ({
                   hasArticleFiguresModal={hasArticleFiguresModal}
                   hasPageImageModal={hasPageImageModal}
                   modalState={modalState}
-                  renderImgModal={renderImgModal}
+                  renderImg={renderImg}
                   setModalState={setModalState}
                 />
               }

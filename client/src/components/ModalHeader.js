@@ -17,30 +17,33 @@ const ModalHeader = ({
   return (
     <div>
       <div>
-        {modalState !== 'figures' && <Button
+        <Button
           variant='contained'
+          disabled={modalState === 'figures'}
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('figures')}
         >
           Figure
-        </Button>}
-        {modalState !== 'article figures' && <Button
+        </Button>
+        <Button
           variant='contained'
+          disabled={modalState === 'article figures'}
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('article figures')}
         >
           Figures In Article
-        </Button>}
-        {modalState !== 'page image' && hasPageImageModal && <Button
+        </Button>
+        <Button
           variant='contained'
+          disabled={modalState === 'page image' || !hasPageImageModal}
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('page image')}
         >
           Page
-        </Button>}
+        </Button>
         <Button
           variant='contained'
           disableElevation

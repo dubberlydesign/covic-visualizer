@@ -8,7 +8,7 @@ const ModalFigures = ({
   handleClose,
   hasPageImageModal,
   modalState,
-  renderImgModal,
+  renderImg,
   setModalState
 }) => {
 
@@ -23,7 +23,7 @@ const ModalFigures = ({
         setModalState={setModalState}
       />
       <div className={classes.modalImagesHolder}>
-        {renderImgModal(curItem, true)}
+        {renderImg(curItem, true)}
       </div>
     </>
   );

@@ -1,7 +1,5 @@
 import React from 'react';
-import classNames from 'classnames';
 import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
 
 const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
   return (
@@ -43,26 +41,6 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         <b>Country: </b>{" "}
         {item?.fields["Country (from ID copy)"]}
       </Typography>
-      <div className={classNames(classes.cardButtons, getDisplayLabels())}>
-        <Button
-          variant='contained'
-          disableElevation
-          className={classes.links}
-          onClick={() => handleOpen(item)}
-          target='_blank'
-        >
-          Quick Look
-        </Button>
-        <Button
-          variant='contained'
-          disableElevation
-          className={classes.links}
-          href={item.fields["URL (from ID copy)"][0]}
-          target='_blank'
-        >
-          Visit
-        </Button>
-      </div>
     </>
   )
 }
