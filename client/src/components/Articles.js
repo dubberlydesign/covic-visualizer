@@ -48,7 +48,9 @@ const Articles = props => {
 
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
+  const [dataIds, setDataIds] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
+  const [modalIndex, setModalIndex] = useState(null);
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -86,6 +88,10 @@ const Articles = props => {
       .then(response => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
+        setDataIds([
+          ...dataIds,
+          ...response.data.records.map(record => record.id)
+        ]);
         setDataOffset(response.data.offset);
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
@@ -283,6 +289,8 @@ const Articles = props => {
   };
 
   const handleOpen = item => {
+    setModalIndex(dataIds.indexOf(item.id));
+
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
@@ -436,7 +444,9 @@ const Articles = props => {
         curItem={curItem}
         data={data}
         handleClose={handleClose}
+        handleOpen={handleOpen}
         hasPageImageModal={hasPageImageModal}
+        modalIndex={modalIndex}
         open={open}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
         renderImg={renderImg}

@@ -1,6 +1,8 @@
 import React from 'react';
 import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -8,13 +10,35 @@ import Button from "@material-ui/core/Button";
 const ModalHeader = ({
   classes,
   curItem,
+  data,
   handleClose,
+  handleOpen,
   hasPageImageModal,
+  modalIndex,
   modalState,
   setModalState
 }) => {
+
   return (
     <div>
+      <div className={classes.modalHeaderPagingContainer}>
+        {modalIndex !== 0 &&
+          <IconButton
+            className={classes.modalHeaderClose}
+            onClick={() => handleOpen(data[modalIndex - 1])}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        }
+        {modalIndex !== data.length - 1 &&
+          <IconButton
+            className={classes.modalHeaderClose}
+            onClick={() => handleOpen(data[modalIndex + 1])}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        }
+      </div>
       <div>
         <Button
           variant='contained'

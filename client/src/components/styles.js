@@ -237,6 +237,11 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
   },
 
+  modalHeaderPagingContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+
   modalArticleFiguresWrapper: {
     listStyle: "none",
     margin: 0,
