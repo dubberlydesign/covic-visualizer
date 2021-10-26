@@ -13,7 +13,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         className={getDisplayLabels()}
       >
         <p className={classes.cardTitle}>
-          {item?.fields["Title (from ID copy)"]}
+          {item?.fields["Title (from Article)"]}
         </p>
       </Typography>
       <Typography
