@@ -8,6 +8,7 @@ import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 
+import ModalHeader from './ModalHeader';
 import ModalFigures from './ModalFigures';
 import ModalArticleFigures from './ModalArticleFigures';
 import ModalPageImage from './ModalPageImage';
@@ -17,11 +18,12 @@ const ModalHolder = ({
   curItem,
   data,
   handleClose,
-  hasArticleFiguresModal,
+  handleOpen,
   hasPageImageModal,
+  modalIndex,
   open,
   renderImgArticleFiguresModal,
-  renderImgModal,
+  renderImg,
   renderImgPageModal
 }) => {
   const [modalState, setModalState] = useState('figures');
@@ -51,41 +53,34 @@ const ModalHolder = ({
           <Paper className={classes.paperModal}>
             <Card elevation={0}>
               <CardContent className={classes.cardContainer}>
+              <ModalHeader
+                classes={classes}
+                curItem={curItem}
+                data={data}
+                handleClose={handleModalHeaderClose}
+                handleOpen={handleOpen}
+                hasPageImageModal={hasPageImageModal}
+                modalIndex={modalIndex}
+                modalState={modalState}
+                setModalState={setModalState}
+              />
                 {modalState === 'figures' &&
                 <ModalFigures
                   classes={classes}
                   curItem={curItem}
-                  data={data}
-                  handleClose={handleModalHeaderClose}
-                  hasArticleFiguresModal={hasArticleFiguresModal}
-                  hasPageImageModal={hasPageImageModal}
-                  modalState={modalState}
-                  renderImgModal={renderImgModal}
-                  setModalState={setModalState}
+                  renderImg={renderImg}
                 />
               }
               {modalState === 'article figures' &&
                 <ModalArticleFigures
-                  classes={classes}
                   curItem={curItem}
-                  handleClose={handleModalHeaderClose}
-                  hasArticleFiguresModal={hasArticleFiguresModal}
-                  hasPageImageModal={hasPageImageModal}
-                  modalState={modalState}
                   renderImgArticleFiguresModal={renderImgArticleFiguresModal}
-                  setModalState={setModalState}
                 />
               }
               {modalState === 'page image' &&
                 <ModalPageImage
-                  classes={classes}
                   curItem={curItem}
-                  handleClose={handleModalHeaderClose}
-                  hasArticleFiguresModal={hasArticleFiguresModal}
-                  hasPageImageModal={hasPageImageModal}
-                  modalState={modalState}
                   renderImgPageModal={renderImgPageModal}
-                  setModalState={setModalState}
                 />
               }
               </CardContent>

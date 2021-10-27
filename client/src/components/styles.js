@@ -25,6 +25,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     textAlign: "left",
     padding: "20px",
+    position: "relative"
   },
 
   cardButtons: {
@@ -43,14 +44,35 @@ export const useStyles = makeStyles(theme => ({
     marginBottom: "20px",
     maxWidth: "600px",
   },
+  cardVideo: {
+    width: "100%",
+    height: "400px",
+    objectFit: "contain",
+    margin: "auto",
+    display: "block",
+    boxSizing: "border-box",
+    border: "1px solid #333",
+    marginBottom: "20px",
+    maxWidth: "600px",
+  },
+
+  cardImageOverLay: {
+    cursor: "pointer",
+    height: "400px",
+    left: "20px",
+    position: "absolute",
+    width: "calc(100% - 40px)",
+    zIndex: 5
+  },
 
   cardImageModal: {
-    // height: "400px",
     objectFit: "cover",
     boxSizing: "border-box",
     border: "1px solid #333",
-    // margin: "20px",
-    // maxWidth: "200px",
+    width: "100%"
+  },
+
+  cardVideoModal: {
     width: "100%"
   },
 
@@ -58,6 +80,7 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 900,
     color: "#C6AD8F",
     marginBottom: "10px",
+    width: "100%"
   },
 
   modalImagesHolder: {
@@ -214,6 +237,11 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end",
   },
 
+  modalHeaderPagingContainer: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+
   modalArticleFiguresWrapper: {
     listStyle: "none",
     margin: 0,
@@ -247,6 +275,10 @@ export const useStyles = makeStyles(theme => ({
   modalPageImage: {
     height: "auto",
     width: "100%",
+  },
+
+  modalPageImagePdf: {
+    cursor: "pointer"
   },
 
   modalHeaderClose: {

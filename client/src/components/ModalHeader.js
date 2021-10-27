@@ -1,6 +1,8 @@
 import React from 'react';
 import IconButton from "@material-ui/core/IconButton";
 import Chip from "@material-ui/core/Chip";
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -8,39 +10,63 @@ import Button from "@material-ui/core/Button";
 const ModalHeader = ({
   classes,
   curItem,
-  handleClose, 
-  hasArticleFiguresModal,
+  data,
+  handleClose,
+  handleOpen,
   hasPageImageModal,
+  modalIndex,
   modalState,
   setModalState
 }) => {
+
   return (
     <div>
+      <div className={classes.modalHeaderPagingContainer}>
+        {modalIndex !== 0 &&
+          <IconButton
+            className={classes.modalHeaderClose}
+            onClick={() => handleOpen(data[modalIndex - 1])}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        }
+        {modalIndex !== data.length - 1 &&
+          <IconButton
+            className={classes.modalHeaderClose}
+            onClick={() => handleOpen(data[modalIndex + 1])}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        }
+      </div>
       <div>
-        {modalState !== 'figures' && <Button
+        <Button
           variant='contained'
+          disabled={modalState === 'figures'}
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('figures')}
         >
           Figure
-        </Button>}
-        {modalState !== 'article figures' && <Button
+        </Button>
+        <Button
           variant='contained'
+          disabled={modalState === 'article figures'}
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('article figures')}
         >
           Figures In Article
-        </Button>}
-        {modalState !== 'page image' && hasPageImageModal && <Button
+        </Button>
+        <Button
           variant='contained'
+          disabled={modalState === 'page image' || !hasPageImageModal}
           disableElevation
           className={classes.modalButton}
           onClick={() => setModalState('page image')}
         >
           Page
-        </Button>}
+        </Button>
         <Button
           variant='contained'
           disableElevation

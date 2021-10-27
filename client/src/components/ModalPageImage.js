@@ -1,31 +1,8 @@
-import React from 'react';
-
-import ModalHeader from './ModalHeader';
-
 const ModalPageImage = ({
-  classes,
   curItem, 
-  handleClose,
-  hasPageImageModal,
-  modalState,
   renderImgPageModal,
-  setModalState
 }) => {
-  return (
-    <>
-      <ModalHeader
-        classes={classes}
-        curItem={curItem}
-        handleClose={handleClose}
-        hasPageImageModal={hasPageImageModal}
-        modalState={modalState}
-        setModalState={setModalState}
-      />
-      <div>
-        {renderImgPageModal(curItem, true)}
-      </div>
-    </>
-  );
+  return renderImgPageModal(curItem, true);
 };
 
 export default ModalPageImage;

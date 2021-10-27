@@ -1,29 +1,15 @@
 import React from 'react';
 
-import ModalHeader from './ModalHeader';
-
 const ModalFigures = ({
   classes,
   curItem,
-  handleClose,
-  hasPageImageModal,
-  modalState,
-  renderImgModal,
-  setModalState
+  renderImg,
 }) => {
 
   return (
     <>
-      <ModalHeader
-        classes={classes}
-        curItem={curItem}
-        handleClose={handleClose}
-        hasPageImageModal={hasPageImageModal}
-        modalState={modalState}
-        setModalState={setModalState}
-      />
       <div className={classes.modalImagesHolder}>
-        {renderImgModal(curItem, true)}
+        {renderImg(curItem, true)}
       </div>
     </>
   );
