@@ -101,10 +101,6 @@ const Articles = props => {
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
         }
-        console.log([
-          ...(pagination ? dataIds : []),
-          ...response.data.records.map(record => record.id)
-        ]);
       });
   };
 
