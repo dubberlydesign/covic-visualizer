@@ -174,6 +174,28 @@ const FilterMenu = props => {
     }
   };
 
+  const handleApplySubmit = e => {
+    const filterObject = {
+      sourceType: sourceName,
+      countryType: countryName,
+      languageType: languageName,
+      publisherType: publisherName,
+      subjectType: subjectName,
+      visualizationType: visualizationName,
+      visualTechType: visualTechName,
+      interactionType: interactionName,
+      articleTechType: articleTechName,
+      isDateFilter:
+        format(selectedDateBefore, dateFormatting) !==
+        format(initialNewDate, dateFormatting) || format(selectedDateAfter, dateFormatting) !== format(new Date(), dateFormatting),
+      dateRange: [
+        format(selectedDateBefore, dateFormatting),
+        format(selectedDateAfter, dateFormatting),
+      ],
+    };
+    props.handleSubmit(e, filterObject);
+  }
+
   const handleApplyFilterClick = (anchor, open) => event => {
     const filterObject = {
       sourceType: sourceName,
@@ -474,7 +496,7 @@ const FilterMenu = props => {
         </IconButton>
       </div>
       <SearchMenu 
-        handleSubmit={handleSubmit}
+        handleSubmit={handleApplySubmit}
         handleChange={handleChange}
       />
       <div className={classes.filterHeaders}>ARTICLE ATTRIBUTES</div>

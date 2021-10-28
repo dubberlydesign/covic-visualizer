@@ -150,9 +150,11 @@ const Articles = props => {
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e, filterObject)  => {
     e.preventDefault();
+    globFilter = filterObject;
     resetField = true;
+    setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
     requestData("search", "FIND", searchValue, "", "", searchValue, globFilter);
