@@ -89,6 +89,10 @@ const FilterMenu = props => {
   const initialNewDate = new Date(initialStartDate);
   const [isDisableFilterApply, setIsDisableFilterApply] = useState(false);
 
+  // toggleMenu states for order and label
+  const [checkedOrder, setCheckedOrder] = useState(false);
+  const [checkedLabel, setCheckedLabel] = useState(false);
+
   const FILTER_CATEGORIES_ARTICLE = [
     {
       filterLabel: "Source Type",
@@ -261,6 +265,9 @@ const FilterMenu = props => {
       ],
     };
 
+    props.resetToggles();
+    setCheckedOrder(false);
+    setCheckedLabel(false);
     props.handleApplyFilter(filterObject);
     setState({ ...state, [anchor]: open });
   };
@@ -492,6 +499,10 @@ const FilterMenu = props => {
         <ToggleMenu 
           toggleOrder={toggleOrder}
           toggleLabel={toggleLabel}
+          checkedOrder={checkedOrder}
+          checkedLabel={checkedLabel}
+          setCheckedOrder={setCheckedOrder}
+          setCheckedLabel={setCheckedLabel}
         />
       </div>
       <div className={classes.searchFilterHolder}>
@@ -530,7 +541,7 @@ const FilterMenu = props => {
                   : handleApplyFilterClick(anchor, false)
               }
             >
-              Apply Filters
+              Apply
             </Button>
           </div>
           <div className={classes.resetIconHolder}>

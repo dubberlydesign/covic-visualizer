@@ -364,6 +364,12 @@ const Articles = props => {
     setToggleLabels(checked);
   }
 
+  const resetToggles = () => {
+    globOrderChecked = false;
+    setToggleOrder(false);
+    setToggleLabels(false);
+  }
+
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
@@ -386,6 +392,7 @@ const Articles = props => {
             handleChange={handleChange}
             toggleOrder={toggleArticleOrder}
             toggleLabel={toggleArticleLabel}
+            resetToggles={resetToggles}
           />
         </AppBar>
       </ElevationScroll>
