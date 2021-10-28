@@ -21,6 +21,11 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: "900",
   },
 
+  covicMenuSelected: {
+    textDecoration: "underline",
+    color: "#b3bbc1",
+  },
+
   covicLogo: {
     margin: "auto",
     display: "block",

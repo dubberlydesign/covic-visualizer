@@ -331,5 +331,6 @@ export const useStyles = makeStyles(theme => ({
     justifyContent: "space-around",
     left: "10%",
     marginTop: "10px",
-  }
+    paddingBottom: "40px",
+  },
 }));
