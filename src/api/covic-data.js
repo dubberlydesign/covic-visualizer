@@ -92,22 +92,9 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-01-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
   }
 
-  // if (req.query.queryType === "search") {
-  //   const searchParams = setSearchParams(
-  //     params,
-  //     req.query.term,
-  //     req.query.fieldReset
-  //   );
-  //   params = { ...params, searchParams };
-    
-  //   if (req.query.term === "") {
-  //     params.filterByFormula = "";
-  //   }
-  // }
-
   if (req.query.queryType === "filter" || req.query.queryType === "search") {
     const obj = JSON.parse(req.query.filterValue);
-
+    
     const queryObject = {
       'sourceTypeQuery': '',
       'countryTypeQuery': '',
@@ -203,9 +190,6 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     params.filterByFormula += ')';
     params.filterByFormula = params.filterByFormula.replace(',)', ')');
 
-    // if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
-    //   params.filterByFormula = "";
-    // }
     if (req.query.fieldReset === "true") {
       params.offset = "";
     } else {

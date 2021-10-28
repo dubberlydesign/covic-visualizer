@@ -29,6 +29,7 @@ import _uniqueId from "lodash/uniqueId";
 
 let globFilter = {};
 let resetField = false;
+let globOrderChecked = 'false';
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -140,12 +141,12 @@ const Articles = props => {
   const handleScroll = () => {
     resetField = false;
     if (searchValue !== "") {
-      requestData("search", "FIND", searchValue, "", "", searchValue, globFilter);
+      requestData("search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
     } else {
       if (isEmpty(globFilter) && searchValue === "") {
         requestData();
       } else {
-        requestData("filter", "FIND", globFilter, "", "", searchValue, globFilter);
+        requestData("filter", "FIND", globFilter, "", globOrderChecked, searchValue, globFilter);
       }
     }
   };
@@ -157,7 +158,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("search", "FIND", searchValue, "", "", searchValue, globFilter);
+    requestData("search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
   };
 
   const handleChange = e => {
@@ -291,7 +292,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject, "", "", searchValue, filterObject);
+    requestData("filter", "FIND", filterObject, "", globOrderChecked, searchValue, filterObject);
   };
 
   const handleOpen = item => {
@@ -357,6 +358,7 @@ const Articles = props => {
       const filterObject = getFilterObjectReset();
       globFilter = filterObject;
     }
+    globOrderChecked = checked;
     setToggleOrder(checked);
     resetField = true;
     setIsMoreEntries(true);
