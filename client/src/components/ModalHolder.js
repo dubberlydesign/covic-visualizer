@@ -22,6 +22,7 @@ const ModalHolder = ({
   hasPageImageModal,
   modalIndex,
   open,
+  pdf,
   renderImgArticleFiguresModal,
   renderImg,
   renderImgPageModal
@@ -62,6 +63,7 @@ const ModalHolder = ({
                 hasPageImageModal={hasPageImageModal}
                 modalIndex={modalIndex}
                 modalState={modalState}
+                pdf={pdf}
                 setModalState={setModalState}
               />
                 {modalState === 'figures' &&

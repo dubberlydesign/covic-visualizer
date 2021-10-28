@@ -16,30 +16,13 @@ const ModalHeader = ({
   hasPageImageModal,
   modalIndex,
   modalState,
+  pdf,
   setModalState
 }) => {
 
   return (
     <div>
-      <div className={classes.modalHeaderPagingContainer}>
-        {modalIndex !== 0 &&
-          <IconButton
-            className={classes.modalHeaderClose}
-            onClick={() => handleOpen(data[modalIndex - 1])}
-          >
-            <ArrowBackIcon />
-          </IconButton>
-        }
-        {modalIndex !== data.length - 1 &&
-          <IconButton
-            className={classes.modalHeaderClose}
-            onClick={() => handleOpen(data[modalIndex + 1])}
-          >
-            <ArrowForwardIcon />
-          </IconButton>
-        }
-      </div>
-      <div>
+      <div className={classes.ModalHeaderNavWrapper}>
         <Button
           variant='contained'
           disabled={modalState === 'figures'}
@@ -63,7 +46,13 @@ const ModalHeader = ({
           disabled={modalState === 'page image' || !hasPageImageModal}
           disableElevation
           className={classes.modalButton}
-          onClick={() => setModalState('page image')}
+          onClick={() => {
+            if (pdf) {
+              window.open(pdf);
+              return;
+            }
+            setModalState('page image');
+          }}
         >
           Page
         </Button>
@@ -76,14 +65,38 @@ const ModalHeader = ({
         >
           Visit
         </Button>
+        <div className={classes.modalIconHolder}>
+          <IconButton
+            className={classes.modalHeaderClose}
+            onClick={handleClose}
+          >
+            <HighlightOffIcon className={classes.filterBtnIcon} />
+          </IconButton>
+        </div>
       </div>
-      <div className={classes.modalIconHolder}>
-        <IconButton
-          className={classes.modalHeaderClose}
-          onClick={handleClose}
-        >
-          <HighlightOffIcon className={classes.filterBtnIcon} />
-        </IconButton>
+      <div className={classes.modalHeaderPagingContainer}>
+        {modalIndex !== 0 &&
+          <IconButton
+            className={classes.modalHeaderPrevious}
+            onClick={() => {
+              setModalState('figures');
+              handleOpen(data[modalIndex - 1]);
+            }}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+        }
+        {modalIndex !== data.length - 1 &&
+          <IconButton
+            className={classes.modalHeaderNext}
+            onClick={() => {
+              setModalState('figures');
+              handleOpen(data[modalIndex + 1]);
+            }}
+          >
+            <ArrowForwardIcon />
+          </IconButton>
+        }
       </div>
       <div className={classes.modalChipHolder}>
         <Chip
