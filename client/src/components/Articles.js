@@ -353,10 +353,11 @@ const Articles = props => {
   }
 
   const toggleArticleOrder = (checked) => {
-    // const filterObject = getFilterObjectReset();
+    if (isEmpty(globFilter) && searchValue === "") {
+      const filterObject = getFilterObjectReset();
+      globFilter = filterObject;
+    }
     setToggleOrder(checked);
-
-    // globFilter = filterObject;
     resetField = true;
     setIsMoreEntries(true);
     data.splice(0, data.length);
