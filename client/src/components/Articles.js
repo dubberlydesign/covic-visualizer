@@ -69,6 +69,8 @@ const Articles = props => {
     term = "",
     fieldCol = "",
     inOrderDisplay = false,
+    searchValue = "",
+    filterValue = "",
   ) => {
     setIsLoading(true);
     axios
@@ -83,6 +85,8 @@ const Articles = props => {
           fieldCol,
           fieldReset: resetField,
           inOrderDisplay,
+          searchValue,
+          filterValue,
         },
       })
       .then(response => {
@@ -136,12 +140,12 @@ const Articles = props => {
   const handleScroll = () => {
     resetField = false;
     if (searchValue !== "") {
-      requestData("search", "FIND", searchValue);
+      requestData("search", "FIND", searchValue, "", "", searchValue, globFilter);
     } else {
-      if (isEmpty(globFilter)) {
+      if (isEmpty(globFilter) && searchValue === "") {
         requestData();
       } else {
-        requestData("filter", "FIND", globFilter);
+        requestData("filter", "FIND", globFilter, "", "", searchValue, globFilter);
       }
     }
   };
@@ -151,7 +155,7 @@ const Articles = props => {
     resetField = true;
     data.splice(0, data.length);
     setData(data);
-    requestData("search", "FIND", searchValue);
+    requestData("search", "FIND", searchValue, "", "", searchValue, globFilter);
   };
 
   const handleChange = e => {
@@ -285,7 +289,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject);
+    requestData("filter", "FIND", filterObject, "", "", searchValue, filterObject);
   };
 
   const handleOpen = item => {
@@ -347,15 +351,15 @@ const Articles = props => {
   }
 
   const toggleArticleOrder = (checked) => {
-    const filterObject = getFilterObjectReset();
+    // const filterObject = getFilterObjectReset();
     setToggleOrder(checked);
 
-    globFilter = filterObject;
+    // globFilter = filterObject;
     resetField = true;
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject, "", checked);
+    requestData("filter", "FIND", globFilter, "", checked, searchValue, globFilter);
   }
 
   const toggleArticleLabel = (checked) => {
