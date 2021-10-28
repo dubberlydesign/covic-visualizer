@@ -206,7 +206,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   modalTextHolderCountryLang: {
-    paddingRight: "30px",
+    paddingRight: "10px",
   },
 
   modalTextHolderImg: {
@@ -230,16 +230,22 @@ export const useStyles = makeStyles(theme => ({
     alignItems: "center",
     marginBottom: 20,
     flexWrap: "wrap",
+    clear: "both"
   },
 
   modalIconHolder: {
     display: "flex",
-    justifyContent: "flex-end",
+    flex: "1 1 auto",
+    justifyContent: "flex-end"
+  },
+
+  ModalHeaderNavWrapper: {
+    display: "flex",
+    margin: "20px 0"
   },
 
   modalHeaderPagingContainer: {
-    display: "flex",
-    justifyContent: "space-between",
+    margin: "0 0 20px"
   },
 
   modalArticleFiguresWrapper: {
@@ -287,14 +293,26 @@ export const useStyles = makeStyles(theme => ({
     color: "#C6AD8F",
     letterSpacing: "-1px",
     borderColor: "#C6AD8F",
-    margin: "0 0 0 0",
+    margin: 0,
     cursor: "pointer",
   },
 
+  modalHeaderPrevious: {
+    color: "#C6AD8F",
+    cursor: "pointer",
+    float: "left"
+  },
+
+  modalHeaderNext: {
+    color: "#C6AD8F",
+    cursor: "pointer",
+    float: "right"
+  },
+
   modalButton: {
-    marginTop: "30px",
     backgroundColor: "#C6AD8F",
     color: "white",
+    flex: "0 0 auto",
     width: "auto",
     marginRight: "10px",
   },

@@ -269,12 +269,6 @@ const Articles = props => {
           isPdf ? classes.modalPageImagePdf : {}
         )}
         key={_uniqueId()}
-        onClick={() => {
-          if (isPdf) {
-            window.open(curFigureData.pageImage.Image[0]?.url);
-          }
-          return;
-        }}
       />
     );
   };
@@ -367,6 +361,7 @@ const Articles = props => {
   }
 
   const hasPageImageModal = curFigureData?.pageImage;
+  const pdf = curFigureData?.pageImage?.Image[0]?.type === 'application/pdf' ? curFigureData.pageImage.Image[0]?.url : '';
 
   return (
     <div className={classes.root}>
@@ -446,6 +441,7 @@ const Articles = props => {
         handleClose={handleClose}
         handleOpen={handleOpen}
         hasPageImageModal={hasPageImageModal}
+        pdf={pdf}
         modalIndex={modalIndex}
         open={open}
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
