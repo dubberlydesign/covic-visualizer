@@ -19,7 +19,6 @@ import Container from "@material-ui/core/Container";
 import ElevationScroll from "./ElavationScroll";
 
 import FilterMenu from "./FilterMenu";
-import ToggleMenu from "./ToggleMenu/ToggleMenu";
 import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
 import GridContent from "./GridContent";
 import ModalHolder from "./ModalHolder";
@@ -379,16 +378,14 @@ const Articles = props => {
         <AppBar className={classes.appBar}>
           <div className={classes.mainHeader}>
             <CovicExternalNav />
-            <ToggleMenu 
-              toggleOrder={toggleArticleOrder}
-              toggleLabel={toggleArticleLabel}
-            />
           </div>
           <FilterMenu
             handleApplyFilter={handleApplyFilter}
             filteringValues={filteringValues}
             handleSubmit={handleSubmit}
             handleChange={handleChange}
+            toggleOrder={toggleArticleOrder}
+            toggleLabel={toggleArticleLabel}
           />
         </AppBar>
       </ElevationScroll>
@@ -404,7 +401,7 @@ const Articles = props => {
             container
             spacing={3}
             style={{
-              padding: width > 1280 ? "60px 20px 20px 344px" : "100px 20px 20px 20px",
+              padding: width > 1280 ? "100px 20px 20px 344px" : "100px 20px 20px 20px",
             }}
           >
             <InfiniteScroll

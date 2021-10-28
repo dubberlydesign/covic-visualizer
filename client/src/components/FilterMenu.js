@@ -29,6 +29,7 @@ import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
 import SearchMenu from './SearchMenu';
+import ToggleMenu from "./ToggleMenu/ToggleMenu";
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -480,60 +481,68 @@ const FilterMenu = props => {
     );
   };
 
-  const list = (anchor, handleSubmit, handleChange)  => (
+  const list = (anchor, handleSubmit, handleChange, toggleOrder, toggleLabel)  => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === "bottom",
       })}
       role='presentation'
     >
-      <div className={classes.filterHeaderContainer}>
-        <IconButton
-          className={classes.filterHeaderClose}
-          onClick={toggleDrawer(anchor, false)}
-        >
-          <HighlightOffIcon className={classes.filterBtnIcon} />
-        </IconButton>
+      <div className={classes.toggleMenu}>
+        <ToggleMenu 
+          toggleOrder={toggleOrder}
+          toggleLabel={toggleLabel}
+        />
       </div>
-      <SearchMenu 
-        handleSubmit={handleApplySubmit}
-        handleChange={handleChange}
-      />
-      <div className={classes.filterHeaders}>ARTICLE ATTRIBUTES</div>
-      {renderArticleFilterCategories()}
-      {renderDateFilter()}
-      <div className={classes.filterHeaders}>FIGURE ATTRIBUTES</div>
-      {renderFigureFilterCategories()}
-      <div className={classes.filterButtonsHolder}>
-        <div
-          className={
-            isDisableFilterApply
-              ? classes.disableIconHolder
-              : classes.infoIconHolder
-          }
-        >
-          <Button
-            variant='contained'
-            disableElevation
-            className={classes.links}
-            onClick={
+      <div className={classes.searchFilterHolder}>
+        <div className={classes.filterHeaderContainer}>
+          <IconButton
+            className={classes.filterHeaderClose}
+            onClick={toggleDrawer(anchor, false)}
+          >
+            <HighlightOffIcon className={classes.filterBtnIcon} />
+          </IconButton>
+        </div>
+        <SearchMenu 
+          handleSubmit={handleApplySubmit}
+          handleChange={handleChange}
+        />
+        <div className={classes.filterHeaders}>ARTICLE ATTRIBUTES</div>
+        {renderArticleFilterCategories()}
+        {renderDateFilter()}
+        <div className={classes.filterHeaders}>FIGURE ATTRIBUTES</div>
+        {renderFigureFilterCategories()}
+        <div className={classes.filterButtonsHolder}>
+          <div
+            className={
               isDisableFilterApply
-                ? () => {}
-                : handleApplyFilterClick(anchor, false)
+                ? classes.disableIconHolder
+                : classes.infoIconHolder
             }
           >
-            Apply Filters
-          </Button>
-        </div>
-        <div className={classes.resetIconHolder}>
-          <Button
-            variant='contained'
-            disableElevation
-            className={classes.links}
-            onClick={handleResetFilter(anchor, false)}
-          >
-            Reset
-          </Button>
+            <Button
+              variant='contained'
+              disableElevation
+              className={classes.links}
+              onClick={
+                isDisableFilterApply
+                  ? () => {}
+                  : handleApplyFilterClick(anchor, false)
+              }
+            >
+              Apply Filters
+            </Button>
+          </div>
+          <div className={classes.resetIconHolder}>
+            <Button
+              variant='contained'
+              disableElevation
+              className={classes.links}
+              onClick={handleResetFilter(anchor, false)}
+            >
+              Reset
+            </Button>
+          </div>
         </div>
       </div>
     </div>
@@ -555,7 +564,7 @@ const FilterMenu = props => {
         onClose={toggleDrawer(anchor, false)}
         {...(width > 1280 ? {variant: "permanent"} : null)}
       >
-        {list(anchor, props.handleSubmit, props.handleChange)}
+        {list(anchor, props.handleSubmit, props.handleChange, props.toggleOrder, props.toggleLabel)}
       </Drawer>
     </Fragment>
   ));

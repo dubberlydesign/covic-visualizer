@@ -11,7 +11,6 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("lg")]: {
       height: "100%",
       overflowY: "scroll",
-      paddingLeft: "20px",
       width: "344px",
       "& hr": {
         display: "none"
@@ -164,5 +163,16 @@ export const useStyles = makeStyles(theme => ({
 
   datePickerKeyboard: {
     paddingLeft: "9px",
+  },
+
+  toggleMenu: {
+    padding: '20px 0 20px 20px',
+    borderBottom: '1px solid #b3bbc1'
+  },
+
+  searchFilterHolder: {
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "20px",
+    },
   }
 }));
