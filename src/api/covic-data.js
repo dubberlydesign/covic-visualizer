@@ -30,16 +30,12 @@ axios.defaults.headers[
   "Authorization"
 ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
-const setSearchParams = (params, term, fieldReset) => {
-  const locParams = params;
-  if (fieldReset === "true") {
-    locParams.offset = "";
-  }
+const setSearchParams = (term) => {
   const capTerm = term.charAt(0).toUpperCase() + term.slice(1);
   const upperTerm = term.toUpperCase();
   const lowerTerm = term.toLowerCase();
 
-  locParams.filterByFormula = `OR(
+  const locParams = `IF(OR(
     FIND('${term}',{ID}),
     FIND('${term}',{File Name}),
     FIND('${lowerTerm}',{File Name}),
@@ -57,7 +53,7 @@ const setSearchParams = (params, term, fieldReset) => {
     FIND('${term}',{Title 2}),
     FIND('${lowerTerm}',{Title 2}),
     FIND('${capTerm}',{Title 2}),
-    FIND('${upperTerm}',{Title 2}))`;
+    FIND('${upperTerm}',{Title 2})), 'true')`;
 
   return locParams;
 };
@@ -96,21 +92,9 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-01-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
   }
 
-  if (req.query.queryType === "search") {
-    const searchParams = setSearchParams(
-      params,
-      req.query.term,
-      req.query.fieldReset
-    );
-    params = { ...params, searchParams };
+  if (req.query.queryType === "filter" || req.query.queryType === "search") {
+    const obj = JSON.parse(req.query.filterValue);
     
-    if (req.query.term === "") {
-      params.filterByFormula = "";
-    }
-  }
-  if (req.query.queryType === "filter") {
-    const obj = JSON.parse(req.query.term);
-
     const queryObject = {
       'sourceTypeQuery': '',
       'countryTypeQuery': '',
@@ -202,12 +186,10 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     Object.keys(queryObject).forEach(key => {
       params.filterByFormula += appendToFilterQuery(queryObject[key]);
     })
+    params.filterByFormula += setSearchParams(req.query.searchValue);
     params.filterByFormula += ')';
     params.filterByFormula = params.filterByFormula.replace(',)', ')');
 
-    if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
-      params.filterByFormula = "";
-    }
     if (req.query.fieldReset === "true") {
       params.offset = "";
     } else {

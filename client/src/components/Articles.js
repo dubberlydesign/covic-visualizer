@@ -29,6 +29,7 @@ import _uniqueId from "lodash/uniqueId";
 
 let globFilter = {};
 let resetField = false;
+let globOrderChecked = 'false';
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -69,6 +70,8 @@ const Articles = props => {
     term = "",
     fieldCol = "",
     inOrderDisplay = false,
+    searchValue = "",
+    filterValue = "",
   ) => {
     setIsLoading(true);
     axios
@@ -83,6 +86,8 @@ const Articles = props => {
           fieldCol,
           fieldReset: resetField,
           inOrderDisplay,
+          searchValue,
+          filterValue,
         },
       })
       .then(response => {
@@ -136,22 +141,24 @@ const Articles = props => {
   const handleScroll = () => {
     resetField = false;
     if (searchValue !== "") {
-      requestData("search", "FIND", searchValue);
+      requestData("search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
     } else {
-      if (isEmpty(globFilter)) {
+      if (isEmpty(globFilter) && searchValue === "") {
         requestData();
       } else {
-        requestData("filter", "FIND", globFilter);
+        requestData("filter", "FIND", globFilter, "", globOrderChecked, searchValue, globFilter);
       }
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e, filterObject)  => {
     e.preventDefault();
+    globFilter = filterObject;
     resetField = true;
+    setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("search", "FIND", searchValue);
+    requestData("search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
   };
 
   const handleChange = e => {
@@ -279,7 +286,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject);
+    requestData("filter", "FIND", filterObject, "", globOrderChecked, searchValue, filterObject);
   };
 
   const handleOpen = item => {
@@ -341,15 +348,17 @@ const Articles = props => {
   }
 
   const toggleArticleOrder = (checked) => {
-    const filterObject = getFilterObjectReset();
+    if (isEmpty(globFilter) && searchValue === "") {
+      const filterObject = getFilterObjectReset();
+      globFilter = filterObject;
+    }
+    globOrderChecked = checked;
     setToggleOrder(checked);
-
-    globFilter = filterObject;
     resetField = true;
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject, "", checked);
+    requestData("filter", "FIND", globFilter, "", checked, searchValue, globFilter);
   }
 
   const toggleArticleLabel = (checked) => {
