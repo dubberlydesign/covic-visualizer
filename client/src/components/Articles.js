@@ -93,7 +93,7 @@ const Articles = props => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
         setDataIds([
-          ...dataIds,
+          // ...dataIds,
           ...response.data.records.map(record => record.id)
         ]);
         setDataOffset(response.data.offset);
