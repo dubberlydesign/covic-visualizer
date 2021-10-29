@@ -85,7 +85,7 @@ const Articles = props => {
           fieldCol,
           fieldReset: resetField,
           inOrderDisplay,
-          searchValue,
+          searchValue: resetClicked ? '' : searchValue,
           filterValue,
         },
       })
@@ -97,6 +97,7 @@ const Articles = props => {
           ...response.data.records.map(record => record.id)
         ]);
         setDataOffset(response.data.offset);
+        resetClicked = false;
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
         }
@@ -364,6 +365,14 @@ const Articles = props => {
     setToggleLabels(checked);
   }
 
+  let resetClicked = false;
+  const resetToggles = () => {
+    resetClicked = true;
+    globOrderChecked = false;
+    setToggleOrder(false);
+    setToggleLabels(false);
+  }
+
   const getDisplayLabels = () => {
     return toggleLabels ? classes.hideLabelsForToggle : '';
   }
@@ -386,6 +395,9 @@ const Articles = props => {
             handleChange={handleChange}
             toggleOrder={toggleArticleOrder}
             toggleLabel={toggleArticleLabel}
+            resetToggles={resetToggles}
+            searchValue={searchValue}
+            setSearchVal={setSearchVal}
           />
         </AppBar>
       </ElevationScroll>

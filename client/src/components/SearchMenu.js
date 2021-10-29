@@ -8,11 +8,15 @@ import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 
 import { useStyles } from "./styles";
 
-const SearchMenu = ({handleSubmit, handleChange}) => {
+const SearchMenu = ({handleSubmit, handleChange, searchValue, setSearchVal}) => {
   const theme = createTheme();
 
   const classes = useStyles(theme);
 
+  const handleValueChange = e => {
+    handleChange(e);
+    setSearchVal(e.target.value);
+  }
   return (
     <form className={classes.formHolderSide}>
       <TextField
@@ -48,7 +52,8 @@ const SearchMenu = ({handleSubmit, handleChange}) => {
             </InputAdornment>
           ),
         }}
-        onChange={handleChange}
+        onChange={handleValueChange}
+        value={searchValue}
       />
     </form>
   )

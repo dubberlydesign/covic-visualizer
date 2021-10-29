@@ -6,14 +6,11 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import { useStyles } from "./stylesToggleMenu";
 
-const ToggleMenu = ({toggleOrder, toggleLabel}) => {
+const ToggleMenu = ({toggleOrder, toggleLabel, checkedOrder, setCheckedOrder, checkedLabel, setCheckedLabel}) => {
   const theme = createTheme();
 
   const classes = useStyles(theme);
 
-  const [checkedOrder, setCheckedOrder] = useState(false);
-  const [checkedLabel, setCheckedLabel] = useState(false);
-  
   const handleSwitchChangeOrder = event => {
     toggleOrder(event.target.checked);
     setCheckedOrder(event.target.checked);
