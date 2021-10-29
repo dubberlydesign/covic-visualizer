@@ -271,7 +271,6 @@ const FilterMenu = props => {
     props.setSearchVal('');
     
     props.handleApplyFilter(filterObject);
-
     setState({ ...state, [anchor]: open });
   };
 
@@ -520,6 +519,7 @@ const FilterMenu = props => {
         <SearchMenu 
           handleSubmit={handleApplySubmit}
           handleChange={handleChange}
+          handleSearchClear={props.handleSearchClear}
           searchValue={props.searchValue}
           setSearchVal={props.setSearchVal}
         />

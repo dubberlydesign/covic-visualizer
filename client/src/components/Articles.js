@@ -167,6 +167,10 @@ const Articles = props => {
     }, 500);
   };
 
+  const handleSearchClear = () => {
+    setSearchVal('');
+  }
+
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
 
@@ -398,6 +402,7 @@ const Articles = props => {
             resetToggles={resetToggles}
             searchValue={searchValue}
             setSearchVal={setSearchVal}
+            handleSearchClear={handleSearchClear}
           />
         </AppBar>
       </ElevationScroll>
