@@ -183,8 +183,8 @@ const FilterMenu = props => {
     }
   };
 
-  const handleApplySubmit = e => {
-    const filterObject = {
+  const getFilterObject = () => {
+    return {
       sourceType: sourceName,
       countryType: countryName,
       languageType: languageName,
@@ -202,7 +202,14 @@ const FilterMenu = props => {
         format(selectedDateAfter, dateFormatting),
       ],
     };
-    props.handleSubmit(e, filterObject);
+  }
+
+  const handleApplySubmit = e => {
+    props.handleSubmit(e, getFilterObject());
+  }
+
+  const handleSearchClear = () => {
+    props.handleSearchClear(getFilterObject())
   }
 
   const handleApplyFilterClick = (anchor, open) => event => {
@@ -304,6 +311,10 @@ const FilterMenu = props => {
     }
   };
 
+  const handleSearchEdit = e => {
+    props.handleChange(e);
+  }
+ 
   const handleDelete = (e, value) => {
     e.preventDefault();
     if (sourceName.includes(value)) {
@@ -528,8 +539,8 @@ const FilterMenu = props => {
         </div>
         <SearchMenu 
           handleSubmit={handleApplySubmit}
-          handleChange={handleChange}
-          handleSearchClear={props.handleSearchClear}
+          handleChange={handleSearchEdit}
+          handleSearchClear={handleSearchClear}
           searchValue={props.searchValue}
           setSearchVal={props.setSearchVal}
         />
