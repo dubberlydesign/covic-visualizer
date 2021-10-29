@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { createTheme } from "@material-ui/core/styles";
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
 
 import { useStyles } from "./stylesToggleMenu";
 
@@ -39,7 +40,7 @@ const ToggleMenu = ({toggleOrder, toggleLabel, checkedOrder, setCheckedOrder, ch
             <Grid item>Old</Grid>
           </Grid>
         }
-        label="Published Date"
+        label={<Typography className={classes.formControlLabel}>Published Date</Typography>}
         className={classes.toggleSwitchOrderLabel}
         labelPlacement="top"
       />
@@ -59,7 +60,7 @@ const ToggleMenu = ({toggleOrder, toggleLabel, checkedOrder, setCheckedOrder, ch
             <Grid item>Off</Grid>
           </Grid> 
         }
-        label="Labels"
+        label={<Typography className={classes.formControlLabel}>Labels</Typography>}
         className={classes.toggleSwitchOrderLabel}
         labelPlacement="top"
       />
