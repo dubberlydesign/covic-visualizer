@@ -5,10 +5,11 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import IconButton from "@material-ui/core/IconButton";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
+import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
 import { useStyles } from "./styles";
 
-const SearchMenu = ({handleSubmit, handleChange, searchValue, setSearchVal}) => {
+const SearchMenu = ({handleSubmit, handleChange, handleSearchClear, searchValue, setSearchVal}) => {
   const theme = createTheme();
 
   const classes = useStyles(theme);
@@ -48,6 +49,14 @@ const SearchMenu = ({handleSubmit, handleChange, searchValue, setSearchVal}) => 
                     opacity: ".5",
                   }}
                 />
+              </IconButton>
+              <IconButton
+                style={{
+                  padding: "0",
+                }}
+                onClick={handleSearchClear}
+              >
+                <HighlightOffIcon className={classes.searchClearIcon} />
               </IconButton>
             </InputAdornment>
           ),

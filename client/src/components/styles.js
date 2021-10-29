@@ -333,4 +333,9 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "10px",
     paddingBottom: "40px",
   },
+
+  searchClearIcon: {
+    color: "#C6AD8F",
+    opacity: ".5",
+  }
 }));
