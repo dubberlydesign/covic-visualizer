@@ -268,7 +268,10 @@ const FilterMenu = props => {
     props.resetToggles();
     setCheckedOrder(false);
     setCheckedLabel(false);
+    props.setSearchVal('');
+    
     props.handleApplyFilter(filterObject);
+
     setState({ ...state, [anchor]: open });
   };
 
@@ -517,6 +520,8 @@ const FilterMenu = props => {
         <SearchMenu 
           handleSubmit={handleApplySubmit}
           handleChange={handleChange}
+          searchValue={props.searchValue}
+          setSearchVal={props.setSearchVal}
         />
         <div className={classes.filterHeaders}>ARTICLE ATTRIBUTES</div>
         {renderArticleFilterCategories()}
