@@ -167,8 +167,14 @@ const Articles = props => {
     }, 500);
   };
 
-  const handleSearchClear = () => {
+  const handleSearchClear = filterObject => {
     setSearchVal('');
+    globFilter = filterObject;
+    resetField = true;
+    setIsMoreEntries(true);
+    data.splice(0, data.length);
+    setData(data);
+    requestData("filter", "FIND", filterObject, "", globOrderChecked, "", filterObject);
   }
 
   const renderImg = (item, isModal = false) => {

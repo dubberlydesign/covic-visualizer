@@ -5,5 +5,10 @@ export const useStyles = makeStyles(theme => ({
 
   toggleSwitchOrderLabel: {
     color: "#C6AD8F",
+  },
+
+  formControlLabel: {
+    color: "#C6AD8F",
+    fontSize: "14px"
   }
 }));

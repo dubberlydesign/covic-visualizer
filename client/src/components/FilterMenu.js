@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState, Fragment } from "react";
 import clsx from "clsx";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
@@ -93,6 +94,8 @@ const FilterMenu = props => {
   const [checkedOrder, setCheckedOrder] = useState(false);
   const [checkedLabel, setCheckedLabel] = useState(false);
 
+  const [isFilterChange, setIsFilterChange] = useState(false);
+
   const FILTER_CATEGORIES_ARTICLE = [
     {
       filterLabel: "Source Type",
@@ -172,6 +175,7 @@ const FilterMenu = props => {
   ];
 
   const handleFilterChange = (event, setFilter, filterData) => {
+    setIsFilterChange(true);
     if (event.target.value.includes("All")) {
       setFilter(filterData);
     } else {
@@ -179,8 +183,8 @@ const FilterMenu = props => {
     }
   };
 
-  const handleApplySubmit = e => {
-    const filterObject = {
+  const getFilterObject = () => {
+    return {
       sourceType: sourceName,
       countryType: countryName,
       languageType: languageName,
@@ -198,10 +202,18 @@ const FilterMenu = props => {
         format(selectedDateAfter, dateFormatting),
       ],
     };
-    props.handleSubmit(e, filterObject);
+  }
+
+  const handleApplySubmit = e => {
+    props.handleSubmit(e, getFilterObject());
+  }
+
+  const handleSearchClear = () => {
+    props.handleSearchClear(getFilterObject())
   }
 
   const handleApplyFilterClick = (anchor, open) => event => {
+    setIsFilterChange(false);
     const filterObject = {
       sourceType: sourceName,
       countryType: countryName,
@@ -233,6 +245,8 @@ const FilterMenu = props => {
   };
 
   const handleResetFilter = (anchor, open) => event => {
+    setIsFilterChange(false);
+
     setSourceName([]);
     setCountryName([]);
     setLanguageName([]);
@@ -278,6 +292,7 @@ const FilterMenu = props => {
   const [selectedDateAfter, setSelectedDateAfter] = useState(new Date());
 
   const handleDateChangeBefore = date => {
+    setIsFilterChange(true);
     setSelectedDateBefore(date);
     if (isValid(date)) {
       setIsDisableFilterApply(false);
@@ -287,6 +302,7 @@ const FilterMenu = props => {
   };
 
   const handleDateChangeAfter = date => {
+    setIsFilterChange(true);
     setSelectedDateAfter(date);
     if (isValid(date)) {
       setIsDisableFilterApply(false);
@@ -295,6 +311,10 @@ const FilterMenu = props => {
     }
   };
 
+  const handleSearchEdit = e => {
+    props.handleChange(e);
+  }
+ 
   const handleDelete = (e, value) => {
     e.preventDefault();
     if (sourceName.includes(value)) {
@@ -327,6 +347,7 @@ const FilterMenu = props => {
     if (articleTechName.includes(value)) {
       setArticleTechName(current => _without(current, value));
     }
+    setIsFilterChange(true);
   };
 
   const toggleDrawer = (anchor, open) => event => {
@@ -518,8 +539,8 @@ const FilterMenu = props => {
         </div>
         <SearchMenu 
           handleSubmit={handleApplySubmit}
-          handleChange={handleChange}
-          handleSearchClear={props.handleSearchClear}
+          handleChange={handleSearchEdit}
+          handleSearchClear={handleSearchClear}
           searchValue={props.searchValue}
           setSearchVal={props.setSearchVal}
         />
@@ -539,7 +560,7 @@ const FilterMenu = props => {
             <Button
               variant='contained'
               disableElevation
-              className={classes.links}
+              className={classNames(classes.links, isFilterChange ? '' : classes.disableFilterApply)}
               onClick={
                 isDisableFilterApply
                   ? () => {}
@@ -560,6 +581,7 @@ const FilterMenu = props => {
             </Button>
           </div>
         </div>
+        <div className={classNames(classes.filterCTA, isFilterChange ? '' : classes.filterCTAHide)}>*Click Apply to update results</div>
       </div>
     </div>
   );

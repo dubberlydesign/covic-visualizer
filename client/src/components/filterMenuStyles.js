@@ -174,5 +174,20 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("lg")]: {
       paddingLeft: "20px",
     },
+  },
+  
+  disableFilterApply: {
+    opacity: '.25',
+    pointerEvents: 'none',
+  },
+
+  filterCTA: {
+    color: "#C6AD8F",
+    fontWeight: "900",
+    textTransform: "uppercase",
+  },
+
+  filterCTAHide: {
+    display: "none",
   }
 }));

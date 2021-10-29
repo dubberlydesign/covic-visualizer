@@ -1,7 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 
 export const useStyles = makeStyles(theme => ({
-  covicExternalNavMenuHolder: {},
+  covicExternalNavMenuHolder: {
+    fontSize: "16px"
+  },
 
   covicExternalNavList: {
     display: "flex",
