@@ -64,6 +64,7 @@ const Articles = props => {
   const [toggleLabels, setToggleLabels] = useState(false);
 
   const requestData = (
+    pagination = false,
     queryType = "",
     filterType = "",
     term = "",
@@ -93,7 +94,7 @@ const Articles = props => {
         setIsLoading(false);
         setData(data.concat(response.data.records));
         setDataIds([
-          // ...dataIds,
+          ...(pagination ? dataIds : []),
           ...response.data.records.map(record => record.id)
         ]);
         setDataOffset(response.data.offset);
@@ -141,12 +142,12 @@ const Articles = props => {
   const handleScroll = () => {
     resetField = false;
     if (searchValue !== "") {
-      requestData("search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
+      requestData(true, "search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
     } else {
       if (isEmpty(globFilter) && searchValue === "") {
-        requestData();
+        requestData(true);
       } else {
-        requestData("filter", "FIND", globFilter, "", globOrderChecked, searchValue, globFilter);
+        requestData(true, "filter", "FIND", globFilter, "", globOrderChecked, searchValue, globFilter);
       }
     }
   };
@@ -158,7 +159,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
+    requestData(false, "search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
   };
 
   const handleChange = e => {
@@ -296,7 +297,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject, "", globOrderChecked, searchValue, filterObject);
+    requestData(false, "filter", "FIND", filterObject, "", globOrderChecked, searchValue, filterObject);
   };
 
   const handleOpen = item => {
@@ -368,7 +369,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", globFilter, "", checked, searchValue, globFilter);
+    requestData(false, "filter", "FIND", globFilter, "", checked, searchValue, globFilter);
   }
 
   const toggleArticleLabel = (checked) => {
