@@ -175,7 +175,7 @@ const Articles = props => {
     setIsMoreEntries(true);
     data.splice(0, data.length);
     setData(data);
-    requestData("filter", "FIND", filterObject, "", globOrderChecked, "", filterObject);
+    requestData(false, "filter", "FIND", filterObject, "", globOrderChecked, "", filterObject);
   }
 
   const renderImg = (item, isModal = false) => {
