@@ -31,6 +31,7 @@ import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
 import SearchMenu from './SearchMenu';
 import ToggleMenu from "./ToggleMenu/ToggleMenu";
+import './GlobalCssSlider.css';
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -367,7 +368,7 @@ const FilterMenu = props => {
         <div key={index}>
           <div>
             <FormControl className={classes.formControl}>
-              <InputLabel id='mutiple-chip-label'>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
+              <InputLabel id='mutiple-chip-label' shrink={filterName.length === 0 ? false : true} focused={false} >{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
               <Select
                 labelId='mutiple-chip-label'
                 id='mutiple-chip'
@@ -419,7 +420,7 @@ const FilterMenu = props => {
         <div key={index} className={classes.figureFilterMenu}>
           <div>
             <FormControl className={classes.formControl}>
-              <InputLabel id='mutiple-chip-label'>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
+              <InputLabel id='mutiple-chip-label' shrink={filterName.length === 0 ? false : true} focused={false}>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
               <Select
                 labelId='mutiple-chip-label'
                 id='mutiple-chip'
