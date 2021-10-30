@@ -105,7 +105,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   resetIconHolder: {
-    margin: "0px 0px 20px 20px",
+    margin: "0px 0px 0px 20px",
     flex: "0 0 100%",
     [theme.breakpoints.up("lg")]: {
       margin: "0",
@@ -114,7 +114,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   infoIconHolder: {
-    margin: "0px 0px 20px 20px",
+    margin: "0px 0px 0px 20px",
     flex: "0 0 100%",
     [theme.breakpoints.up("lg")]: {
       margin: "0",
@@ -197,6 +197,10 @@ export const useStyles = makeStyles(theme => ({
     color: "#C6AD8F",
     fontWeight: "900",
     textTransform: "uppercase",
+    padding: "0 40px 40px 40px",
+    [theme.breakpoints.up("lg")]: {
+      padding: '0',
+    },
   },
 
   filterCTAHide: {
