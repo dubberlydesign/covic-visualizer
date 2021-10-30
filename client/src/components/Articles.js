@@ -169,6 +169,7 @@ const Articles = props => {
   };
 
   const handleSearchClear = filterObject => {
+    resetClicked = true;
     setSearchVal('');
     globFilter = filterObject;
     resetField = true;
