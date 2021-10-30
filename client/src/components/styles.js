@@ -130,7 +130,10 @@ export const useStyles = makeStyles(theme => ({
 
   formHolderSide: {
     display: "flex",
-    margin: "0 auto",
+    margin: "40px 0 0 20px",
+    [theme.breakpoints.up('lg')]: {
+      margin: "20px auto 0 auto",
+    },
   },
 
   inputText: {
@@ -327,11 +330,14 @@ export const useStyles = makeStyles(theme => ({
   
   mainHeader: {
     position: "relative",
-    display: "flex",
-    justifyContent: "space-around",
-    left: "10%",
-    marginTop: "10px",
     paddingBottom: "40px",
+    paddingLeft: "40px",
+    [theme.breakpoints.up('lg')]: {
+      display: "flex",
+      justifyContent: "space-around",
+      left: "10%",
+      marginTop: "10px",
+    },
   },
 
   searchClearIcon: {

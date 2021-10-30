@@ -42,7 +42,11 @@ export const useStyles = makeStyles(theme => ({
 
   filterHeaderContainer: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
+    [theme.breakpoints.up("lg")]: {
+      display: "none"
+    },
+
   },
 
   filterHeader: {
@@ -90,7 +94,7 @@ export const useStyles = makeStyles(theme => ({
   filterButtonsHolder: {
     display: "flex",
     justifyContent: "flex-end",
-    margin: "0px 75px 20px 20px",
+    margin: "0px 10px 20px 20px",
     flexDirection: "column",
     [theme.breakpoints.up("lg")]: {
       flexDirection: "row",
@@ -101,17 +105,19 @@ export const useStyles = makeStyles(theme => ({
   },
 
   resetIconHolder: {
-    margin: "0px 10px 20px 20px",
+    margin: "0px 0px 20px 20px",
+    flex: "0 0 100%",
     [theme.breakpoints.up("lg")]: {
-      margin: 0,
+      margin: "0",
       flex: "0 0 50%"
     }
   },
 
   infoIconHolder: {
-    margin: "0px 66px 20px 20px",
+    margin: "0px 0px 20px 20px",
+    flex: "0 0 100%",
     [theme.breakpoints.up("lg")]: {
-      margin: 0,
+      margin: "0",
       flex: "0 0 50%"
     }
   },
@@ -130,10 +136,10 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "20px",
     backgroundColor: "#C6AD8F",
     color: "white",
-    width: "150px",
+    width: "92%",
     [theme.breakpoints.up("lg")]: {
       marginTop: 0,
-      width: "92%"
+      width: "150px",
     }
   },
 
@@ -156,9 +162,12 @@ export const useStyles = makeStyles(theme => ({
   },
 
   filterHeaders: {
-    margin: "40px 0 10px 0",
+    margin: "40px 0 10px 20px",
     fontWeight: "700",
-    color: "#C6AD8F"
+    color: "#C6AD8F",
+    [theme.breakpoints.up("lg")]: {
+      margin: "40px 0 10px 0",
+    },
   },
 
   datePickerKeyboard: {
@@ -166,8 +175,11 @@ export const useStyles = makeStyles(theme => ({
   },
 
   toggleMenu: {
-    padding: '20px 0 20px 20px',
-    borderBottom: '1px solid #b3bbc1'
+    padding: '20px 0 20px 5px',
+    borderBottom: '1px solid #b3bbc1',
+    [theme.breakpoints.up("lg")]: {
+      padding: '20px 0 20px 20px',
+    },
   },
 
   searchFilterHolder: {

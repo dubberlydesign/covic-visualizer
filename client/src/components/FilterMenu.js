@@ -519,6 +519,14 @@ const FilterMenu = props => {
       })}
       role='presentation'
     >
+      <div className={classes.filterHeaderContainer}>
+          <IconButton
+            className={classes.filterHeaderClose}
+            onClick={toggleDrawer(anchor, false)}
+          >
+            <HighlightOffIcon className={classes.filterBtnIcon} />
+          </IconButton>
+        </div>
       <div className={classes.toggleMenu}>
         <ToggleMenu 
           toggleOrder={toggleOrder}
@@ -530,14 +538,6 @@ const FilterMenu = props => {
         />
       </div>
       <div className={classes.searchFilterHolder}>
-        <div className={classes.filterHeaderContainer}>
-          <IconButton
-            className={classes.filterHeaderClose}
-            onClick={toggleDrawer(anchor, false)}
-          >
-            <HighlightOffIcon className={classes.filterBtnIcon} />
-          </IconButton>
-        </div>
         <SearchMenu 
           handleSubmit={handleApplySubmit}
           handleChange={handleSearchEdit}
