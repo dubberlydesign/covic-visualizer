@@ -12,16 +12,24 @@ const CovicExternalNav = () => {
   const classes = useStyles(theme);
 
   const handleMenuClick = e => {
+    let link = '';
     switch(e?.currentTarget?.textContent) {
       case 'COVIC Is':
+        link = 'http://covic-archive.org/covic-is.html';
         break;
       case 'COVIC Contains':
+        link = 'http://covic-archive.org/covic-contains.html';
         break;
       case 'COVIC Team':
+        link = 'http://covic-archive.org/team.html';
         break;
+      case 'COVIC Visualizer':
+        return;
       default:
         break;
     }
+
+    window.open(link, "_blank");
   }
 
   const renderNavItems = () => MENU_ITEMS.map(item => (
