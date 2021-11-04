@@ -2,12 +2,14 @@
   display: none;
 }
 
-.MuiDrawer-paperAnchorDockedLeft {
-  border: none !important;
-  border-top: 1px solid rgba(0, 0, 0, 0.12) !important;
-}
-
-.MuiDrawer-paper {
-  top: 18% !important;
-  height: 83% !important;
+@media (min-width: 1200px) {
+  .MuiDrawer-paperAnchorDockedLeft {
+    border: none !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.12) !important;
+  }
+  
+  .MuiDrawer-paper {
+    top: 18% !important;
+    height: 83% !important;
+  }
 }
