@@ -134,7 +134,8 @@ export const useStyles = makeStyles(theme => ({
     display: "flex",
     margin: "40px 0 0 20px",
     [theme.breakpoints.up('lg')]: {
-      margin: "20px auto 0 auto",
+      paddingTop: "20px",
+      margin: "0 auto 0 auto",
     },
   },
 
@@ -352,12 +353,10 @@ export const useStyles = makeStyles(theme => ({
   
   mainHeader: {
     position: "relative",
-    paddingBottom: "40px",
-    paddingLeft: "40px",
+    zIndex: "1300",
     [theme.breakpoints.up('lg')]: {
       display: "flex",
       justifyContent: "space-around",
-      left: "10%",
       marginTop: "10px",
     },
   },
