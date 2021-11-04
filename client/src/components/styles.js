@@ -66,10 +66,11 @@ export const useStyles = makeStyles(theme => ({
   },
 
   cardImageModal: {
-    objectFit: "cover",
     boxSizing: "border-box",
     border: "1px solid #333",
-    width: "100%"
+    display: "block",
+    margin: "0 auto",
+    width: "auto"
   },
 
   cardVideoModal: {
@@ -84,8 +85,8 @@ export const useStyles = makeStyles(theme => ({
   },
 
   modalImagesHolder: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: "block",
+    textAlign: "center"
   },
 
   cardLabel: {
