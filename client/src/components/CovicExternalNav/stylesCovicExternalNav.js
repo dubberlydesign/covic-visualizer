@@ -33,5 +33,6 @@ export const useStyles = makeStyles(theme => ({
     margin: "auto",
     display: "block",
     width: "125px",
+    cursor: "pointer",
   }
 }));
