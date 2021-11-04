@@ -21,7 +21,7 @@ const ModalHeader = ({
 }) => {
 
   return (
-    <div>
+    <div className={classes.ModalHeaderWrapper}>
       <div className={classes.ModalHeaderNavWrapper}>
         <Button
           variant='contained'
@@ -98,63 +98,77 @@ const ModalHeader = ({
           </IconButton>
         }
       </div>
-      <div className={classes.modalChipHolder}>
-        <Chip
-          className={classes.chip}
-          label={curItem?.fields["Source Type"]}
-        />
-        <Typography
-          variant='body2'
-          color='textSecondary'
-          component='p'
-          className={classes.modalTextHolderCountryLang}
-        >
-          {curItem?.fields["Country (from ID copy)"]} -{" "}
-          {curItem?.fields["Language (from Article)"]}
-        </Typography>
+      {/*METADATA INFO STARTS HERE */}
+      {/*Publisher, Country: Language */}
+      <div className={classes.modalHeaderMetaContainer}>
+        <div className={classes.modalHeaderMetaLeftColumn}>
+          <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolder}
+          >
+            {curItem?.fields["Publisher (from ID copy)"]}, {curItem?.fields["Country (from ID copy)"]}: {curItem?.fields["Language (from Article)"]}
+          </Typography>
+          <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolderHeader}
+          >
+            {curItem?.fields["Title (from Article)"]}
+          </Typography>
+          {modalState !== 'article figures' &&<Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolder}
+          >
+            {curItem?.fields["File Name"]}
+          </Typography>}
+        </div>
+        <div className={classes.modalHeaderMetaRightColumn}>
+          <Chip
+            className={classes.chip}
+            label={curItem?.fields["Source Type"]}
+          />
+          <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolder}
+          >
+            {curItem?.fields["Date (from Article)"]}
+          </Typography>
+          <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolder}
+          >
+            Subject(s): {curItem?.fields["Subject(s) (from Article)"]?.join(', ')}
+          </Typography>
+          <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolder}
+          >
+            {curItem?.fields["Article Technique (from Article)"]?.join(', ')}
+          </Typography>
+        </div>
       </div>
-      <Typography
-        variant='body2'
-        color='textSecondary'
-        component='p'
-        className={classes.modalTextHolderHeader}
-      >
-        {curItem?.fields["Title (from Article)"]}
-      </Typography>
-      <Typography
-        variant='body2'
-        color='textSecondary'
-        component='p'
-        className={classes.modalTextHolder}
-      >
-        <b>Publisher:</b>{" "}
-        {curItem?.fields["Publisher (from ID copy)"]}
-      </Typography>
-      <Typography
-        variant='body2'
-        color='textSecondary'
-        component='p'
-        className={classes.modalTextHolder}
-      >
-        <b>Published:</b> {curItem?.fields["Date (from Article)"]}
-      </Typography>
-      <Typography
-        variant='body2'
-        color='textSecondary'
-        component='p'
-        className={classes.modalTextHolderLast}
-      >
-        <b>Subject(s):</b>{" "}
-        {curItem?.fields["Subject(s) (from Article)"]?.map(
-          (subject, index) =>
-            `${subject}${
-              index ===
-              curItem?.fields["Subject(s) (from Article)"].length - 1
-                ? ""
-                : ", "
-            }`
-        )}
-      </Typography>
+      {modalState !== 'article figures' && <div>
+        <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolderCountryLang}
+        >
+          {curItem?.fields['Visualization Type']?.join(', ')}, {curItem?.fields['Visual Technique']?.join(', ')}, {curItem?.fields['Visual Technique']?.join(', ')}
+        </Typography>
+      </div>}
+      {/*METATDATA INFO ENDS HERE */}
     </div>
   );
 };

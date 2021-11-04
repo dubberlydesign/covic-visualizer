@@ -185,13 +185,6 @@ const Articles = props => {
     const imgList = item?.fields["Image"]?.map((figure, index) => {
       return (
         <>
-          {isModal && <Typography
-            variant='body2'
-            color='textSecondary'
-            component='span'
-          >
-            {figure?.filename}
-          </Typography>}
           {!isModal &&
             <div className={classes.cardImageOverLay} onClick={() => handleOpen(item)}></div>
           }
@@ -212,15 +205,6 @@ const Articles = props => {
                   Your browser does not support the video tag.
                 </video>
               </div>
-          }
-          {item?.fields['Visualization Type']?.length && isModal &&
-            <Typography
-              variant='body2'
-              color='textSecondary'
-              component='span'
-            >
-              {item?.fields['Visualization Type'].join(', ')}
-            </Typography>
           }
         </>
       );

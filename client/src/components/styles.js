@@ -70,6 +70,7 @@ export const useStyles = makeStyles(theme => ({
     border: "1px solid #333",
     display: "block",
     margin: "0 auto",
+    maxWidth: "100%",
     width: "auto"
   },
 
@@ -252,6 +253,20 @@ export const useStyles = makeStyles(theme => ({
     margin: "0 0 20px"
   },
 
+  modalHeaderMetaContainer: {
+    clear: "both",
+    display: "flex"
+  },
+
+  modalHeaderMetaLeftColumn: {
+    flex: "0 1 67%"
+  },
+
+  modalHeaderMetaRightColumn: {
+    flex: "0 1 33%",
+    textAlign: "right"
+  },
+
   modalArticleFiguresWrapper: {
     listStyle: "none",
     margin: 0,
@@ -283,12 +298,18 @@ export const useStyles = makeStyles(theme => ({
   },
 
   modalPageImage: {
+    display: "block",
     height: "auto",
-    width: "100%",
+    margin: "0 auto",
+    maxWidth: "100%",
   },
 
   modalPageImagePdf: {
     cursor: "pointer"
+  },
+
+  ModalHeaderWrapper: {
+    margin: "0 0 40px"
   },
 
   modalHeaderClose: {
