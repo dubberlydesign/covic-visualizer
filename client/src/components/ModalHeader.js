@@ -39,7 +39,7 @@ const ModalHeader = ({
           className={classes.modalButton}
           onClick={() => setModalState('article figures')}
         >
-          Figures In Article
+          In Article
         </Button>
         <Button
           variant='contained'
