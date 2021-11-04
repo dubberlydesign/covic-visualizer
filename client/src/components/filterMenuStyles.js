@@ -81,8 +81,9 @@ export const useStyles = makeStyles(theme => ({
     fontSize: 16,
     fontWeight: 700,
     color: "#425664",
+    margin: "20px 40%",
     [theme.breakpoints.up("lg")]: {
-      visibility: "hidden"
+      display: "none",
     },
 
   },
@@ -177,10 +178,11 @@ export const useStyles = makeStyles(theme => ({
 
   toggleMenu: {
     padding: '20px 0 20px 5px',
-    borderRight: '1px solid rgba(0, 0, 0, 0.12)',
     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    borderRight: "none",
     [theme.breakpoints.up("lg")]: {
       padding: '20px 0 20px 20px',
+      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
     },
   },
 
@@ -209,5 +211,5 @@ export const useStyles = makeStyles(theme => ({
 
   filterCTAHide: {
     display: "none",
-  }
+  },
 }));

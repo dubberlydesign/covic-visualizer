@@ -364,5 +364,5 @@ export const useStyles = makeStyles(theme => ({
   searchClearIcon: {
     color: "#C6AD8F",
     opacity: ".5",
-  }
+  },
 }));
