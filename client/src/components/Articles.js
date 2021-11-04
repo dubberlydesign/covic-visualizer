@@ -25,6 +25,7 @@ import ModalHolder from "./ModalHolder";
 import { useStyles } from "./styles";
 import { format } from "date-fns";
 import _uniqueId from "lodash/uniqueId";
+import './GlobalCssSlider.css';
 
 let globFilter = {};
 let resetField = false;
@@ -384,18 +385,20 @@ const Articles = props => {
           <div className={classes.mainHeader}>
             <CovicExternalNav />
           </div>
-          <FilterMenu
-            handleApplyFilter={handleApplyFilter}
-            filteringValues={filteringValues}
-            handleSubmit={handleSubmit}
-            handleChange={handleChange}
-            toggleOrder={toggleArticleOrder}
-            toggleLabel={toggleArticleLabel}
-            resetToggles={resetToggles}
-            searchValue={searchValue}
-            setSearchVal={setSearchVal}
-            handleSearchClear={handleSearchClear}
-          />
+          <div className="filterMenuWrapper">
+            <FilterMenu
+              handleApplyFilter={handleApplyFilter}
+              filteringValues={filteringValues}
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              toggleOrder={toggleArticleOrder}
+              toggleLabel={toggleArticleLabel}
+              resetToggles={resetToggles}
+              searchValue={searchValue}
+              setSearchVal={setSearchVal}
+              handleSearchClear={handleSearchClear}
+            />
+          </div>
         </AppBar>
       </ElevationScroll>
       {isLoading && (
@@ -410,7 +413,7 @@ const Articles = props => {
             container
             spacing={3}
             style={{
-              padding: width > 1280 ? "100px 20px 20px 344px" : "100px 20px 20px 20px",
+              padding: width > 1280 ? "50px 20px 20px 344px" : "100px 20px 20px 20px",
             }}
           >
             <InfiniteScroll
