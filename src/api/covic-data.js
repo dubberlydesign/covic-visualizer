@@ -67,7 +67,8 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     cacheLogTime &&
     cacheLogTime > Date.now() - 30 * 1000 &&
     prevOffset === req.query.offset &&
-    prevOrderDisplay === req.query.inOrderDisplay
+    prevOrderDisplay === req.query.inOrderDisplay &&
+    cachedRecords?.length > 0
   ) {
     return res.json(cachedRecords);
   }
