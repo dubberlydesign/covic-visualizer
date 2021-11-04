@@ -26,6 +26,7 @@ const CovicExternalNav = () => {
       case 'COVIC Visualizer':
         return;
       default:
+        link = 'http://covic-archive.org/index.html';
         break;
     }
 
@@ -35,7 +36,7 @@ const CovicExternalNav = () => {
   const renderNavItems = () => MENU_ITEMS.map(item => (
       <li className={classes.covicExternalNavListItem} key={_uniqueId()}>
         {item === "logo" 
-          ? <img className={classes.covicLogo} src="./assets/logo.svg" alt="" />
+          ? <img className={classes.covicLogo} src="./assets/logo.svg" alt="" onClick={handleMenuClick} />
           : <div className={classNames(classes.covicMenuLabel, item === 'COVIC Visualizer' ? classes.covicMenuSelected : '')} onClick={handleMenuClick}>{item}</div>
         }
       </li>
