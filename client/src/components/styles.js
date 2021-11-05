@@ -75,8 +75,8 @@ export const useStyles = makeStyles(theme => ({
   },
 
   cardVideoModal: {
-    maxWidth: "800px",
-    width: "100%",
+    maxWidth: "100%",
+    width: "auto",
   },
 
   altMediaFormat: {
