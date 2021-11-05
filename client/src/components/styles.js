@@ -62,7 +62,7 @@ export const useStyles = makeStyles(theme => ({
     left: "20px",
     position: "absolute",
     width: "calc(100% - 40px)",
-    zIndex: 5
+    zIndex: 5,
   },
 
   cardImageModal: {
@@ -71,23 +71,24 @@ export const useStyles = makeStyles(theme => ({
     display: "block",
     margin: "0 auto",
     maxWidth: "100%",
-    width: "auto"
+    width: "auto",
   },
 
   cardVideoModal: {
-    width: "100%"
+    maxWidth: "800px",
+    width: "100%",
   },
 
   altMediaFormat: {
     fontWeight: 900,
     color: "#C6AD8F",
     marginBottom: "10px",
-    width: "100%"
+    width: "100%",
   },
 
   modalImagesHolder: {
     display: "block",
-    textAlign: "center"
+    textAlign: "center",
   },
 
   cardLabel: {
@@ -286,7 +287,8 @@ export const useStyles = makeStyles(theme => ({
   modalArticleFigureImage: {
     display: "block",
     height: "auto",
-    width: "100%",
+    maxWidth: "100%",
+    width: "auto",
   },
 
   modalArticleFiguresVizWrapper: {
