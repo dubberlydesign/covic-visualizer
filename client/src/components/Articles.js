@@ -91,11 +91,13 @@ const Articles = props => {
         },
       })
       .then(response => {
+        const filteredResponse =
+          response.data.records.filter(record => record.fields["File Name"].indexOf('-0') === -1);
         setIsLoading(false);
-        setData(data.concat(response.data.records));
+        setData(data.concat(filteredResponse));
         setDataIds([
           ...(pagination ? dataIds : []),
-          ...response.data.records.map(record => record.id)
+          ...filteredResponse.map(record => record.id)
         ]);
         setDataOffset(response.data.offset);
         resetClicked = false;

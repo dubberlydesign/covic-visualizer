@@ -129,7 +129,7 @@ const ModalHeader = ({
           >
             {curItem?.fields["Title (from Article)"]}
           </Typography>
-          {modalState !== 'article figures' &&<Typography
+          {modalState === 'figures' &&<Typography
             variant='body2'
             color='textSecondary'
             component='p'
@@ -169,7 +169,7 @@ const ModalHeader = ({
           </Typography>
         </div>
       </div>
-      {modalState !== 'article figures' && <div>
+      {modalState === 'figures' && <div>
         <Typography
             variant='body2'
             color='textSecondary'
