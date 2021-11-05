@@ -20,6 +20,17 @@ const ModalHeader = ({
   setModalState
 }) => {
 
+  const combinedMetaArray = [];
+  if (curItem?.fields['Visualization Type']) {
+    combinedMetaArray.push(curItem.fields['Visualization Type']);
+  }
+  if (curItem?.fields['Visual Technique']) {
+    combinedMetaArray.push(curItem.fields['Visual Technique']);
+  }
+  if(curItem?.fields['Interaction Technique']) {
+    combinedMetaArray.push(curItem?.fields['Interaction Technique']);
+  }
+
   return (
     <div className={classes.ModalHeaderWrapper}>
       <div className={classes.ModalHeaderNavWrapper}>
@@ -165,7 +176,7 @@ const ModalHeader = ({
             component='p'
             className={classes.modalTextHolderCountryLang}
         >
-          {curItem?.fields['Visualization Type']?.join(', ')}, {curItem?.fields['Visual Technique']?.join(', ')}, {curItem?.fields['Visual Technique']?.join(', ')}
+          {combinedMetaArray?.join(', ')}
         </Typography>
       </div>}
       {/*METATDATA INFO ENDS HERE */}
