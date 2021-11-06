@@ -43,13 +43,11 @@ export const useStyles = makeStyles(theme => ({
   filterHeaderContainer: {
     display: "flex",
     justifyContent: "flex-end",
-
     [theme.breakpoints.up("lg")]: {
-      display: "none"
+      display: "none",
     },
-
   },
-
+  
   filterHeader: {
     fontFamily: "sans-serif",
     fontSize: 20,
@@ -81,7 +79,6 @@ export const useStyles = makeStyles(theme => ({
     fontSize: 16,
     fontWeight: 700,
     color: "#425664",
-    margin: "20px 40%",
     [theme.breakpoints.up("lg")]: {
       display: "none",
     },

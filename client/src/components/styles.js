@@ -356,9 +356,11 @@ export const useStyles = makeStyles(theme => ({
   mainHeader: {
     position: "relative",
     zIndex: "1300",
+    margin: "0",
     [theme.breakpoints.up('lg')]: {
       display: "flex",
       justifyContent: "space-between",
+      margin: "0",
     },
   },
 
@@ -375,4 +377,18 @@ export const useStyles = makeStyles(theme => ({
       display: "block",
     },
   },
+
+  menuRight: {
+    display: "none",
+    [theme.breakpoints.up("lg")]: {
+      display: "block",
+    },
+  },
+
+  filterMenuWrapper: {
+    margin: "10px auto",
+    [theme.breakpoints.up("lg")]: {
+      margin: 0,
+    },
+  }
 }));
