@@ -3,6 +3,12 @@ import { createTheme } from "@material-ui/core/styles";
 import _uniqueId from "lodash/uniqueId";
 import classNames from "classnames";
 
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuIcon from "@material-ui/icons/Menu";
+
+import CovicFlyOutMenu from "./CovicFlyOutMenu";
 import { useStyles } from "./stylesCovicExternalNav";
 
 const MENU_ITEMS = ["COVIC Is", "COVIC Contains", "COVIC Visualizer", "logo", "COVIC Team"];
@@ -46,6 +52,7 @@ const CovicExternalNav = () => {
   return (
     <div className={classes.covicExternalNavMenuHolder}>
       <ul className={classes.covicExternalNavList}>{renderNavItems()}</ul>
+      <CovicFlyOutMenu handleMenuClick={handleMenuClick} />
     </div>
   )
 }

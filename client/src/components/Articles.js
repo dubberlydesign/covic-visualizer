@@ -411,7 +411,7 @@ const Articles = props => {
             <CovicExternalNav />
             <div className={classes.menuRight} />
           </div>
-          <div className="filterMenuWrapper">
+          <div className={classes.filterMenuWrapper}>
             <FilterMenu
               handleApplyFilter={handleApplyFilter}
               filteringValues={filteringValues}
