@@ -104,10 +104,6 @@ const Articles = props => {
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
         }
-        // console.log(data);
-        // console.log(dataIds);
-        // console.log(response.data.records);
-        // console.log(filteredResponse);
       });
   };
 
