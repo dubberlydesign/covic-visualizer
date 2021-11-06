@@ -17,7 +17,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import ElevationScroll from "./ElavationScroll";
-import {filterFunnel} from '../utils/filterFunnel';
+import {handleDataFunnel} from '../utils/filterFunnel';
 
 import FilterMenu from "./FilterMenu";
 import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
@@ -65,22 +65,6 @@ const Articles = props => {
   const [toggleOrder, setToggleOrder] = useState(false);
   const [toggleLabels, setToggleLabels] = useState(false);
 
-  const handleSubjectTypeFilter = (response, filterValue) => {
-    let funnelArray = [];
-    funnelArray.splice(0, funnelArray.length);
-    funnelArray = response;
-    funnelArray = filterFunnel(funnelArray, filterValue?.sourceType, 'Source Type');
-    funnelArray = filterFunnel(funnelArray, filterValue?.countryType, 'Country (from ID copy)');
-    funnelArray = filterFunnel(funnelArray, filterValue?.languageType, 'Language (from Article)');
-    funnelArray = filterFunnel(funnelArray, filterValue?.publisherType, 'Publisher (from ID copy)');
-    funnelArray = filterFunnel(funnelArray, filterValue?.subjectType, 'Subject(s) (from Article)');
-    funnelArray = filterFunnel(funnelArray, filterValue?.articleTechTyp, 'Article Technique (from Article)');
-    funnelArray = filterFunnel(funnelArray, filterValue?.visualizationType, 'Visualization Type');
-    funnelArray = filterFunnel(funnelArray, filterValue?.visualTechType, 'Visual Technique');
-    funnelArray = filterFunnel(funnelArray, filterValue?.interactionType, 'Interaction Technique');
-    return funnelArray;
-  }
-
   const requestData = (
     pagination = false,
     queryType = "",
@@ -111,12 +95,12 @@ const Articles = props => {
       .then(response => {
         const filteredResponse =
           response.data.records.filter(record => record.fields["File Name"].indexOf('-0') === -1);
-        const subjectTypeFilterResponse = handleSubjectTypeFilter(filteredResponse, filterValue);
+        const subjectTypeFilterResponse = handleDataFunnel(filteredResponse, filterValue);
         setIsLoading(false);
         setData(data.concat(subjectTypeFilterResponse));
         setDataIds([
           ...(pagination ? dataIds : []),
-          ...filteredResponse.map(record => record.id)
+          ...subjectTypeFilterResponse.map(record => record.id)
         ]);
         setDataOffset(response.data.offset);
         resetClicked = false;
