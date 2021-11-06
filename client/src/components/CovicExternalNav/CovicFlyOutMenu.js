@@ -5,7 +5,13 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import { createTheme } from "@material-ui/core/styles";
+import { useStyles } from "./stylesCovicExternalNav";
+
 const CovicFlyOutMenu = ({handleMenuClick}) => {
+  const theme = createTheme();
+  const classes = useStyles(theme);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -16,7 +22,7 @@ const CovicFlyOutMenu = ({handleMenuClick}) => {
   };
 
   return (
-    <>
+    <div className={classes.covicFlyOut}>
       <Button
         id="basic-button"
         aria-controls="basic-menu"
@@ -39,7 +45,7 @@ const CovicFlyOutMenu = ({handleMenuClick}) => {
         <MenuItem onClick={handleClose}><div onClick={handleMenuClick}>COVIC Contains</div></MenuItem>
         <MenuItem onClick={handleClose}><div onClick={handleMenuClick}>COVIC Team</div></MenuItem>
       </Menu>
-    </>
+    </div>
   )
 }
 
