@@ -23,6 +23,7 @@ import FilterMenu from "./FilterMenu";
 import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
 import GridContent from "./GridContent";
 import ModalHolder from "./ModalHolder";
+import ToggleMenu from "./ToggleMenu/ToggleMenu";
 import { useStyles } from "./styles";
 import { format } from "date-fns";
 import _uniqueId from "lodash/uniqueId";
@@ -64,6 +65,10 @@ const Articles = props => {
   const [isMoreEntries, setIsMoreEntries] = useState(true);
   const [toggleOrder, setToggleOrder] = useState(false);
   const [toggleLabels, setToggleLabels] = useState(false);
+
+  // toggleMenu states for order and label
+  const [checkedOrder, setCheckedOrder] = useState(false);
+  const [checkedLabel, setCheckedLabel] = useState(false);
 
   const requestData = (
     pagination = false,
@@ -202,7 +207,6 @@ const Articles = props => {
         setCurItem(item);
 
         response?.data?.records?.forEach((record) => {
-          console.log(record);
           if (record?.fields?.ID === item?.fields.ID) {
             if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
               curFigObject.pageImage = record?.fields;
@@ -394,7 +398,18 @@ const Articles = props => {
       <ElevationScroll {...props}>
         <AppBar className={classes.appBar}>
           <div className={classes.mainHeader}>
+            <div className={classes.toggleMenu}>
+              <ToggleMenu 
+                toggleOrder={toggleArticleOrder}
+                toggleLabel={toggleArticleLabel}
+                checkedOrder={checkedOrder}
+                checkedLabel={checkedLabel}
+                setCheckedOrder={setCheckedOrder}
+                setCheckedLabel={setCheckedLabel}
+              />
+            </div>
             <CovicExternalNav />
+            <div className={classes.menuRight} />
           </div>
           <div className="filterMenuWrapper">
             <FilterMenu
@@ -402,8 +417,8 @@ const Articles = props => {
               filteringValues={filteringValues}
               handleSubmit={handleSubmit}
               handleChange={handleChange}
-              toggleOrder={toggleArticleOrder}
-              toggleLabel={toggleArticleLabel}
+              setCheckedOrder={setCheckedOrder}
+              setCheckedLabel={setCheckedLabel}
               resetToggles={resetToggles}
               searchValue={searchValue}
               setSearchVal={setSearchVal}

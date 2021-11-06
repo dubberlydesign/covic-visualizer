@@ -1,5 +1,4 @@
 const addToSpecificFilter = (filterCol) => {
-  console.log('Filter Column ', filterCol)
   switch(filterCol) {
     default:
       break;

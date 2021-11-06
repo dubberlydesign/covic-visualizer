@@ -179,10 +179,8 @@ export const useStyles = makeStyles(theme => ({
   toggleMenu: {
     padding: '20px 0 20px 5px',
     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
-    borderRight: "none",
     [theme.breakpoints.up("lg")]: {
       padding: '20px 0 20px 20px',
-      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
     },
   },
 
@@ -190,7 +188,6 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("lg")]: {
       paddingLeft: "20px",
       paddingBottom: "20px",
-      borderRight: '1px solid rgba(0, 0, 0, 0.12)',
     },
   },
   

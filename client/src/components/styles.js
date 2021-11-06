@@ -358,8 +358,7 @@ export const useStyles = makeStyles(theme => ({
     zIndex: "1300",
     [theme.breakpoints.up('lg')]: {
       display: "flex",
-      justifyContent: "space-around",
-      marginTop: "10px",
+      justifyContent: "space-between",
     },
   },
 

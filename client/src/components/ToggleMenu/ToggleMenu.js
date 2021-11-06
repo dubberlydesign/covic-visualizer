@@ -23,7 +23,7 @@ const ToggleMenu = ({toggleOrder, toggleLabel, checkedOrder, setCheckedOrder, ch
   };
 
   return (
-    <div>
+    <div className={classes.toggleContainer}>
       <FormControlLabel
         control={
           <Grid component="label" container alignItems="center" spacing={1}>
