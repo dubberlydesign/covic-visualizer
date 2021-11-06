@@ -417,8 +417,12 @@ const Articles = props => {
               filteringValues={filteringValues}
               handleSubmit={handleSubmit}
               handleChange={handleChange}
+              checkedOrder={checkedOrder}
+              checkedLabel={checkedLabel}
               setCheckedOrder={setCheckedOrder}
               setCheckedLabel={setCheckedLabel}
+              toggleOrder={toggleArticleOrder}
+              toggleLabel={toggleArticleLabel}
               resetToggles={resetToggles}
               searchValue={searchValue}
               setSearchVal={setSearchVal}

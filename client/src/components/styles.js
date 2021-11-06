@@ -366,4 +366,13 @@ export const useStyles = makeStyles(theme => ({
     color: "#C6AD8F",
     opacity: ".5",
   },
+
+  toggleMenu: {
+    padding: '20px 0 20px 5px',
+    display: "none",
+    [theme.breakpoints.up("lg")]: {
+      padding: '0px 0 20px 20px',
+      display: "block",
+    },
+  },
 }));
