@@ -186,9 +186,6 @@ const Articles = props => {
   }
 
   const handleOpen = item => {
-    console.log('handleOpen');
-    // console.log(item);
-    // console.log(item?.fields.ID);
     setModalIndex(dataIds.indexOf(item.id));
 
     axios
@@ -261,9 +258,6 @@ const Articles = props => {
   const renderImgArticleFiguresModal = () => {
     if (curFigureData.figures.length === 0) return [];
     const imgList = curFigureData.figures.map((figure) => {
-      console.log('renderImgArticleFiguresModal');
-      console.log(curItem);
-      console.log(figure);
       return (
         <li
           className={classes.modalArticleFiguresItem}
