@@ -17,6 +17,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import ElevationScroll from "./ElavationScroll";
+import {handleDataFunnel} from '../utils/filterFunnel';
 
 import FilterMenu from "./FilterMenu";
 import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
@@ -94,11 +95,12 @@ const Articles = props => {
       .then(response => {
         const filteredResponse =
           response.data.records.filter(record => record.fields["File Name"].indexOf('-0') === -1);
+        const subjectTypeFilterResponse = handleDataFunnel(filteredResponse, filterValue);
         setIsLoading(false);
-        setData(data.concat(filteredResponse));
+        setData(data.concat(subjectTypeFilterResponse));
         setDataIds([
           ...(pagination ? dataIds : []),
-          ...filteredResponse.map(record => record.id)
+          ...subjectTypeFilterResponse.map(record => record.id)
         ]);
         setDataOffset(response.data.offset);
         resetClicked = false;
