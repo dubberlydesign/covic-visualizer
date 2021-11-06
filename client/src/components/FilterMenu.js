@@ -30,7 +30,6 @@ import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
 import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
 import SearchMenu from './SearchMenu';
-import ToggleMenu from "./ToggleMenu/ToggleMenu";
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -89,10 +88,6 @@ const FilterMenu = props => {
   const dateFormatting = "MM/dd/yyyy";
   const initialNewDate = new Date(initialStartDate);
   const [isDisableFilterApply, setIsDisableFilterApply] = useState(false);
-
-  // toggleMenu states for order and label
-  const [checkedOrder, setCheckedOrder] = useState(false);
-  const [checkedLabel, setCheckedLabel] = useState(false);
 
   const [isFilterChange, setIsFilterChange] = useState(false);
 
@@ -280,8 +275,8 @@ const FilterMenu = props => {
     };
 
     props.resetToggles();
-    setCheckedOrder(false);
-    setCheckedLabel(false);
+    props.setCheckedOrder(false);
+    props.setCheckedLabel(false);
     props.setSearchVal('');
     
     props.handleApplyFilter(filterObject);
@@ -511,7 +506,7 @@ const FilterMenu = props => {
     );
   };
 
-  const list = (anchor, handleSubmit, handleChange, toggleOrder, toggleLabel)  => (
+  const list = (anchor, handleSubmit, handleChange)  => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === "bottom",
@@ -519,22 +514,12 @@ const FilterMenu = props => {
       role='presentation'
     >
       <div className={classes.filterHeaderContainer}>
-          <IconButton
-            className={classes.filterHeaderClose}
-            onClick={toggleDrawer(anchor, false)}
-          >
-            <HighlightOffIcon className={classes.filterBtnIcon} />
-          </IconButton>
-        </div>
-      <div className={classes.toggleMenu}>
-        <ToggleMenu 
-          toggleOrder={toggleOrder}
-          toggleLabel={toggleLabel}
-          checkedOrder={checkedOrder}
-          checkedLabel={checkedLabel}
-          setCheckedOrder={setCheckedOrder}
-          setCheckedLabel={setCheckedLabel}
-        />
+        <IconButton
+          className={classes.filterHeaderClose}
+          onClick={toggleDrawer(anchor, false)}
+        >
+          <HighlightOffIcon className={classes.filterBtnIcon} />
+        </IconButton>
       </div>
       <div className={classes.searchFilterHolder}>
         <SearchMenu 
@@ -602,7 +587,7 @@ const FilterMenu = props => {
         onClose={toggleDrawer(anchor, false)}
         {...(width > 1280 ? {variant: "permanent"} : null)}
       >
-        {list(anchor, props.handleSubmit, props.handleChange, props.toggleOrder, props.toggleLabel)}
+        {list(anchor, props.handleSubmit, props.handleChange)}
       </Drawer>
     </Fragment>
   ));

@@ -2,16 +2,26 @@
 
 # Steps to run project locally
 
-## Start up Local Server
-
 From within the covic-visualizer folder run:
+
+## Install Server Dependencies
+
+```javascript
+npm install
+```
+## Start up Local Server
 
 ```javascript
 npm run dev
 ```
 
-## Run App Locally
+From within the covic-visualizer/client folder run:
 
+## Install Client Dependencies
+```javascript
+yarn
+```
+## Run App Locally
 ```javascript
 yarn start
 ```
@@ -26,4 +36,12 @@ git push heroku main
 
 ```javascript
 https://covic-visualizer.herokuapp.com
+```
+
+## Airtable Information
+Views used from Figures Table (Please do not edit the column names, param names for these views)
+```javascript
+API [DO NOT EDIT]
+API [DO NOT EDIT] old-new
+Figures Grid
 ```
