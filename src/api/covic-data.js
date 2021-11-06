@@ -240,7 +240,8 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
         params: {
           offset: req.query.offset,
           pageSize: req.query.requestAmount,
-          filterByFormula: `SEARCH('${req.query.queryType}',{ID})`,
+          filterByFormula: `IF(OR(FIND('${req.query.queryType}',{ID}), FIND('${req.query.queryType}',{Article})), 'true')`,
+          view: "Figures Grid"
         },
       })
       .then(response => {
