@@ -184,6 +184,42 @@ const Articles = props => {
     requestData(false, "filter", "FIND", filterObject, "", globOrderChecked, "", filterObject);
   }
 
+  const handleOpen = item => {
+    setModalIndex(dataIds.indexOf(item.id));
+
+    axios
+      .get("/api/v1/covic-data/figures", {
+        params: {
+          baseType: "Figures",
+          offset: 0,
+          queryType: item?.fields.ID,
+        },
+      })
+      .then(response => {
+        const curFigObject = {};
+        curFigObject.figures = [];
+
+        setCurItem(item);
+
+        response?.data?.records?.forEach((record) => {
+          console.log(record);
+          if (record?.fields?.ID === item?.fields.ID) {
+            if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
+              curFigObject.pageImage = record?.fields;
+            } else {
+              curFigObject.figures.push(record?.fields);
+            }
+          }
+        });
+        setCurFigureData(curFigObject);
+        setOpen(true);
+      });
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const renderImg = (item, isModal = false) => {
     if (item === null) return [];
 
@@ -222,7 +258,11 @@ const Articles = props => {
     if (curFigureData.figures.length === 0) return [];
     const imgList = curFigureData.figures.map((figure) => {
       return (
-        <li className={classes.modalArticleFiguresItem} key={_uniqueId()}>
+        <li
+          className={classes.modalArticleFiguresItem}
+          key={_uniqueId()}
+          onClick={() => console.log('article fig click')}
+        >
           <div className={classes.modalArticleFigureImageWrapper}>
             <Typography
               variant='body2'
@@ -288,39 +328,6 @@ const Articles = props => {
     data.splice(0, data.length);
     setData(data);
     requestData(false, "filter", "FIND", filterObject, "", globOrderChecked, searchValue, filterObject);
-  };
-
-  const handleOpen = item => {
-    setModalIndex(dataIds.indexOf(item.id));
-
-    axios
-      .get("/api/v1/covic-data/figures", {
-        params: {
-          baseType: "Figures",
-          offset: 0,
-          queryType: item?.fields.ID,
-        },
-      })
-      .then(response => {
-        const curFigObject = {};
-        curFigObject.figures = [];
-
-        setCurItem(item);
-
-        response?.data?.records?.forEach((record) => {
-          if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
-            curFigObject.pageImage = record?.fields;
-          } else {
-            curFigObject.figures.push(record?.fields);
-          }
-        });
-        setCurFigureData(curFigObject);
-        setOpen(true);
-      });
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const [width] = useWindowSize();
