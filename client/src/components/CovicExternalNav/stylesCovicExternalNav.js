@@ -48,5 +48,12 @@ export const useStyles = makeStyles(theme => ({
     display: "block",
     width: "125px",
     cursor: "pointer",
+  },
+
+  covicFlyOut: {
+    display: "block",
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
   }
 }));
