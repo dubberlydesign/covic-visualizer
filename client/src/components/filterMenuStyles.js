@@ -176,11 +176,13 @@ export const useStyles = makeStyles(theme => ({
     paddingLeft: "9px",
   },
 
-  toggleMenu: {
+  toggleMenuFilter: {
     padding: '20px 0 20px 5px',
     borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    display: "block",
     [theme.breakpoints.up("lg")]: {
       padding: '20px 0 20px 20px',
+      display: "none",
     },
   },
 
