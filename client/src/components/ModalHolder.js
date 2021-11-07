@@ -20,12 +20,13 @@ const ModalHolder = ({
   handleClose,
   handleOpen,
   hasPageImageModal,
+  isFigureLoading,
   modalIndex,
   open,
   pdf,
   renderImgArticleFiguresModal,
   renderImg,
-  renderImgPageModal
+  renderImgPageModal,
 }) => {
   const [modalState, setModalState] = useState('figures');
   const handleModalHeaderClose = () => {
@@ -70,6 +71,7 @@ const ModalHolder = ({
                 <ModalFigures
                   classes={classes}
                   curItem={curItem}
+                  isFigureLoading={isFigureLoading}
                   renderImg={renderImg}
                 />
               }

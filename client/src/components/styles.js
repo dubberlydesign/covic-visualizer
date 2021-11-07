@@ -88,6 +88,7 @@ export const useStyles = makeStyles(theme => ({
 
   modalImagesHolder: {
     display: "block",
+    position: "relative",
     textAlign: "center",
   },
 
