@@ -57,6 +57,7 @@ const Articles = props => {
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isFigureLoading, setIsFigureLoading] = useState(false);
   const requestAmount = 100;
 
   const [open, setOpen] = useState(false);
@@ -191,6 +192,7 @@ const Articles = props => {
 
   const handleOpen = item => {
     setModalIndex(dataIds.indexOf(item.id));
+    setIsFigureLoading(true)
 
     axios
       .get("/api/v1/covic-data/figures", {
@@ -216,6 +218,7 @@ const Articles = props => {
           }
         });
         setCurFigureData(curFigObject);
+        setIsFigureLoading(false);
         setOpen(true);
       });
   };
@@ -489,6 +492,7 @@ const Articles = props => {
         handleClose={handleClose}
         handleOpen={handleOpen}
         hasPageImageModal={hasPageImageModal}
+        isFigureLoading={isFigureLoading}
         pdf={pdf}
         modalIndex={modalIndex}
         open={open}
