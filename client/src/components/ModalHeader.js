@@ -17,7 +17,8 @@ const ModalHeader = ({
   modalIndex,
   modalState,
   pdf,
-  setModalState
+  setModalState,
+  totalFiguresInModal,
 }) => {
 
   const combinedMetaArray = [
@@ -110,8 +111,6 @@ const ModalHeader = ({
           </IconButton>
         }
       </div>
-      {/*METADATA INFO STARTS HERE */}
-      {/*Publisher, Country: Language */}
       <div className={classes.modalHeaderMetaContainer}>
         <div className={classes.modalHeaderMetaLeftColumn}>
           <Typography
@@ -180,7 +179,16 @@ const ModalHeader = ({
           {combinedMetaArray?.join(', ')}
         </Typography>
       </div>}
-      {/*METATDATA INFO ENDS HERE */}
+      {modalState === 'article figures' && <div>
+        <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolderCountryLang}
+        >
+          {`${totalFiguresInModal} ${totalFiguresInModal > 1 ? 'Figures' : 'Figure'}`}
+        </Typography>
+      </div>}
     </div>
   );
 };

@@ -54,6 +54,7 @@ const Articles = props => {
   const [dataIds, setDataIds] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
   const [modalIndex, setModalIndex] = useState(null);
+  const [totalFiguresInModal, setTotalFiguresInModal] = useState(0);
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
@@ -263,12 +264,12 @@ const Articles = props => {
 
   const renderImgArticleFiguresModal = () => {
     if (curFigureData.figures.length === 0) return [];
+    setTotalFiguresInModal(curFigureData.figures.length);
     const imgList = curFigureData.figures.map((figure) => {
       return (
         <li
           className={classes.modalArticleFiguresItem}
           key={_uniqueId()}
-          onClick={() => console.log('article fig click')}
         >
           <div className={classes.modalArticleFigureImageWrapper}>
             <Typography
@@ -499,6 +500,7 @@ const Articles = props => {
         renderImgArticleFiguresModal={renderImgArticleFiguresModal}
         renderImg={renderImg}
         renderImgPageModal={renderImgPageModal}
+        totalFiguresInModal={totalFiguresInModal}
       />
     </div>
   );
