@@ -20,16 +20,11 @@ const ModalHeader = ({
   setModalState
 }) => {
 
-  const combinedMetaArray = [];
-  if (curItem?.fields['Visualization Type']) {
-    combinedMetaArray.push(curItem.fields['Visualization Type']);
-  }
-  if (curItem?.fields['Visual Technique']) {
-    combinedMetaArray.push(curItem.fields['Visual Technique']);
-  }
-  if(curItem?.fields['Interaction Technique']) {
-    combinedMetaArray.push(curItem?.fields['Interaction Technique']);
-  }
+  const combinedMetaArray = [
+    ...(curItem?.fields['Visualization Type']?.length ? [...curItem?.fields['Visualization Type']] : []),
+    ...(curItem?.fields['Visual Technique']?.length ? [...curItem?.fields['Visual Technique']] : []),
+    ...(curItem?.fields['Interaction Technique']?.length ? [...curItem?.fields['Interaction Technique']] : [])
+  ];
 
   return (
     <div className={classes.ModalHeaderWrapper}>
