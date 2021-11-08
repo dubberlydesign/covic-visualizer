@@ -26,6 +26,12 @@ const ModalHeader = ({
     ...(curItem?.fields['Interaction Technique']?.length ? [...curItem?.fields['Interaction Technique']] : [])
   ];
 
+  const getFormattedDate = (date) => {
+    const dateParts = date[0]?.split('-');
+
+    return date ? `${dateParts[1]}/${dateParts[2]}/${dateParts[0].slice(2,4)}` : null;
+  };
+
   return (
     <div className={classes.ModalHeaderWrapper}>
       <div className={classes.ModalHeaderNavWrapper}>
@@ -144,7 +150,7 @@ const ModalHeader = ({
             component='p'
             className={classes.modalTextHolder}
           >
-            {curItem?.fields["Date (from Article)"]}
+            {getFormattedDate(curItem?.fields["Date (from Article)"])}
           </Typography>
           <Typography
             variant='body2'
