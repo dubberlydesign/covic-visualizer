@@ -265,7 +265,13 @@ const Articles = props => {
   const renderImgArticleFiguresModal = () => {
     if (curFigureData.figures.length === 0) return [];
     setTotalFiguresInModal(curFigureData.figures.length);
+
     const imgList = curFigureData.figures.map((figure) => {
+      const combinedMetaArray = [
+        ...(figure['Visualization Type']?.length ? [...figure['Visualization Type']] : []),
+        ...(figure['Visual Technique']?.length ? [...figure['Visual Technique']] : []),
+        ...(figure['Interaction Technique']?.length ? [...figure['Interaction Technique']] : [])
+      ];
       return (
         <li
           className={classes.modalArticleFiguresItem}
@@ -291,9 +297,9 @@ const Articles = props => {
                 />
             }
           </div>
-          {figure['Visualization Type'].length &&
+          {combinedMetaArray.length &&
             <ul className={classes.modalArticleFiguresVizWrapper}>
-              {figure['Visualization Type'].map((visType) => (
+              {combinedMetaArray.map((visType) => (
                 <li key={_uniqueId()}>
                   <Typography
                     variant='body2'
