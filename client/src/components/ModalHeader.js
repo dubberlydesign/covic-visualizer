@@ -158,7 +158,7 @@ const ModalHeader = ({
             component='p'
             className={classes.modalTextHolder}
           >
-            Subject(s): {curItem?.fields["Subject(s) (from Article)"]?.join(', ')}
+            {curItem?.fields["Subject(s) (from Article)"]?.join(', ')}
           </Typography>
           <Typography
             variant='body2'

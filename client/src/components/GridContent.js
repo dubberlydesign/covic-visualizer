@@ -1,13 +1,7 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
 
-const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
-  const combinedMetaArray = [
-    ...(curItem?.fields['Visualization Type']?.length ? [...curItem?.fields['Visualization Type']] : []),
-    ...(curItem?.fields['Visual Technique']?.length ? [...curItem?.fields['Visual Technique']] : []),
-    ...(curItem?.fields['Interaction Technique']?.length ? [...curItem?.fields['Interaction Technique']] : [])
-  ];
-
+const GridContent = ({item, classes, getDisplayLabels}) => {
   const getFormattedDate = (date) => {
     const dateParts = date[0]?.split('-');
 
@@ -32,8 +26,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        <b>Published: </b>{" "}
-        {item?.fields["Date (from Article)"]}
+        {`${item?.fields["Publisher (from ID copy)"]}, ${getFormattedDate(item?.fields["Date (from Article)"])}`}
       </Typography>
       <Typography
         variant='body2'
@@ -41,8 +34,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        <b>Publisher: </b>{" "}
-        {item?.fields["Publisher (from ID copy)"]}
+        {item?.fields['Visualization Type']?.join(', ')}
       </Typography>
       <Typography
         variant='body2'
@@ -50,8 +42,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        <b>Country: </b>{" "}
-        {item?.fields["Country (from ID copy)"]}
+        {item?.fields["File Name"]}
       </Typography>
     </>
   )
