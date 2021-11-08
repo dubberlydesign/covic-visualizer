@@ -17,7 +17,8 @@ const ModalHeader = ({
   modalIndex,
   modalState,
   pdf,
-  setModalState
+  setModalState,
+  totalFiguresInModal,
 }) => {
 
   const combinedMetaArray = [
@@ -25,6 +26,12 @@ const ModalHeader = ({
     ...(curItem?.fields['Visual Technique']?.length ? [...curItem?.fields['Visual Technique']] : []),
     ...(curItem?.fields['Interaction Technique']?.length ? [...curItem?.fields['Interaction Technique']] : [])
   ];
+
+  const getFormattedDate = (date) => {
+    const dateParts = date[0]?.split('-');
+
+    return date ? `${dateParts[1]}/${dateParts[2]}/${dateParts[0].slice(2,4)}` : null;
+  };
 
   return (
     <div className={classes.ModalHeaderWrapper}>
@@ -104,8 +111,6 @@ const ModalHeader = ({
           </IconButton>
         }
       </div>
-      {/*METADATA INFO STARTS HERE */}
-      {/*Publisher, Country: Language */}
       <div className={classes.modalHeaderMetaContainer}>
         <div className={classes.modalHeaderMetaLeftColumn}>
           <Typography
@@ -144,7 +149,7 @@ const ModalHeader = ({
             component='p'
             className={classes.modalTextHolder}
           >
-            {curItem?.fields["Date (from Article)"]}
+            {getFormattedDate(curItem?.fields["Date (from Article)"])}
           </Typography>
           <Typography
             variant='body2'
@@ -152,7 +157,7 @@ const ModalHeader = ({
             component='p'
             className={classes.modalTextHolder}
           >
-            Subject(s): {curItem?.fields["Subject(s) (from Article)"]?.join(', ')}
+            {curItem?.fields["Subject(s) (from Article)"]?.join(', ')}
           </Typography>
           <Typography
             variant='body2'
@@ -174,7 +179,16 @@ const ModalHeader = ({
           {combinedMetaArray?.join(', ')}
         </Typography>
       </div>}
-      {/*METATDATA INFO ENDS HERE */}
+      {modalState === 'article figures' && <div>
+        <Typography
+            variant='body2'
+            color='textSecondary'
+            component='p'
+            className={classes.modalTextHolderCountryLang}
+        >
+          {`${totalFiguresInModal} ${totalFiguresInModal > 1 ? 'Figures' : 'Figure'}`}
+        </Typography>
+      </div>}
     </div>
   );
 };

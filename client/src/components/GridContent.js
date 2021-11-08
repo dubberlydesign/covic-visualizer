@@ -1,7 +1,13 @@
 import React from 'react';
 import Typography from "@material-ui/core/Typography";
 
-const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
+const GridContent = ({item, classes, getDisplayLabels}) => {
+  const getFormattedDate = (date) => {
+    const dateParts = date[0]?.split('-');
+
+    return date ? `${dateParts[1]}/${dateParts[2]}/${dateParts[0].slice(2,4)}` : null;
+  ;}
+
   return (
     <>
       <Typography
@@ -20,8 +26,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        <b>Published: </b>{" "}
-        {item?.fields["Date (from Article)"]}
+        {`${item?.fields["Publisher (from ID copy)"]}, ${getFormattedDate(item?.fields["Date (from Article)"])}`}
       </Typography>
       <Typography
         variant='body2'
@@ -29,8 +34,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        <b>Publisher: </b>{" "}
-        {item?.fields["Publisher (from ID copy)"]}
+        {item?.fields['Visualization Type']?.join(', ')}
       </Typography>
       <Typography
         variant='body2'
@@ -38,8 +42,7 @@ const GridContent = ({item, classes, getDisplayLabels, handleOpen}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        <b>Country: </b>{" "}
-        {item?.fields["Country (from ID copy)"]}
+        {item?.fields["File Name"]}
       </Typography>
     </>
   )
