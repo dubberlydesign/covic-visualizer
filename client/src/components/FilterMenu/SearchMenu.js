@@ -7,7 +7,7 @@ import IconButton from "@material-ui/core/IconButton";
 import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
-import { useStyles } from "./styles";
+import { useStyles } from "../styles";
 
 const SearchMenu = ({handleSubmit, handleChange, handleSearchClear, searchValue, setSearchVal}) => {
   const theme = createTheme();

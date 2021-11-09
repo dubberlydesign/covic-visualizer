@@ -19,15 +19,15 @@ import Container from "@material-ui/core/Container";
 import ElevationScroll from "./ElavationScroll";
 import {handleDataFunnel} from '../utils/filterFunnel';
 
-import FilterMenu from "./FilterMenu";
+import FilterMenu from "./FilterMenu/FilterMenu";
 import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
 import GridContent from "./GridContent";
-import ModalHolder from "./ModalHolder";
+import ModalHolder from "./Modal/ModalHolder";
 import ToggleMenu from "./ToggleMenu/ToggleMenu";
 import { useStyles } from "./styles";
 import { format } from "date-fns";
 import _uniqueId from "lodash/uniqueId";
-import './GlobalCssSlider.css';
+import './FilterMenu/GlobalCssSlider.css';
 
 let globFilter = {};
 let resetField = false;

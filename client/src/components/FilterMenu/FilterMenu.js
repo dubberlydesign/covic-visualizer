@@ -28,9 +28,9 @@ import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
-import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
+import { DEFAULT_MATERIAL_THEME } from "../../utils/stylesHelper";
 import SearchMenu from './SearchMenu';
-import ToggleMenu from "./ToggleMenu/ToggleMenu";
+import ToggleMenu from "../ToggleMenu/ToggleMenu";
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
