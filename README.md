@@ -79,7 +79,7 @@ requestData params:
   term (search/filter term), 
   fieldCol (field column to search), 
   inOrderDisplay (order of display), 
-  searchValue (search value ), 
+  searchValue (search value), 
   filterValue (filter value)
 ```
 <br /><br />
