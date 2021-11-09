@@ -1,6 +1,6 @@
 # COVIC Visualizer Server
 
-# COVIC Visualizer Client
+## COVIC Visualizer Client
 For information about running visualizer client reference:
 [a link](https://github.com/dubberlydesign/covic-visualizer/blob/main/client/README.md)
 # Steps to run project locally
