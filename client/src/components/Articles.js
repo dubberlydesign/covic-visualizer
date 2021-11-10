@@ -1,39 +1,37 @@
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import axios from "axios";
+import classNames from "classnames";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 import { createTheme } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
-
-import SearchOutlinedIcon from "@material-ui/icons/SearchOutlined";
 
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import ElevationScroll from "./ElavationScroll";
+import {handleDataFunnel} from '../utils/filterFunnel';
 
-import FilterMenu from "./FilterMenu";
+import FilterMenu from "./FilterMenu/FilterMenu";
+import CovicExternalNav from "./CovicExternalNav/CovicExternalNav";
+import GridContent from "./GridContent";
+import ModalHolder from "./Modal/ModalHolder";
+import ToggleMenu from "./ToggleMenu/ToggleMenu";
 import { useStyles } from "./styles";
-
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Chip from "@material-ui/core/Chip";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { format } from "date-fns";
+import _uniqueId from "lodash/uniqueId";
+import './FilterMenu/GlobalCssSlider.css';
 
 let globFilter = {};
 let resetField = false;
+let globOrderChecked = 'false';
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -53,22 +51,36 @@ const Articles = props => {
 
   const classes = useStyles(theme);
   const [data, setData] = useState([]);
+  const [dataIds, setDataIds] = useState([]);
   const [dataOffset, setDataOffset] = useState("");
+  const [modalIndex, setModalIndex] = useState(null);
+  const [totalFiguresInModal, setTotalFiguresInModal] = useState(0);
   const [searchValue, setSearchVal] = useState("");
   const [filteringValues, setFilterValues] = useState({});
   const [isLoading, setIsLoading] = useState(true);
+  const [isFigureLoading, setIsFigureLoading] = useState(false);
   const requestAmount = 100;
 
   const [open, setOpen] = useState(false);
   const [curItem, setCurItem] = useState(null);
-  const [curFigureData, setCurFigureData] = useState("");
+  const [curFigureData, setCurFigureData] = useState(null);
   const [isMoreEntries, setIsMoreEntries] = useState(true);
+  const [toggleOrder, setToggleOrder] = useState(false);
+  const [toggleLabels, setToggleLabels] = useState(false);
+
+  // toggleMenu states for order and label
+  const [checkedOrder, setCheckedOrder] = useState(false);
+  const [checkedLabel, setCheckedLabel] = useState(false);
 
   const requestData = (
+    pagination = false,
     queryType = "",
     filterType = "",
     term = "",
-    fieldCol = ""
+    fieldCol = "",
+    inOrderDisplay = false,
+    searchValue = "",
+    filterValue = "",
   ) => {
     setIsLoading(true);
     axios
@@ -82,12 +94,23 @@ const Articles = props => {
           term,
           fieldCol,
           fieldReset: resetField,
+          inOrderDisplay,
+          searchValue: resetClicked ? '' : searchValue,
+          filterValue,
         },
       })
       .then(response => {
+        const filteredResponse =
+          response.data.records.filter(record => record.fields["File Name"].indexOf('-0') === -1);
+        const subjectTypeFilterResponse = handleDataFunnel(filteredResponse, filterValue);
         setIsLoading(false);
-        setData(data.concat(response.data.records));
+        setData(data.concat(subjectTypeFilterResponse));
+        setDataIds([
+          ...(pagination ? dataIds : []),
+          ...subjectTypeFilterResponse.map(record => record.id)
+        ]);
         setDataOffset(response.data.offset);
+        resetClicked = false;
         if (response.data.offset === undefined) {
           setIsMoreEntries(false);
         }
@@ -131,21 +154,24 @@ const Articles = props => {
   const handleScroll = () => {
     resetField = false;
     if (searchValue !== "") {
-      requestData("search", "FIND", searchValue);
+      requestData(true, "search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
     } else {
-      if (isEmpty(globFilter)) {
-        requestData();
+      if (isEmpty(globFilter) && searchValue === "") {
+        requestData(true);
       } else {
-        requestData("filter", "FIND", globFilter);
+        requestData(true, "filter", "FIND", globFilter, "", globOrderChecked, searchValue, globFilter);
       }
     }
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e, filterObject)  => {
     e.preventDefault();
+    globFilter = filterObject;
     resetField = true;
-    setData(data.splice(0, data.length));
-    requestData("search", "FIND", searchValue);
+    setIsMoreEntries(true);
+    data.splice(0, data.length);
+    setData(data);
+    requestData(false, "search", "FIND", searchValue, "", globOrderChecked, searchValue, globFilter);
   };
 
   const handleChange = e => {
@@ -154,85 +180,46 @@ const Articles = props => {
     }, 500);
   };
 
-  const renderImg = (item, isModal = false) => {
-    if (item === null) return [];
-
-    const imgList = item?.fields["Image"]?.map((figure, index) => {
-      if (figure.thumbnails && index <= 3) {
-        return (
-          <img
-            src={figure.thumbnails.large.url}
-            alt=''
-            className={isModal ? classes.cardImageModal : classes.cardImage}
-            key={Math.random() * 100}
-          />
-        );
-      } else {
-        return (
-          <div className={classes.altMediaFormat}>
-            <div>
-              <b>Media Type: </b>
-              {figure.type}
-            </div>
-            <div>
-              <b>FileName: </b>
-              {figure.filename}
-            </div>
-          </div>
-        );
-      }
-    });
-
-    return imgList?.length > 0 ? imgList[0] : null;
-  };
-
-  const renderImgModal = (item, isModal = false) => {
-    if (curFigureData.length === 0) return [];
-    const imgList = curFigureData.map((figure, index) => {
-      return (
-        <img
-          src={figure}
-          alt=''
-          className={isModal ? classes.cardImageModal : classes.cardImage}
-          key={Math.random() * 100}
-        />
-      );
-    });
-
-    return imgList?.length > 0 ? imgList : null;
-  };
-
-  const handleApplyFilter = filterObject => {
+  const handleSearchClear = filterObject => {
+    resetClicked = true;
+    setSearchVal('');
     globFilter = filterObject;
     resetField = true;
     setIsMoreEntries(true);
-    setData(data.splice(0, data.length));
-    requestData("filter", "FIND", filterObject);
-  };
+    data.splice(0, data.length);
+    setData(data);
+    requestData(false, "filter", "FIND", filterObject, "", globOrderChecked, "", filterObject);
+  }
 
   const handleOpen = item => {
+    setModalIndex(dataIds.indexOf(item.id));
+    setIsFigureLoading(true)
+
     axios
       .get("/api/v1/covic-data/figures", {
         params: {
           baseType: "Figures",
           offset: 0,
-          requestAmount: 3,
           queryType: item?.fields.ID,
         },
       })
       .then(response => {
-        setCurItem(item);
-        setCurFigureData([]);
+        const curFigObject = {};
+        curFigObject.figures = [];
 
-        response?.data?.records?.forEach(record => {
-          if (record?.fields?.Image[0]?.thumbnails?.large?.url) {
-            setCurFigureData(curFigureData => [
-              ...curFigureData,
-              record?.fields?.Image[0]?.thumbnails?.large?.url,
-            ]);
+        setCurItem(item);
+
+        response?.data?.records?.forEach((record) => {
+          if (record?.fields?.ID === item?.fields.ID) {
+            if (record?.fields?.['File Name'].indexOf('-0.') > -1) {
+              curFigObject.pageImage = record?.fields;
+            } else {
+              curFigObject.figures.push(record?.fields);
+            }
           }
         });
-
+        setCurFigureData(curFigObject);
+        setIsFigureLoading(false);
         setOpen(true);
       });
   };
@@ -241,56 +228,217 @@ const Articles = props => {
     setOpen(false);
   };
 
+  const renderImg = (item, isModal = false) => {
+    if (item === null) return [];
+
+    const imgList = item?.fields["Image"]?.map((figure, index) => {
+      return (
+        <>
+          {!isModal &&
+            <div className={classes.cardImageOverLay} onClick={() => handleOpen(item)}></div>
+          }
+          { figure.thumbnails && index <= 3 
+            ? <img
+                src={figure.thumbnails.large.url}
+                alt=''
+                className={isModal ? classes.cardImageModal : classes.cardImage}
+                key={_uniqueId()}
+              />
+            : <div className={classes.altMediaFormat}>
+                <video
+                  width="100%"
+                  controls={isModal ? true : false}
+                  className={isModal ? classes.cardVideoModal : classes.cardVideo}
+                >
+                  <source src={figure.url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+          }
+        </>
+      );
+    });
+
+    return imgList?.length > 0 ? imgList[0] : null;
+  };
+
+  const renderImgArticleFiguresModal = () => {
+    if (curFigureData.figures.length === 0) return [];
+    setTotalFiguresInModal(curFigureData.figures.length);
+
+    const imgList = curFigureData.figures.map((figure) => {
+      const combinedMetaArray = [
+        ...(figure['Visualization Type']?.length ? [...figure['Visualization Type']] : []),
+        ...(figure['Visual Technique']?.length ? [...figure['Visual Technique']] : []),
+        ...(figure['Interaction Technique']?.length ? [...figure['Interaction Technique']] : [])
+      ];
+      return (
+        <li
+          className={classes.modalArticleFiguresItem}
+          key={_uniqueId()}
+        >
+          <div className={classes.modalArticleFigureImageWrapper}>
+            <Typography
+              variant='body2'
+              color='textSecondary'
+              component='span'
+            >
+              {figure['File Name']}
+            </Typography>
+            {figure['Image'][0].type === 'video/mp4'
+              ? <video width="100%" controls>
+                  <source src={figure['Image'][0].url} type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              : <img
+                  src={figure['Image'][0].thumbnails.large.url}
+                  alt=''
+                  className={classes.modalArticleFigureImage}
+                />
+            }
+          </div>
+          {combinedMetaArray.length &&
+            <ul className={classes.modalArticleFiguresVizWrapper}>
+              {combinedMetaArray.map((visType) => (
+                <li key={_uniqueId()}>
+                  <Typography
+                    variant='body2'
+                    color='textSecondary'
+                    component='span'
+                  >
+                    {visType}
+                  </Typography>
+                </li>
+              ))}
+            </ul>
+          }
+        </li>
+      );
+    });
+
+    return imgList?.length > 0 ? <ul className={classes.modalArticleFiguresWrapper}>{imgList}</ul> : null;
+  };
+
+  const renderImgPageModal = () => {
+    const isPdf = curFigureData.pageImage.Image[0]?.type === 'application/pdf';
+
+    return (
+      <img
+        src={curFigureData.pageImage.Image[0]?.thumbnails?.large?.url}
+        alt=''
+        className={classNames(
+          classes.modalPageImage,
+          isPdf ? classes.modalPageImagePdf : {}
+        )}
+        key={_uniqueId()}
+      />
+    );
+  };
+
+  const handleApplyFilter = filterObject => {
+    globFilter = filterObject;
+    resetField = true;
+    setIsMoreEntries(true);
+    data.splice(0, data.length);
+    setData(data);
+    requestData(false, "filter", "FIND", filterObject, "", globOrderChecked, searchValue, filterObject);
+  };
+
   const [width] = useWindowSize();
+  const getFilterObjectReset = () => {
+    const initialStartDate = "2020-01-01T21:11:54";
+    const dateFormatting = "MM/dd/yyyy";
+    const initialNewDate = new Date(initialStartDate);
+    const filterObject = {
+      sourceType: [],
+      countryType: [],
+      languageType: [],
+      publisherType: [],
+      subjectType: [],
+      visualizationType: [],
+      visualTechType: [],
+      interactionType: [],
+      articleTechType: [],
+      isDateFilter: false,
+      dateRange: [
+        format(initialNewDate, dateFormatting),
+        format(new Date(), dateFormatting),
+      ],
+    };
+
+    return filterObject;
+  }
+
+  const toggleArticleOrder = (checked) => {
+    if (isEmpty(globFilter) && searchValue === "") {
+      const filterObject = getFilterObjectReset();
+      globFilter = filterObject;
+    }
+    globOrderChecked = checked;
+    setToggleOrder(checked);
+    resetField = true;
+    setIsMoreEntries(true);
+    data.splice(0, data.length);
+    setData(data);
+    requestData(false, "filter", "FIND", globFilter, "", checked, searchValue, globFilter);
+  }
+
+  const toggleArticleLabel = (checked) => {
+    setToggleLabels(checked);
+  }
+
+  let resetClicked = false;
+  const resetToggles = () => {
+    resetClicked = true;
+    globOrderChecked = false;
+    setToggleOrder(false);
+    setToggleLabels(false);
+  }
+
+  const getDisplayLabels = () => {
+    return toggleLabels ? classes.hideLabelsForToggle : '';
+  }
+
+  const hasPageImageModal = curFigureData?.pageImage;
+  const pdf = curFigureData?.pageImage?.Image[0]?.type === 'application/pdf' ? curFigureData.pageImage.Image[0]?.url : '';
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <ElevationScroll {...props}>
         <AppBar className={classes.appBar}>
-          <>
-            <form className={classes.formHolder}>
-              <TextField
-                id='standard-full-width'
-                style={{ margin: 8 }}
-                placeholder='Search Visualizations...'
-                helperText='Search'
-                fullWidth
-                margin='normal'
-                FormHelperTextProps={{
-                  className: classes.helperText,
-                }}
-                InputProps={{
-                  className: classes.inputText,
-                  endAdornment: (
-                    <InputAdornment position='end'>
-                      <IconButton
-                        style={{
-                          padding: "0",
-                        }}
-                        onClick={handleSubmit}
-                        type='submit'
-                      >
-                        <SearchOutlinedIcon
-                          style={{
-                            fontSize: 65,
-                            color: "#C6AD8F",
-                            letterSpacing: "-2.5px",
-                            opacity: ".5",
-                          }}
-                        />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={handleChange}
+          <div className={classes.mainHeader}>
+            <div className={classes.toggleMenu}>
+              <ToggleMenu 
+                toggleOrder={toggleArticleOrder}
+                toggleLabel={toggleArticleLabel}
+                checkedOrder={checkedOrder}
+                checkedLabel={checkedLabel}
+                setCheckedOrder={setCheckedOrder}
+                setCheckedLabel={setCheckedLabel}
               />
-            </form>
-          </>
-          <FilterMenu
-            handleApplyFilter={handleApplyFilter}
-            filteringValues={filteringValues}
-          />
+            </div>
+            <CovicExternalNav />
+            <div className={classes.menuRight} />
+          </div>
+          <div className={classes.filterMenuWrapper}>
+            <FilterMenu
+              handleApplyFilter={handleApplyFilter}
+              filteringValues={filteringValues}
+              handleSubmit={handleSubmit}
+              handleChange={handleChange}
+              checkedOrder={checkedOrder}
+              checkedLabel={checkedLabel}
+              setCheckedOrder={setCheckedOrder}
+              setCheckedLabel={setCheckedLabel}
+              toggleOrder={toggleArticleOrder}
+              toggleLabel={toggleArticleLabel}
+              resetToggles={resetToggles}
+              searchValue={searchValue}
+              setSearchVal={setSearchVal}
+              handleSearchClear={handleSearchClear}
+            />
+          </div>
         </AppBar>
       </ElevationScroll>
       {isLoading && (
@@ -298,14 +446,14 @@ const Articles = props => {
           className={classes.initLoader}
           style={{ ...(width > 1280 ? { left: "58%" } : null) }}
         />
-      )}
+      )} 
       <Container maxWidth={false} className={classes.containerScroll}>
         <Box my={6}>
           <Grid
             container
             spacing={3}
             style={{
-              padding: width > 1280 ? "20px 20px 20px 344px" : 20,
+              padding: width > 1280 ? "50px 20px 20px 344px" : "100px 20px 20px 20px",
             }}
           >
             <InfiniteScroll
@@ -327,61 +475,13 @@ const Articles = props => {
                   >
                     <Paper className={classes.paper}>
                       <Card key={item.id} elevation={0}>
-                        <CardContent className={classes.cardContainer}>
+                        <CardContent className={classNames(classes.cardContainer, toggleLabels ? classes.cardIconSet : '')} onClick={() => { if (toggleLabels) { handleOpen(item) }}}>
                           {renderImg(item)}
-                          <Typography
-                            variant='body2'
-                            color='textSecondary'
-                            component='div'
-                          >
-                            <p className={classes.cardTitle}>
-                              {item?.fields["Title"]}
-                            </p>
-                          </Typography>
-                          <Typography
-                            variant='body2'
-                            color='textSecondary'
-                            component='p'
-                          >
-                            <b>Published: </b>{" "}
-                            {item?.fields["Date (from Article)"]}
-                          </Typography>
-                          <Typography
-                            variant='body2'
-                            color='textSecondary'
-                            component='p'
-                          >
-                            <b>Publisher: </b>{" "}
-                            {item?.fields["Publisher (from ID copy)"]}
-                          </Typography>
-                          <Typography
-                            variant='body2'
-                            color='textSecondary'
-                            component='p'
-                          >
-                            <b>Country: </b>{" "}
-                            {item?.fields["Country (from ID copy)"]}
-                          </Typography>
-                          <div className={classes.cardButtons}>
-                            <Button
-                              variant='contained'
-                              disableElevation
-                              className={classes.links}
-                              onClick={() => handleOpen(item)}
-                              target='_blank'
-                            >
-                              Quick Look
-                            </Button>
-                            <Button
-                              variant='contained'
-                              disableElevation
-                              className={classes.links}
-                              href={item.fields["URL (from ID copy)"][0]}
-                              target='_blank'
-                            >
-                              Visit
-                            </Button>
-                          </div>
+                          <GridContent
+                            item={item}
+                            classes={classes} 
+                            getDisplayLabels={getDisplayLabels}
+                          />
                         </CardContent>
                       </Card>
                     </Paper>
@@ -392,107 +492,22 @@ const Articles = props => {
           </Grid>
         </Box>
       </Container>
-      <Modal
-        aria-labelledby='transition-modal-title'
-        aria-describedby='transition-modal-description'
-        className={classes.modal}
+      <ModalHolder 
+        classes={classes}
+        curItem={curItem}
+        data={data}
+        handleClose={handleClose}
+        handleOpen={handleOpen}
+        hasPageImageModal={hasPageImageModal}
+        isFigureLoading={isFigureLoading}
+        pdf={pdf}
+        modalIndex={modalIndex}
         open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Paper className={classes.paperModal}>
-            <Card elevation={0}>
-              <CardContent className={classes.cardContainer}>
-                <div className={classes.modalIconHolder}>
-                  <IconButton
-                    className={classes.modalHeaderClose}
-                    onClick={handleClose}
-                  >
-                    <HighlightOffIcon className={classes.filterBtnIcon} />
-                  </IconButton>
-                </div>
-                <div className={classes.modalChipHolder}>
-                  <Chip
-                    className={classes.chip}
-                    label={curItem?.fields["Source Type"]}
-                  />
-                  <Typography
-                    variant='body2'
-                    color='textSecondary'
-                    component='p'
-                    className={classes.modalTextHolderCountryLang}
-                  >
-                    {curItem?.fields["Country (from ID copy)"]} -{" "}
-                    {curItem?.fields["Language (from Article)"]}
-                  </Typography>
-                </div>
-                <Typography
-                  variant='body2'
-                  color='textSecondary'
-                  component='p'
-                  className={classes.modalTextHolderHeader}
-                >
-                  {curItem?.fields["Title (from ID copy)"]}
-                </Typography>
-                <Typography
-                  variant='body2'
-                  color='textSecondary'
-                  component='p'
-                  className={classes.modalTextHolder}
-                >
-                  <b>Publisher:</b>{" "}
-                  {curItem?.fields["Publisher (from ID copy)"]}
-                </Typography>
-                <Typography
-                  variant='body2'
-                  color='textSecondary'
-                  component='p'
-                  className={classes.modalTextHolder}
-                >
-                  <b>Published:</b> {curItem?.fields["Date (from Article)"]}
-                </Typography>
-                <Typography
-                  variant='body2'
-                  color='textSecondary'
-                  component='p'
-                  className={classes.modalTextHolderLast}
-                >
-                  <b>Subject(s):</b>{" "}
-                  {curItem?.fields["Subject(s) (from Article)"]?.map(
-                    (subject, index) =>
-                      `${subject}${
-                        index ===
-                        curItem?.fields["Subject(s) (from Article)"].length - 1
-                          ? ""
-                          : ", "
-                      }`
-                  )}
-                </Typography>
-                <div className={classes.modalImagesHolder}>
-                  {renderImgModal(curItem, true)}
-                </div>
-
-                <div className={classes.modalButtonHolder}>
-                  <Button
-                    variant='contained'
-                    disableElevation
-                    className={classes.links}
-                    href={curItem?.fields["URL (from ID copy)"][0]}
-                    target='_blank'
-                  >
-                    Visit
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </Paper>
-        </Fade>
-      </Modal>
+        renderImgArticleFiguresModal={renderImgArticleFiguresModal}
+        renderImg={renderImg}
+        renderImgPageModal={renderImgPageModal}
+        totalFiguresInModal={totalFiguresInModal}
+      />
     </div>
   );
 };

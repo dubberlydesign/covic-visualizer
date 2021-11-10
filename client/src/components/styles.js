@@ -25,6 +25,7 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     textAlign: "left",
     padding: "20px",
+    position: "relative"
   },
 
   cardButtons: {
@@ -35,7 +36,18 @@ export const useStyles = makeStyles(theme => ({
   cardImage: {
     width: "100%",
     height: "400px",
-    objectFit: "cover",
+    objectFit: "contain",
+    margin: "auto",
+    display: "block",
+    boxSizing: "border-box",
+    border: "1px solid #333",
+    marginBottom: "20px",
+    maxWidth: "600px",
+  },
+  cardVideo: {
+    width: "100%",
+    height: "400px",
+    objectFit: "contain",
     margin: "auto",
     display: "block",
     boxSizing: "border-box",
@@ -44,24 +56,40 @@ export const useStyles = makeStyles(theme => ({
     maxWidth: "600px",
   },
 
-  cardImageModal: {
+  cardImageOverLay: {
+    cursor: "pointer",
     height: "400px",
-    objectFit: "cover",
+    left: "20px",
+    position: "absolute",
+    width: "calc(100% - 40px)",
+    zIndex: 5,
+  },
+
+  cardImageModal: {
     boxSizing: "border-box",
     border: "1px solid #333",
-    margin: "20px",
-    maxWidth: "200px",
+    display: "block",
+    margin: "0 auto",
+    maxWidth: "100%",
+    width: "auto",
+  },
+
+  cardVideoModal: {
+    maxWidth: "100%",
+    width: "auto",
   },
 
   altMediaFormat: {
     fontWeight: 900,
     color: "#C6AD8F",
     marginBottom: "10px",
+    width: "100%",
   },
 
   modalImagesHolder: {
-    display: "flex",
-    flexWrap: "wrap",
+    display: "block",
+    position: "relative",
+    textAlign: "center",
   },
 
   cardLabel: {
@@ -104,21 +132,19 @@ export const useStyles = makeStyles(theme => ({
     padding: "20px",
   },
 
-  formHolder: {
+  formHolderSide: {
     display: "flex",
-    width: "80%",
-    margin: "0 auto",
-    paddingTop: "50px",
-    [theme.breakpoints.up("lg")]: {
-      paddingLeft: "344px"
+    margin: "40px 0 0 20px",
+    [theme.breakpoints.up('lg')]: {
+      paddingTop: "20px",
+      margin: "0 auto 0 auto",
     },
   },
 
   inputText: {
     fontFamily: "sans-serif",
-    fontSize: 50,
-    color: "#C6AD8F",
-    letterSpacing: "-2.5px",
+    fontSize: 16,
+    color: "#000",
     borderColor: "#C6AD8F",
   },
 
@@ -161,7 +187,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   containerScroll: {
-    marginTop: "220px",
+    marginTop: "80px",
     maxWidth: "none",
   },
 
@@ -169,6 +195,10 @@ export const useStyles = makeStyles(theme => ({
     overflow: "scroll",
     position: "absolute",
     padding: "100px",
+  },
+
+  modalPageView: {
+    outline: 0,
   },
 
   paperModal: {
@@ -184,7 +214,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   modalTextHolderCountryLang: {
-    paddingRight: "30px",
+    paddingRight: "10px",
   },
 
   modalTextHolderImg: {
@@ -208,11 +238,82 @@ export const useStyles = makeStyles(theme => ({
     alignItems: "center",
     marginBottom: 20,
     flexWrap: "wrap",
+    clear: "both"
   },
 
   modalIconHolder: {
     display: "flex",
-    justifyContent: "flex-end",
+    flex: "1 1 auto",
+    justifyContent: "flex-end"
+  },
+
+  ModalHeaderNavWrapper: {
+    display: "flex",
+    margin: "20px 0"
+  },
+
+  modalHeaderPagingContainer: {
+    margin: "0 0 20px"
+  },
+
+  modalHeaderMetaContainer: {
+    clear: "both",
+    display: "flex"
+  },
+
+  modalHeaderMetaLeftColumn: {
+    flex: "0 1 67%"
+  },
+
+  modalHeaderMetaRightColumn: {
+    flex: "0 1 33%",
+    textAlign: "right"
+  },
+
+  modalArticleFiguresWrapper: {
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+  },
+
+  modalArticleFiguresItem: {
+    display: "flex",
+    margin: "0 0 20px",
+  },
+
+  modalArticleFigureImageWrapper: {
+    flex: "0 0 50%",
+    textAlign: "center"
+  },
+
+  modalArticleFigureImage: {
+    display: "block",
+    height: "auto",
+    maxWidth: "100%",
+    width: "auto",
+  },
+
+  modalArticleFiguresVizWrapper: {
+    flex: "0 0 50%",
+    listStyle: "none",
+    margin: 0,
+    padding: 0,
+    textAlign: "right",
+  },
+
+  modalPageImage: {
+    display: "block",
+    height: "auto",
+    margin: "0 auto",
+    maxWidth: "100%",
+  },
+
+  modalPageImagePdf: {
+    cursor: "pointer"
+  },
+
+  ModalHeaderWrapper: {
+    margin: "0 0 40px"
   },
 
   modalHeaderClose: {
@@ -221,11 +322,74 @@ export const useStyles = makeStyles(theme => ({
     color: "#C6AD8F",
     letterSpacing: "-1px",
     borderColor: "#C6AD8F",
-    margin: "0 0 0 0",
+    margin: 0,
     cursor: "pointer",
   },
 
-  modalButtonHolder: {
-    display: "flex",
+  modalHeaderPrevious: {
+    color: "#C6AD8F",
+    cursor: "pointer",
+    float: "left"
   },
+
+  modalHeaderNext: {
+    color: "#C6AD8F",
+    cursor: "pointer",
+    float: "right"
+  },
+
+  modalButton: {
+    backgroundColor: "#C6AD8F",
+    color: "white",
+    flex: "0 0 auto",
+    width: "auto",
+    marginRight: "10px",
+  },
+
+  hideLabelsForToggle: {
+    display: "none",
+  },
+
+  cardIconSet: {
+    cursor: "pointer",
+  },
+  
+  mainHeader: {
+    position: "relative",
+    zIndex: "1300",
+    margin: "0",
+    [theme.breakpoints.up('lg')]: {
+      display: "flex",
+      justifyContent: "space-between",
+      margin: "0",
+    },
+  },
+
+  searchClearIcon: {
+    color: "#C6AD8F",
+    opacity: ".5",
+  },
+
+  toggleMenu: {
+    padding: '20px 0 20px 5px',
+    display: "none",
+    [theme.breakpoints.up("lg")]: {
+      padding: '0px 0 20px 20px',
+      display: "block",
+    },
+  },
+
+  menuRight: {
+    display: "none",
+    [theme.breakpoints.up("lg")]: {
+      display: "block",
+    },
+  },
+
+  filterMenuWrapper: {
+    margin: "10px auto",
+    [theme.breakpoints.up("lg")]: {
+      margin: 0,
+    },
+  }
 }));

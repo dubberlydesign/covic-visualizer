@@ -1,6 +1,7 @@
 import React, { useLayoutEffect, useState, Fragment } from "react";
 import clsx from "clsx";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import classNames from "classnames";
 
 import Drawer from "@material-ui/core/Drawer";
 import Divider from "@material-ui/core/Divider";
@@ -27,7 +28,9 @@ import DateFnsUtils from "@date-io/date-fns";
 import { format } from "date-fns";
 import isValid from "date-fns/isValid";
 import { useStyles } from "./filterMenuStyles";
-import { DEFAULT_MATERIAL_THEME } from "../utils/stylesHelper";
+import { DEFAULT_MATERIAL_THEME } from "../../utils/stylesHelper";
+import SearchMenu from './SearchMenu';
+import ToggleMenu from "../ToggleMenu/ToggleMenu";
 
 const useWindowSize = () => {
   const [size, setSize] = useState([0, 0]);
@@ -82,12 +85,14 @@ const FilterMenu = props => {
   const [visualTechName, setVisualTechName] = useState([]);
   const [interactionName, setInteractionName] = useState([]);
   const [articleTechName, setArticleTechName] = useState([]);
-  const initialStartDate = "2020-02-01T21:11:54";
+  const initialStartDate = "2020-01-01T21:11:54";
   const dateFormatting = "MM/dd/yyyy";
   const initialNewDate = new Date(initialStartDate);
   const [isDisableFilterApply, setIsDisableFilterApply] = useState(false);
 
-  const FILTER_CATEGORIES = [
+  const [isFilterChange, setIsFilterChange] = useState(false);
+
+  const FILTER_CATEGORIES_ARTICLE = [
     {
       filterLabel: "Source Type",
       filterName: sourceName,
@@ -129,6 +134,17 @@ const FilterMenu = props => {
         : props.filteringValues["Subject(s)"],
     },
     {
+      filterLabel: "Article Technique",
+      filterName: articleTechName,
+      setFilter: setArticleTechName,
+      filterData: isEmpty(props.filteringValues)
+        ? []
+        : props.filteringValues["Article Technique"],
+    },
+  ];
+
+  const FILTER_CATEGORIES_FIGURE = [
+    {
       filterLabel: "Visualization Type",
       filterName: visualizationName,
       setFilter: setVisualizationName,
@@ -152,17 +168,10 @@ const FilterMenu = props => {
         ? []
         : props.filteringValues["Interaction Technique"],
     },
-    {
-      filterLabel: "Article Technique",
-      filterName: articleTechName,
-      setFilter: setArticleTechName,
-      filterData: isEmpty(props.filteringValues)
-        ? []
-        : props.filteringValues["Article Technique"],
-    },
   ];
 
   const handleFilterChange = (event, setFilter, filterData) => {
+    setIsFilterChange(true);
     if (event.target.value.includes("All")) {
       setFilter(filterData);
     } else {
@@ -170,7 +179,37 @@ const FilterMenu = props => {
     }
   };
 
+  const getFilterObject = () => {
+    return {
+      sourceType: sourceName,
+      countryType: countryName,
+      languageType: languageName,
+      publisherType: publisherName,
+      subjectType: subjectName,
+      visualizationType: visualizationName,
+      visualTechType: visualTechName,
+      interactionType: interactionName,
+      articleTechType: articleTechName,
+      isDateFilter:
+        format(selectedDateBefore, dateFormatting) !==
+        format(initialNewDate, dateFormatting) || format(selectedDateAfter, dateFormatting) !== format(new Date(), dateFormatting),
+      dateRange: [
+        format(selectedDateBefore, dateFormatting),
+        format(selectedDateAfter, dateFormatting),
+      ],
+    };
+  }
+
+  const handleApplySubmit = e => {
+    props.handleSubmit(e, getFilterObject());
+  }
+
+  const handleSearchClear = () => {
+    props.handleSearchClear(getFilterObject())
+  }
+
   const handleApplyFilterClick = (anchor, open) => event => {
+    setIsFilterChange(false);
     const filterObject = {
       sourceType: sourceName,
       countryType: countryName,
@@ -183,7 +222,7 @@ const FilterMenu = props => {
       articleTechType: articleTechName,
       isDateFilter:
         format(selectedDateBefore, dateFormatting) !==
-        format(initialNewDate, dateFormatting),
+        format(initialNewDate, dateFormatting) || format(selectedDateAfter, dateFormatting) !== format(new Date(), dateFormatting),
       dateRange: [
         format(selectedDateBefore, dateFormatting),
         format(selectedDateAfter, dateFormatting),
@@ -202,6 +241,8 @@ const FilterMenu = props => {
   };
 
   const handleResetFilter = (anchor, open) => event => {
+    setIsFilterChange(false);
+
     setSourceName([]);
     setCountryName([]);
     setLanguageName([]);
@@ -214,7 +255,7 @@ const FilterMenu = props => {
     setArticleTechName([]);
     setSelectedDateBefore(initialNewDate);
     setSelectedDateAfter(new Date());
-
+    
     const filterObject = {
       sourceType: [],
       countryType: [],
@@ -234,6 +275,11 @@ const FilterMenu = props => {
       ],
     };
 
+    props.resetToggles();
+    props.setCheckedOrder(false);
+    props.setCheckedLabel(false);
+    props.setSearchVal('');
+    
     props.handleApplyFilter(filterObject);
     setState({ ...state, [anchor]: open });
   };
@@ -242,6 +288,7 @@ const FilterMenu = props => {
   const [selectedDateAfter, setSelectedDateAfter] = useState(new Date());
 
   const handleDateChangeBefore = date => {
+    setIsFilterChange(true);
     setSelectedDateBefore(date);
     if (isValid(date)) {
       setIsDisableFilterApply(false);
@@ -251,6 +298,7 @@ const FilterMenu = props => {
   };
 
   const handleDateChangeAfter = date => {
+    setIsFilterChange(true);
     setSelectedDateAfter(date);
     if (isValid(date)) {
       setIsDisableFilterApply(false);
@@ -259,6 +307,10 @@ const FilterMenu = props => {
     }
   };
 
+  const handleSearchEdit = e => {
+    props.handleChange(e);
+  }
+ 
   const handleDelete = (e, value) => {
     e.preventDefault();
     if (sourceName.includes(value)) {
@@ -291,6 +343,7 @@ const FilterMenu = props => {
     if (articleTechName.includes(value)) {
       setArticleTechName(current => _without(current, value));
     }
+    setIsFilterChange(true);
   };
 
   const toggleDrawer = (anchor, open) => event => {
@@ -304,13 +357,13 @@ const FilterMenu = props => {
     setState({ ...state, [anchor]: open });
   };
 
-  const renderFilterCategories = () =>
-    FILTER_CATEGORIES.map(
+  const renderArticleFilterCategories = () => 
+    FILTER_CATEGORIES_ARTICLE.map(
       ({ filterLabel, filterName, setFilter, filterData }, index) => (
         <div key={index}>
           <div>
             <FormControl className={classes.formControl}>
-              <InputLabel id='mutiple-chip-label'>{filterLabel}</InputLabel>
+              <InputLabel id='mutiple-chip-label' shrink={filterName.length === 0 ? false : true} focused={false} >{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
               <Select
                 labelId='mutiple-chip-label'
                 id='mutiple-chip'
@@ -332,7 +385,59 @@ const FilterMenu = props => {
                           />
                         }
                         onDelete={e => handleDelete(e, value)}
-                        onClick={() => console.log("clicked chip")}
+                        onClick={() => {}}
+                      />
+                    ))}
+                  </div>
+                )}
+                MenuProps={MenuProps}
+              >
+                {filterData.map(name => (
+                  <MenuItem
+                    key={name}
+                    value={name}
+                    style={getStyles(name, filterName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </div>
+          <Divider />
+        </div>
+      )
+    );
+
+  const renderFigureFilterCategories = () => 
+    FILTER_CATEGORIES_FIGURE.map(
+      ({ filterLabel, filterName, setFilter, filterData }, index) => (
+        <div key={index} className={classes.figureFilterMenu}>
+          <div>
+            <FormControl className={classes.formControl}>
+              <InputLabel id='mutiple-chip-label' shrink={filterName.length === 0 ? false : true} focused={false}>{filterLabel} {filterData?.length > 0 ? `(${filterData?.length})` : ''}</InputLabel>
+              <Select
+                labelId='mutiple-chip-label'
+                id='mutiple-chip'
+                multiple
+                value={filterName}
+                onChange={e => handleFilterChange(e, setFilter, filterData)}
+                input={<Input id='select-multiple-chip' />}
+                renderValue={selected => (
+                  <div className={classes.chips}>
+                    {selected.map(value => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        className={classes.chip}
+                        clickable
+                        deleteIcon={
+                          <CancelIcon
+                            onMouseDown={event => event.stopPropagation()}
+                          />
+                        }
+                        onDelete={e => handleDelete(e, value)}
+                        onClick={() => {}}
                       />
                     ))}
                   </div>
@@ -391,6 +496,7 @@ const FilterMenu = props => {
                   KeyboardButtonProps={{
                     "aria-label": "change date",
                   }}
+                  className={classes.datePickerKeyboard}
                 />
               </ThemeProvider>
             </MuiPickersUtilsProvider>
@@ -401,7 +507,7 @@ const FilterMenu = props => {
     );
   };
 
-  const list = anchor => (
+  const list = (anchor, handleSubmit, handleChange, toggleOrder, toggleLabel, checkedOrder, checkedLabel, setCheckedOrder, setCheckedLabel)  => (
     <div
       className={clsx(classes.list, {
         [classes.fullList]: anchor === "bottom",
@@ -409,7 +515,6 @@ const FilterMenu = props => {
       role='presentation'
     >
       <div className={classes.filterHeaderContainer}>
-        <div className={classes.filterHeader}>Filter Visualizations By...</div>
         <IconButton
           className={classes.filterHeaderClose}
           onClick={toggleDrawer(anchor, false)}
@@ -417,39 +522,62 @@ const FilterMenu = props => {
           <HighlightOffIcon className={classes.filterBtnIcon} />
         </IconButton>
       </div>
-      {renderFilterCategories()}
-      {renderDateFilter()}
-      <div className={classes.filterButtonsHolder}>
-        <div className={classes.resetIconHolder}>
-          <Button
-            variant='contained'
-            disableElevation
-            className={classes.links}
-            onClick={handleResetFilter(anchor, false)}
-          >
-            Reset Filters
-          </Button>
-        </div>
-        <div
-          className={
-            isDisableFilterApply
-              ? classes.disableIconHolder
-              : classes.infoIconHolder
-          }
-        >
-          <Button
-            variant='contained'
-            disableElevation
-            className={classes.links}
-            onClick={
+      <div className={classes.toggleMenuFilter}>
+        <ToggleMenu 
+          toggleOrder={toggleOrder}
+          toggleLabel={toggleLabel}
+          checkedOrder={checkedOrder}
+          checkedLabel={checkedLabel}
+          setCheckedOrder={setCheckedOrder}
+          setCheckedLabel={setCheckedLabel}
+        />
+      </div>
+      <div className={classes.searchFilterHolder}>
+        <SearchMenu 
+          handleSubmit={handleApplySubmit}
+          handleChange={handleSearchEdit}
+          handleSearchClear={handleSearchClear}
+          searchValue={props.searchValue}
+          setSearchVal={props.setSearchVal}
+        />
+        <div className={classes.filterHeaders}>ARTICLE ATTRIBUTES</div>
+        {renderArticleFilterCategories()}
+        {renderDateFilter()}
+        <div className={classes.filterHeaders}>FIGURE ATTRIBUTES</div>
+        {renderFigureFilterCategories()}
+        <div className={classes.filterButtonsHolder}>
+          <div
+            className={
               isDisableFilterApply
-                ? () => {}
-                : handleApplyFilterClick(anchor, false)
+                ? classes.disableIconHolder
+                : classes.infoIconHolder
             }
           >
-            Apply Filters
-          </Button>
+            <Button
+              variant='contained'
+              disableElevation
+              className={classNames(classes.links, isFilterChange ? '' : classes.disableFilterApply)}
+              onClick={
+                isDisableFilterApply
+                  ? () => {}
+                  : handleApplyFilterClick(anchor, false)
+              }
+            >
+              Apply
+            </Button>
+          </div>
+          <div className={classes.resetIconHolder}>
+            <Button
+              variant='contained'
+              disableElevation
+              className={classes.links}
+              onClick={handleResetFilter(anchor, false)}
+            >
+              Reset
+            </Button>
+          </div>
         </div>
+        <div className={classNames(classes.filterCTA, isFilterChange ? '' : classes.filterCTAHide)}>*Click Apply to update results</div>
       </div>
     </div>
   );
@@ -470,7 +598,7 @@ const FilterMenu = props => {
         onClose={toggleDrawer(anchor, false)}
         {...(width > 1280 ? {variant: "permanent"} : null)}
       >
-        {list(anchor)}
+        {list(anchor, props.handleSubmit, props.handleChange, props.toggleOrder, props.toggleLabel, props.checkedOrder, props.checkedLabel, props.setCheckedOrder, props.setCheckedLabel)}
       </Drawer>
     </Fragment>
   ));

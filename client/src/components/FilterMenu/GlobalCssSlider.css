@@ -1,0 +1,17 @@
+.MuiInput-underline:after  {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .MuiDrawer-paperAnchorDockedLeft {
+    border: none !important;
+    border-top: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12) !important;
+    border-right: 1px solid rgba(0, 0, 0, 0.12) !important;
+  }
+  
+  .MuiDrawer-paper {
+    top: 132px !important;
+    height: 83% !important;
+  }
+}

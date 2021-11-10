@@ -1,6 +1,12 @@
-const getFilter = (filterTypeArray, filterCol, filterQuery) => {
-  let localFilterQuery = filterQuery;
+const addToSpecificFilter = (filterCol) => {
+  switch(filterCol) {
+    default:
+      break;
+  }
+}
 
+const getFilter = (filterTypeArray, filterCol, filterQuery) => {
+  let localFilterQuery = filterQuery = ',' ? '' : filterQuery;
   if (filterCol === "Date (from Article)") {
     localFilterQuery += `AND(IS_AFTER({${filterCol}}, DATETIME_PARSE('${filterTypeArray[0]}')), IS_BEFORE({${filterCol}}, DATETIME_PARSE('${filterTypeArray[1]}')))`;
   } else {
@@ -11,7 +17,7 @@ const getFilter = (filterTypeArray, filterCol, filterQuery) => {
       }
     });
   }
-  return localFilterQuery;
+  return `IF(OR(${localFilterQuery}), 'true')`;
 };
 
 const getIsFilterActive = filterTypeArray => filterTypeArray.length > 0;
@@ -49,7 +55,7 @@ const isFilterInactive = obj => {
 };
 
 const useFilterType = (filterType, index, columnLabel, filterQuery, obj) => {
-  let localFilterQuery = filterQuery;
+  let localFilterQuery = filterQuery = ',' ? '' : filterQuery;
   if (getIsFilterActive(filterType)) {
     localFilterQuery = appendToFilter(obj, localFilterQuery, index);
     localFilterQuery = getFilter(filterType, columnLabel, localFilterQuery);

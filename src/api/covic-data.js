@@ -22,6 +22,7 @@ let cachedRecords;
 let cacheLogTime;
 
 let prevOffset = "";
+let prevOrderDisplay = "";
 
 const baseURL = `https://api.airtable.com/v0/${process.env.AIRTABLE_BASE}/`;
 axios.defaults.headers.post["Content-Type"] = "application/json";
@@ -29,45 +30,56 @@ axios.defaults.headers[
   "Authorization"
 ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
-const setSearchParams = (params, term, fieldReset) => {
-  const locParams = params;
-  if (fieldReset === "true") {
-    locParams.offset = "";
-  }
-  locParams.filterByFormula = `OR(
-    FIND('${term}',{ID})>0,
-    FIND('${term}',{Coder})>0,
-    FIND('${term}',{Title (from ID copy)})>0,
-    FIND('${term}',{File Name})>0,
-    FIND('${term}',{Visualization Type})>0,
-    FIND('${term}',{Visual Technique})>0,
-    FIND('${term}',{Interaction Technique})>0,
-    FIND('${term}',{Notes})>0,
-    FIND('${term}',{Country (from ID copy)})>0,
-    FIND('${term}',{Publisher (from ID copy)})>0,
-    FIND('${term}',{URL (from ID copy)})>0,
-    FIND('${term}',{Source Type})>0,
-    FIND('${term}',{Date (from Article)})>0,
-    FIND('${term}',{Subject(s) (from Article)})>0)`;
+const setSearchParams = (term) => {
+  const capTerm = term.charAt(0).toUpperCase() + term.slice(1);
+  const upperTerm = term.toUpperCase();
+  const lowerTerm = term.toLowerCase();
+
+  const locParams = `IF(OR(
+    FIND('${term}',{ID}),
+    FIND('${term}',{File Name}),
+    FIND('${lowerTerm}',{File Name}),
+    FIND('${capTerm}',{File Name}),
+    FIND('${upperTerm}',{File Name}),
+    FIND('${term}',{Notes}),
+    FIND('${lowerTerm}',{Notes}),
+    FIND('${capTerm}',{Notes}),
+    FIND('${upperTerm}',{Notes}),
+    FIND('${term}',{URL (from ID copy)}),
+    FIND('${term}',{Figure Caption}),
+    FIND('${lowerTerm}',{Figure Caption}),
+    FIND('${capTerm}',{Figure Caption}),
+    FIND('${upperTerm}',{Figure Caption}),
+    FIND('${term}',{Title 2}),
+    FIND('${lowerTerm}',{Title 2}),
+    FIND('${capTerm}',{Title 2}),
+    FIND('${upperTerm}',{Title 2})), 'true')`;
 
   return locParams;
 };
+
+const appendToFilterQuery = (filterCol) => {
+  return filterCol !== '' ? `${filterCol},` : '';
+}
 
 router.get("/", limiter, speedLimiter, async (req, res, next) => {
   if (
     cacheLogTime &&
     cacheLogTime > Date.now() - 30 * 1000 &&
-    prevOffset === req.query.offset
+    prevOffset === req.query.offset &&
+    prevOrderDisplay === req.query.inOrderDisplay &&
+    cachedRecords?.length > 0
   ) {
     return res.json(cachedRecords);
   }
   prevOffset = req.query.offset;
+  prevOrderDisplay = req.query.inOrderDisplay;
   axios.defaults.baseURL = `${baseURL}${req.query.baseType}`;
 
   let params = {
     offset: req.query.offset,
     pageSize: req.query.requestAmount,
-    view: "API [DO NOT EDIT]",
+    view: req.query.inOrderDisplay === "true" ? "API [DO NOT EDIT] old-new" : "API [DO NOT EDIT]",
   };
 
   if (
@@ -78,105 +90,107 @@ router.get("/", limiter, speedLimiter, async (req, res, next) => {
     params.filterByFormula = `${req.query.filterType}('${req.query.term}',{${req.query.fieldCol}})`;
   } else {
     const today = format(new Date(), "yyyy-MM-dd");
-    params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-02-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
+    params.filterByFormula = `AND(IS_AFTER({Date (from Article)}, DATETIME_PARSE('2020-01-01')), IS_BEFORE({Date (from Article)}, DATETIME_PARSE('${today}')))`;
   }
 
-  if (req.query.queryType === "search") {
-    const searchParams = setSearchParams(
-      params,
-      req.query.term,
-      req.query.fieldReset
-    );
-    params = { ...params, searchParams };
-
-    if (req.query.term === "") {
-      params.filterByFormula = "";
+  if (req.query.queryType === "filter" || req.query.queryType === "search") {
+    const obj = JSON.parse(req.query.filterValue);
+    
+    const queryObject = {
+      'sourceTypeQuery': '',
+      'countryTypeQuery': '',
+      'languageTypeQuery': '',
+      'publisherTypeQuery': '',
+      'subjectTypeQuery': '',
+      'visualizationTypeQuery': '',
+      'visualTechniqueTypeQuery': '',
+      'interactionTechniquerTypeQuery': '',
+      'articleTechniqueTypeQuery': '',
+      'dataTypeQuery': '',
     }
-  }
 
-  if (req.query.queryType === "filter") {
-    const obj = JSON.parse(req.query.term);
-    let filterQuery = "IF(OR(";
-
-    filterQuery = filterColumn.useFilterType(
+    queryObject['sourceTypeQuery'] = filterColumn.useFilterType(
       obj.sourceType,
       0,
       "Source Type",
-      filterQuery,
+      queryObject['sourceTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['countryTypeQuery'] = filterColumn.useFilterType(
       obj.countryType,
       1,
       "Country (from ID Copy)",
-      filterQuery,
+      queryObject['countryTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['languageTypeQuery'] = filterColumn.useFilterType(
       obj.languageType,
       2,
       "Language (from Article)",
-      filterQuery,
+      queryObject['languageTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['publisherTypeQuery'] = filterColumn.useFilterType(
       obj.publisherType,
       3,
       "Publisher (from ID Copy)",
-      filterQuery,
+      queryObject['publisherTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['subjectTypeQuery'] = filterColumn.useFilterType(
       obj.subjectType,
       4,
       "Subject(s) (from Article)",
-      filterQuery,
+      queryObject['subjectTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['visualizationTypeQuery'] = filterColumn.useFilterType(
       obj.visualizationType,
       5,
       "Visualization Type",
-      filterQuery,
+      queryObject['visualizationTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['visualTechniqueTypeQuery'] = filterColumn.useFilterType(
       obj.visualTechType,
       6,
       "Visual Technique",
-      filterQuery,
+      queryObject['visualTechniqueTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['interactionTechniquerTypeQuery'] = filterColumn.useFilterType(
       obj.interactionType,
       7,
       "Interaction Technique",
-      filterQuery,
+      queryObject['interactionTechniquerTypeQuery'],
       obj
     );
-    filterQuery = filterColumn.useFilterType(
+    queryObject['articleTechniqueTypeQuery'] = filterColumn.useFilterType(
       obj.articleTechType,
       8,
       "Article Technique (from Article)",
-      filterQuery,
+      queryObject['articleTechniqueTypeQuery'],
       obj
     );
 
     if (obj.isDateFilter) {
-      filterQuery = filterColumn.useFilterType(
+      queryObject['dataTypeQuery'] = filterColumn.useFilterType(
         obj.dateRange,
         9,
         "Date (from Article)",
-        filterQuery,
+        queryObject['dataTypeQuery'],
         obj
       );
     }
 
-    filterQuery += "), 'true')";
-    params.filterByFormula = filterQuery;
-    if (filterColumn.isFilterInactive(obj) && !obj.isDateFilter) {
-      params.filterByFormula = "";
-    }
+    params.filterByFormula = 'AND(';
+    Object.keys(queryObject).forEach(key => {
+      params.filterByFormula += appendToFilterQuery(queryObject[key]);
+    })
+    params.filterByFormula += setSearchParams(req.query.searchValue);
+    params.filterByFormula += ')';
+    params.filterByFormula = params.filterByFormula.replace(',)', ')');
+
     if (req.query.fieldReset === "true") {
       params.offset = "";
     } else {
@@ -226,7 +240,8 @@ router.get("/figures", limiter, speedLimiter, async (req, res, next) => {
         params: {
           offset: req.query.offset,
           pageSize: req.query.requestAmount,
-          filterByFormula: `SEARCH('${req.query.queryType}',{ID})`,
+          filterByFormula: `IF(OR(FIND('${req.query.queryType}',{ID}), FIND('${req.query.queryType}',{Article})), 'true')`,
+          view: "Figures Grid"
         },
       })
       .then(response => {

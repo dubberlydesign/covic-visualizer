@@ -11,7 +11,6 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.up("lg")]: {
       height: "100%",
       overflowY: "scroll",
-      paddingLeft: "20px",
       width: "344px",
       "& hr": {
         display: "none"
@@ -43,9 +42,12 @@ export const useStyles = makeStyles(theme => ({
 
   filterHeaderContainer: {
     display: "flex",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
+    [theme.breakpoints.up("lg")]: {
+      display: "none",
+    },
   },
-
+  
   filterHeader: {
     fontFamily: "sans-serif",
     fontSize: 20,
@@ -78,7 +80,7 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 700,
     color: "#425664",
     [theme.breakpoints.up("lg")]: {
-      visibility: "hidden"
+      display: "none",
     },
 
   },
@@ -91,26 +93,31 @@ export const useStyles = makeStyles(theme => ({
   filterButtonsHolder: {
     display: "flex",
     justifyContent: "flex-end",
-    margin: "0px 75px 20px 20px",
+    margin: "0px 10px 20px 20px",
+    flexDirection: "column",
     [theme.breakpoints.up("lg")]: {
-      flexDirection: "column",
+      flexDirection: "row",
       justifyContent: "space-between",
-      margin: "0 0 20px 0",
+      margin: "40px 0 20px 0",
       width: "100%"
     }
   },
 
   resetIconHolder: {
-    margin: "0px 10px 20px 20px",
+    margin: "0px 0px 0px 20px",
+    flex: "0 0 100%",
     [theme.breakpoints.up("lg")]: {
-      margin: "20px 0 20px 0"
+      margin: "0",
+      flex: "0 0 50%"
     }
   },
 
   infoIconHolder: {
-    margin: "0px 66px 20px 20px",
+    margin: "0px 0px 0px 20px",
+    flex: "0 0 100%",
     [theme.breakpoints.up("lg")]: {
-      margin: 0
+      margin: "0",
+      flex: "0 0 50%"
     }
   },
 
@@ -128,10 +135,10 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "20px",
     backgroundColor: "#C6AD8F",
     color: "white",
-    width: "150px",
+    width: "92%",
     [theme.breakpoints.up("lg")]: {
       marginTop: 0,
-      width: "92%"
+      width: "150px",
     }
   },
 
@@ -147,7 +154,58 @@ export const useStyles = makeStyles(theme => ({
     minWidth: 120,
     width: "92%",
     [theme.breakpoints.up('lg')]: {
-      margin: 0
+      margin: "0 8px",
+      display: "flex",
+      flexDirection: "row",
     },
+  },
+
+  filterHeaders: {
+    margin: "40px 0 10px 20px",
+    fontWeight: "700",
+    color: "#C6AD8F",
+    [theme.breakpoints.up("lg")]: {
+      margin: "40px 0 10px 0",
+    },
+  },
+
+  datePickerKeyboard: {
+    paddingLeft: "9px",
+  },
+
+  toggleMenuFilter: {
+    padding: '20px 0 20px 5px',
+    borderBottom: '1px solid rgba(0, 0, 0, 0.12)',
+    display: "block",
+    [theme.breakpoints.up("lg")]: {
+      padding: '20px 0 20px 20px',
+      display: "none",
+    },
+  },
+
+  searchFilterHolder: {
+    [theme.breakpoints.up("lg")]: {
+      paddingLeft: "20px",
+      paddingBottom: "20px",
+    },
+  },
+  
+  disableFilterApply: {
+    opacity: '.25',
+    pointerEvents: 'none',
+  },
+
+  filterCTA: {
+    color: "#C6AD8F",
+    fontWeight: "900",
+    textTransform: "uppercase",
+    padding: "0 40px 40px 40px",
+    [theme.breakpoints.up("lg")]: {
+      padding: '0',
+    },
+  },
+
+  filterCTAHide: {
+    display: "none",
   },
 }));
