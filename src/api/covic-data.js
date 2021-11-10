@@ -31,7 +31,7 @@ axios.defaults.headers[
 ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
 const setSearchParams = (term) => {
-  const newTerm = term.replace("'", "’");
+  const newTerm = term.replace("'", "’").trim();
   
   let wordsSplit = newTerm;
   if (wordsSplit.length !== 0) {
