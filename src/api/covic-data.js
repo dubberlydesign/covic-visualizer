@@ -31,29 +31,44 @@ axios.defaults.headers[
 ] = `Bearer ${process.env.AIRTABLE_API_KEY}`;
 
 const setSearchParams = (term) => {
-  const capTerm = term.charAt(0).toUpperCase() + term.slice(1);
-  const upperTerm = term.toUpperCase();
-  const lowerTerm = term.toLowerCase();
+  const newTerm = term.replace("'", "’");
+  
+  let wordsSplit = newTerm;
+  if (wordsSplit.length !== 0) {
+    wordsSplit = wordsSplit.split(' ');
+    for (let i = 0; i < wordsSplit.length; i++) {
+      wordsSplit[i] = wordsSplit[i][0].toUpperCase() + wordsSplit[i].substr(1);
+    }
+    wordsSplit = wordsSplit.join(' ');
+  }
+  
+  const capTerm = newTerm.charAt(0).toUpperCase() + newTerm.slice(1);
+  const upperTerm = newTerm.toUpperCase();
+  const lowerTerm = newTerm.toLowerCase();
 
   const locParams = `IF(OR(
-    FIND('${term}',{ID}),
-    FIND('${term}',{File Name}),
-    FIND('${lowerTerm}',{File Name}),
+    FIND('${newTerm}',{ID}),
+    FIND('${newTerm}',{File Name}),
+    FIND('${lowerTerm}',LOWER({File Name})),
     FIND('${capTerm}',{File Name}),
-    FIND('${upperTerm}',{File Name}),
-    FIND('${term}',{Notes}),
-    FIND('${lowerTerm}',{Notes}),
+    FIND('${wordsSplit}',{File Name}),
+    FIND('${upperTerm}',UPPER({File Name})),
+    FIND('${newTerm}',{Notes}),
+    FIND('${lowerTerm}',LOWER({Notes})),
     FIND('${capTerm}',{Notes}),
-    FIND('${upperTerm}',{Notes}),
-    FIND('${term}',{URL (from ID copy)}),
-    FIND('${term}',{Figure Caption}),
-    FIND('${lowerTerm}',{Figure Caption}),
+    FIND('${wordsSplit}',{Notes}),
+    FIND('${upperTerm}',UPPER({Notes})),
+    FIND('${newTerm}',{URL (from ID copy)}),
+    FIND('${newTerm}',{Figure Caption}),
+    FIND('${lowerTerm}',LOWER({Figure Caption})),
     FIND('${capTerm}',{Figure Caption}),
-    FIND('${upperTerm}',{Figure Caption}),
-    FIND('${term}',{Title 2}),
-    FIND('${lowerTerm}',{Title 2}),
+    FIND('${wordsSplit}',{Figure Caption}),
+    FIND('${upperTerm}',UPPER({Figure Caption})),
+    FIND('${newTerm}',{Title 2}),
+    FIND('${lowerTerm}',LOWER({Title 2})),
     FIND('${capTerm}',{Title 2}),
-    FIND('${upperTerm}',{Title 2})), 'true')`;
+    FIND('${wordsSplit}',{Title 2}),
+    FIND('${upperTerm}',UPPER({Title 2}))), 'true')`;
 
   return locParams;
 };
