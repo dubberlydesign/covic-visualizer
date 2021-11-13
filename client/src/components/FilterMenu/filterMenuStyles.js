@@ -208,4 +208,14 @@ export const useStyles = makeStyles(theme => ({
   filterCTAHide: {
     display: "none",
   },
+
+  mailToLinkHolder: {
+    margin: "80px 0 0 0",
+  },
+
+  mailtToLink: {
+    color: "#000",
+    fontStyle: "italic",
+    fontSize: "16px"
+  }
 }));

@@ -578,6 +578,7 @@ const FilterMenu = props => {
           </div>
         </div>
         <div className={classNames(classes.filterCTA, isFilterChange ? '' : classes.filterCTAHide)}>*Click Apply to update results</div>
+        <div className={classes.mailToLinkHolder}><a className={classes.mailtToLink} href="mailto:feedback@covic-archive.org">Feedback, Comments, or Bug Reports</a></div>
       </div>
     </div>
   );

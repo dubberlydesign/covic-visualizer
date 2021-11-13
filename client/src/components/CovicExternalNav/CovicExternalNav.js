@@ -6,7 +6,7 @@ import classNames from "classnames";
 import CovicFlyOutMenu from "./CovicFlyOutMenu";
 import { useStyles } from "./stylesCovicExternalNav";
 
-const MENU_ITEMS = ["COVIC Is", "COVIC Contains", "COVIC Visualizer", "logo", "COVIC Team"];
+const MENU_ITEMS = ["COVIC Is", "COVIC Contains", "COVIC Visualizer", "logo", "Tutorial", "COVIC Team"];
 
 const CovicExternalNav = () => {
   const theme = createTheme();
@@ -24,6 +24,9 @@ const CovicExternalNav = () => {
       case 'COVIC Team':
         link = 'http://covic-archive.org/team.html';
         break;
+      case 'Tutorial':
+          link = 'http://covic-archive.org/tutorial.html';
+          break;
       case 'COVIC Visualizer':
         return;
       default:
