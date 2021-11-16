@@ -132,3 +132,18 @@ Example of Title Code
 ## Toggle Menu
 Toggle Menu can be found and edited in folder: `ToggleMenu`<br />
 This will control the gallery display for `Published Date(New/Old)` and `Labels(On/Off)`
+
+## CSS/Styles
+Styles are located in the following files:
+- `styles.js`
+```javascript
+  Contains styles for main grid view and search bar
+```
+- `/FilterMenu/filterMenuStyles.js`
+```javascript
+  Contains styles for left side filter menu and toggle switches
+```
+- `/CovicExternalNav/stylesCovicExernalnav.js`
+```javascript
+  Contains styles for header/main nav
+```

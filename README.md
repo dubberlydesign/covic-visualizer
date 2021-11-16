@@ -26,6 +26,18 @@ From within the covic-visualizer folder run:
 git push heroku main
 ```
 
+# Deploying to a different server
+Covic Visualizer server is built off of Node.js, so your deployment environment must be capable running Node.js
+
+On your deployment environment please add the following environment variables(*contact admin for airtable keys)
+
+```javascript
+AIRTABLE_API_KEY
+AIRTABLE_BASE
+```
+
+* Please never place these Airtable Environment variables in the projects .env file as this is sensitive access data.
+
 ### Live link
 
 ```javascript
