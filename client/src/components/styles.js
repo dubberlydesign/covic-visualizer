@@ -155,6 +155,9 @@ export const useStyles = makeStyles(theme => ({
     fontWeight: 700,
   },
 
+  // start
+  // styles for Search Filter
+  //
   searchFilter: {
     display: "flex",
     justifyContent: "center",
@@ -190,7 +193,13 @@ export const useStyles = makeStyles(theme => ({
     marginTop: "80px",
     maxWidth: "none",
   },
+  // end
+  // styles for Search Filter
+  //
 
+  // start
+  // styles for Modal
+  //
   modal: {
     overflow: "scroll",
     position: "absolute",
@@ -353,7 +362,13 @@ export const useStyles = makeStyles(theme => ({
   cardIconSet: {
     cursor: "pointer",
   },
-  
+  // end
+  // styles for Modal
+  //
+
+  //
+  // styles for Header Main
+  //
   mainHeader: {
     position: "relative",
     zIndex: "1300",
