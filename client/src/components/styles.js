@@ -204,6 +204,9 @@ export const useStyles = makeStyles(theme => ({
     overflow: "scroll",
     position: "absolute",
     padding: "100px",
+    [theme.breakpoints.down("xs")]: {
+      padding: 0,
+    },
   },
 
   modalPageView: {
@@ -216,6 +219,14 @@ export const useStyles = makeStyles(theme => ({
     textAlign: "left",
     color: "white",
     backgroundColor: "#b3bbc1",
+    height: "auto",
+    [theme.breakpoints.down("xs")]: {
+      backgroundColor: "#fff",
+      borderRadius: 0,
+      height: "100vh",
+      margin: 0,
+      padding: 0
+    },
   },
 
   modalTextHolder: {
@@ -349,10 +360,18 @@ export const useStyles = makeStyles(theme => ({
 
   modalButton: {
     backgroundColor: "#C6AD8F",
+    borderRadius: 0,
     color: "white",
     flex: "0 0 auto",
     width: "auto",
     marginRight: "10px",
+    [theme.breakpoints.down("xs")]: {
+      borderRadius: "50%",
+      flex: "0 0 64px",
+      fontSize: "12px",
+      height: "64px",
+      padding: 0
+    }
   },
 
   hideLabelsForToggle: {
