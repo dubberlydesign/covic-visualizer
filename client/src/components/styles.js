@@ -201,7 +201,6 @@ export const useStyles = makeStyles(theme => ({
   // styles for Modal
   //
   modal: {
-    padding: 0,
     overflow: "scroll",
     position: "absolute",
     padding: "100px",
