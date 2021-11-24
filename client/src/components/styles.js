@@ -1,9 +1,30 @@
 import { makeStyles } from "@material-ui/core/styles";
 
+/*
+* Edit main color scheme within editPalette object
+*/
+const editPalette = {
+  creamBgColor: "#F6F4F2",
+  lightGreyBgColor: "#b3bbc1",
+  tanBgColor: "#C6AD8F",
+}
+
+/*
+* Edit font sizes within editFontSizes object
+*/
+const editFontSizes = {
+  cardTitleFontSize: "18px",
+  inputTextFontSize: "16px",
+  helperTextFontSize: "16px",
+  modalTextHolderFontSize: "20px",
+  modalHeaderCloseFontSize: "50px",
+  modalButtonFontSize: "12px"
+}
+
 export const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
-    background: "#F6F4F2",
+    background: editPalette.creamBgColor,
     height: "100vh",
   },
 
@@ -12,7 +33,7 @@ export const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     textAlign: "left",
     color: "white",
-    backgroundColor: "#b3bbc1",
+    backgroundColor: editPalette.lightGreyBgColor,
     maxWidth: "600px",
   },
 
@@ -81,7 +102,7 @@ export const useStyles = makeStyles(theme => ({
 
   altMediaFormat: {
     fontWeight: 900,
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     marginBottom: "10px",
     width: "100%",
   },
@@ -103,26 +124,26 @@ export const useStyles = makeStyles(theme => ({
   cardTitle: {
     marginBottom: "20px",
     fontWeight: 700,
-    fontSize: "18px",
+    fontSize: editFontSizes.cardTitleFontSize,
   },
 
   initLoader: {
     position: "fixed",
     top: "250px",
     left: "49.5%",
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
   },
 
   loader: {
     position: "fixed",
     bottom: "0",
     left: "50%",
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
   },
 
   links: {
     marginTop: "30px",
-    backgroundColor: "#C6AD8F",
+    backgroundColor: editPalette.tanBgColor,
     color: "white",
     width: "150px",
     marginRight: "10px",
@@ -143,13 +164,13 @@ export const useStyles = makeStyles(theme => ({
 
   inputText: {
     fontFamily: "sans-serif",
-    fontSize: 16,
+    fontSize: editFontSizes.inputTextFontSize,
     color: "#000",
-    borderColor: "#C6AD8F",
+    borderColor: editPalette.tanBgColor,
   },
 
   helperText: {
-    fontSize: 16,
+    fontSize: editFontSizes.helperTextFontSize,
     color: "#425664",
     textTransform: "uppercase",
     fontWeight: 700,
@@ -186,7 +207,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   appBar: {
-    backgroundColor: "#F6F4F2",
+    backgroundColor: editPalette.creamBgColor,
   },
 
   containerScroll: {
@@ -218,7 +239,7 @@ export const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     textAlign: "left",
     color: "white",
-    backgroundColor: "#b3bbc1",
+    backgroundColor: editPalette.lightGreyBgColor,
     height: "auto",
     [theme.breakpoints.down("xs")]: {
       backgroundColor: "#fff",
@@ -248,7 +269,7 @@ export const useStyles = makeStyles(theme => ({
 
   modalTextHolderHeader: {
     fontWeight: 700,
-    fontSize: 20,
+    fontSize: editFontSizes.modalTextHolderFontSize,
     marginBottom: 10,
   },
 
@@ -338,28 +359,28 @@ export const useStyles = makeStyles(theme => ({
 
   modalHeaderClose: {
     fontFamily: "sans-serif",
-    fontSize: 50,
-    color: "#C6AD8F",
+    fontSize: editFontSizes.modalHeaderCloseFontSize,
+    color: editPalette.tanBgColor,
     letterSpacing: "-1px",
-    borderColor: "#C6AD8F",
+    borderColor: editPalette.tanBgColor,
     margin: 0,
     cursor: "pointer",
   },
 
   modalHeaderPrevious: {
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     cursor: "pointer",
     float: "left"
   },
 
   modalHeaderNext: {
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     cursor: "pointer",
     float: "right"
   },
 
   modalButton: {
-    backgroundColor: "#C6AD8F",
+    backgroundColor: editPalette.tanBgColor,
     borderRadius: 0,
     color: "white",
     flex: "0 0 auto",
@@ -368,7 +389,7 @@ export const useStyles = makeStyles(theme => ({
     [theme.breakpoints.down("xs")]: {
       borderRadius: "50%",
       flex: "0 0 64px",
-      fontSize: "12px",
+      fontSize: editFontSizes.modalButtonFontSize,
       height: "64px",
       padding: 0
     }
@@ -400,7 +421,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   searchClearIcon: {
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     opacity: ".5",
   },
 

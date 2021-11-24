@@ -1,12 +1,35 @@
 import { makeStyles } from "@material-ui/core/styles";
 
+/*
+* Edit main color scheme within editPalette object
+*/
+const editPalette = {
+  creamBgColor: "#F6F4F2",
+  lightGreyBgColor: "#b3bbc1",
+  tanBgColor: "#C6AD8F",
+  filterBgColor: "#425664"
+}
+
+/*
+* Edit font sizes within editFontSizes object
+*/
+const editFontSizes = {
+  filterHeaderFontSize: "20px",
+  filterHeaderCloseFontSize: "30px",
+  filterButtonIconFontSize: "30px",
+  filterButtonFontSize: "16px",
+  filterIconFontSize: "40px",
+  filterInfoIconFontSize: "60px",
+  mailToLinkFontSizes: "16px",
+}
+
 export const useStyles = makeStyles(theme => ({
   list: {
     width: 250,
   },
 
   fullList: {
-    backgroundColor: "#F6F4F2",
+    backgroundColor: editPalette.creamBgColor,
     width: "auto",
     [theme.breakpoints.up("lg")]: {
       height: "100%",
@@ -50,19 +73,19 @@ export const useStyles = makeStyles(theme => ({
   
   filterHeader: {
     fontFamily: "sans-serif",
-    fontSize: 20,
-    color: "#C6AD8F",
+    fontSize: editFontSizes.filterHeaderFontSize,
+    color: editPalette.tanBgColor,
     letterSpacing: "-1px",
-    borderColor: "#C6AD8F",
+    borderColor: editPalette.tanBgColor,
     margin: "20px 20px 0 20px",
   },
 
   filterHeaderClose: {
     fontFamily: "sans-serif",
-    fontSize: 30,
-    color: "#C6AD8F",
+    fontSize: editFontSizes.filterHeaderCloseFontSize,
+    color: editPalette.tanBgColor,
     letterSpacing: "-1px",
-    borderColor: "#C6AD8F",
+    borderColor: editPalette.tanBgColor,
     margin: "5px 20px 0 20px",
     cursor: "pointer",
     [theme.breakpoints.up("lg")]: {
@@ -72,13 +95,13 @@ export const useStyles = makeStyles(theme => ({
 
   filterBtnIcon: {
     fontFamily: "sans-serif",
-    fontSize: 30,
+    fontSize: editFontSizes.filterButtonIconFontSize,
   },
 
   filterButton: {
-    fontSize: 16,
+    fontSize: editFontSizes.filterButtonFontSize,
     fontWeight: 700,
-    color: "#425664",
+    color: editPalette.filterBgColor,
     [theme.breakpoints.up("lg")]: {
       display: "none",
     },
@@ -86,8 +109,8 @@ export const useStyles = makeStyles(theme => ({
   },
 
   filterIcon: {
-    fontSize: 40,
-    color: "#425664",
+    fontSize: editFontSizes.filterIconFontSize,
+    color: editPalette.filterBgColor,
   },
 
   filterButtonsHolder: {
@@ -127,13 +150,13 @@ export const useStyles = makeStyles(theme => ({
   },
 
   filterInfoIcon: {
-    fontSize: 60,
-    color: "#C6AD8F",
+    fontSize: editFontSizes.filterInfoIconFontSize,
+    color: editPalette.tanBgColor,
   },
 
   links: {
     marginTop: "20px",
-    backgroundColor: "#C6AD8F",
+    backgroundColor: editPalette.tanBgColor,
     color: "white",
     width: "92%",
     [theme.breakpoints.up("lg")]: {
@@ -163,7 +186,7 @@ export const useStyles = makeStyles(theme => ({
   filterHeaders: {
     margin: "40px 0 10px 20px",
     fontWeight: "700",
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     [theme.breakpoints.up("lg")]: {
       margin: "40px 0 10px 0",
     },
@@ -196,7 +219,7 @@ export const useStyles = makeStyles(theme => ({
   },
 
   filterCTA: {
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     fontWeight: "900",
     textTransform: "uppercase",
     padding: "0 40px 40px 40px",
@@ -216,6 +239,6 @@ export const useStyles = makeStyles(theme => ({
   mailtToLink: {
     color: "#000",
     fontStyle: "italic",
-    fontSize: "16px"
+    fontSize: editFontSizes.mailToLinkFontSizes,
   }
 }));

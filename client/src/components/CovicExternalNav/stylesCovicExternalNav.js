@@ -1,10 +1,26 @@
 import { makeStyles } from "@material-ui/core/styles";
 
+/*
+* Edit main color scheme within editPalette object
+*/
+const editPalette = {
+  creamBgColor: "#F6F4F2",
+  lightGreyBgColor: "#b3bbc1",
+  tanBgColor: "#C6AD8F",
+}
+
+/*
+* Edit font sizes within editFontSizes object
+*/
+const editFontSizes = {
+  covicExternalNavMenuFontSize: "16px"
+}
+
 export const useStyles = makeStyles(theme => ({
   covicExternalNavMenuHolder: {
     display: "flex",
     justifyContent: "space-between",
-    fontSize: "16px",
+    fontSize: editFontSizes.covicExternalNavMenuFontSize,
     margin: "20px 0 0 20px",
     [theme.breakpoints.up("lg")]: {
       display: "block",
@@ -15,7 +31,7 @@ export const useStyles = makeStyles(theme => ({
 
   covicExternalNavList: {
     display: "flex",
-    color: "#C6AD8F",
+    color: editPalette.tanBgColor,
     listStyle: "none"
   },
 
@@ -40,7 +56,7 @@ export const useStyles = makeStyles(theme => ({
 
   covicMenuSelected: {
     textDecoration: "underline",
-    color: "#b3bbc1",
+    color: editPalette.lightGreyBgColor,
   },
 
   covicLogo: {
