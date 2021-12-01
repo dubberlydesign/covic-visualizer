@@ -10,7 +10,7 @@ const getFilter = (filterTypeArray, filterCol, filterQuery) => {
   const beforeConvert = new Date(filterTypeArray[0]);
   const afterConvert = new Date(filterTypeArray[1]);
   if (filterCol === "Date (from Article)") {
-    localFilterQuery += `AND(IS_AFTER({${filterCol}}, DATETIME_PARSE('${new Date(beforeConvert.setDate(beforeConvert.getDate() - 1))}')), IS_BEFORE({${filterCol}}, DATETIME_PARSE('${new Date(afterConvert.setDate(afterConvert.getDate()))}')))`;
+    localFilterQuery += `AND(IS_AFTER({${filterCol}}, DATETIME_PARSE('${new Date(beforeConvert.setDate(beforeConvert.getDate() - 1))}')), IS_BEFORE({${filterCol}}, DATETIME_PARSE('${new Date(afterConvert.setDate(afterConvert.getDate() + 1))}')))`;
   } else {
     filterTypeArray.forEach((filter, index) => {
       localFilterQuery += `FIND('${filter}',{${filterCol}})>0`;
