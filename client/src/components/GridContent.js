@@ -26,7 +26,7 @@ const GridContent = ({item, classes, getDisplayLabels}) => {
         component='p'
         className={getDisplayLabels()}
       >
-        {`${item?.fields["Publisher (from ID copy)"]}, ${getFormattedDate(item?.fields["Date (from Article)"])}`}
+        {`${item?.fields["Publisher (from ID copy)"]}, ${item?.fields["Date (from Article)"] ? getFormattedDate(item?.fields["Date (from Article)"]) : item?.fields["Date (from Article)"]}`}
       </Typography>
       <Typography
         variant='body2'
