@@ -19,8 +19,8 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
-        "img-src": ["'self'", "https://dl.airtable.com/"],
-        "media-src": ["'self'", "https://dl.airtable.com/"],
+        "img-src": ["'self'", "https://dl.airtable.com/", "https://*.airtableusercontent.com"],
+        "media-src": ["'self'", "https://dl.airtable.com/", "https://*.airtableusercontent.com"],
       },
     },
   })
